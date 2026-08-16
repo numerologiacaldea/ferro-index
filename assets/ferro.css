@@ -21,17 +21,9 @@
   --sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --paper: #141414;
-    --card: #252524;
-    --ink: #eae7e1;
-    --muted: #a8a49d;
-    --line: rgba(234, 231, 225, 0.2);
-    --brass: #86adc4;
-    --brass-soft: rgba(134, 173, 196, 0.12);
-  }
-}
+/* Un tema solo, uguale su ogni schermo.
+   Nessuno dei dodici marchi di riferimento apre in scuro, e un sito che cambia
+   aspetto tra telefono e computer non si legge come una cosa sola. */
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -107,7 +99,15 @@ a:hover { color: var(--brass); }
 
 /* ---------- hero ---------- */
 
-.hero { position: relative; padding: 92px 0 56px; }
+/* la prima schermata è tutta sua: nessuna sezione deve affacciarsi da sotto */
+.hero {
+  position: relative;
+  min-height: 100svh;
+  padding: 92px 0 64px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
 
 .hero h1 {
   font-size: clamp(30px, 6.4vw, 44px);
@@ -365,17 +365,25 @@ a:hover { color: var(--brass); }
 .pub-input:focus { outline: none; border-color: var(--brass); }
 .pub-input::placeholder { color: var(--muted); opacity: 0.8; }
 
-.gate-form { margin-top: 26px; }
-.gate-form .pub-input { margin-top: 0; }
-.gate-esito { margin-top: 12px; color: var(--brass); }
-
-/* riquadro che raccoglie la risposta di Substack: non deve vedersi */
-iframe.sink {
-  position: absolute;
-  width: 0; height: 0;
-  border: 0;
-  visibility: hidden;
+/* il modulo ufficiale di Substack arriva con il suo fondo scuro: invece di
+   combatterlo, gli si dà una cornice della stessa tinta, così legge come un
+   blocco voluto dentro la pagina chiara e non come un corpo estraneo */
+.gate-box {
+  margin-top: 26px;
+  border-radius: 3px;
+  background: #1a1a18;
+  padding: 10px 10px 4px;
+  max-width: 470px;
+  overflow: hidden;
 }
+.gate-box iframe {
+  display: block;
+  width: 100%;
+  height: 200px;
+  border: 0;
+  background: transparent;
+}
+.gate-esito { margin-top: 14px; }
 
 .reg-block {
   margin-top: 26px;
@@ -545,6 +553,7 @@ body.in-quiz .lang { display: none; }
   .hero { padding: 118px 0 76px; }
   .hero h1 { font-size: clamp(40px, 4.2vw, 52px); }
   .hero .btn { max-width: 340px; }
+  .hero .sotto { font-size: 22px; }
 
   /* Tre figli soli: verdetto e azioni a sinistra, lettura a destra.
      Le righe sono due e dichiarate, quindi la griglia non può inventarne di vuote. */

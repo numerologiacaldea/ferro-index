@@ -56,6 +56,15 @@ a:hover { color: var(--brass); }
   letter-spacing: 0.26em;
   text-transform: uppercase;
   color: var(--brass);
+  display: flex;
+  align-items: center;
+  gap: 9px;
+}
+.sez-segno {
+  width: 19px; height: 19px;
+  flex: none;
+  color: var(--brass);
+  opacity: 0.85;
 }
 
 .filetto {
@@ -316,8 +325,14 @@ a:hover { color: var(--brass); }
   opacity: 0.9;
 }
 .pillar .p-val { color: var(--muted); }
-.pillar .p-bar { margin-top: 7px; height: 2px; background: var(--line); border-radius: 1px; }
-.pillar .p-fill { height: 2px; background: var(--brass); border-radius: 1px; }
+.pillar .p-bar { margin-top: 7px; height: 3px; background: var(--line); border-radius: 2px; overflow: hidden; }
+.pillar .p-fill {
+  height: 3px;
+  background: var(--brass);
+  border-radius: 2px;
+  width: 0;
+  transition: width 1.1s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
 .pillar .p-note { margin-top: 8px; font-size: 15.5px; color: var(--muted); }
 
 .res-hotel {
@@ -365,25 +380,18 @@ a:hover { color: var(--brass); }
 .pub-input:focus { outline: none; border-color: var(--brass); }
 .pub-input::placeholder { color: var(--muted); opacity: 0.8; }
 
-/* il modulo ufficiale di Substack arriva con il suo fondo scuro: invece di
-   combatterlo, gli si dà una cornice della stessa tinta, così legge come un
-   blocco voluto dentro la pagina chiara e non come un corpo estraneo */
-.gate-box {
-  margin-top: 26px;
-  border-radius: 3px;
-  background: #1a1a18;
-  padding: 10px 10px 4px;
-  max-width: 470px;
-  overflow: hidden;
-}
-.gate-box iframe {
-  display: block;
-  width: 100%;
-  height: 200px;
+.gate-form { margin-top: 28px; max-width: 460px; }
+.gate-mail { margin-top: 0; font-size: 17px; }
+.gate-esito { margin-top: 14px; transition: color 0.3s ease; }
+.gate-esito.confermato { color: var(--brass); }
+
+/* raccoglie la risposta di Substack senza portare via la pagina */
+iframe.sink {
+  position: absolute;
+  width: 0; height: 0;
   border: 0;
-  background: transparent;
+  visibility: hidden;
 }
-.gate-esito { margin-top: 14px; }
 
 .reg-block {
   margin-top: 26px;

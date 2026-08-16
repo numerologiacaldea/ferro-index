@@ -339,7 +339,8 @@
       var q = pt(idx, Math.max(4, R * v));
       d += (idx ? 'L' : 'M') + q[0] + ' ' + q[1];
     });
-    svg += '<path d="' + d + 'Z" fill="var(--brass)" fill-opacity="0.22" stroke="var(--brass)" stroke-width="1.5"/>';
+    svg += '<path class="radar-dati" d="' + d + 'Z" fill="var(--brass)" fill-opacity="0.18" ' +
+      'stroke="var(--brass)" stroke-width="1.8" stroke-linejoin="round"/>';
     F.pillars.forEach(function (p, idx) {
       var lp = pt(idx, R + 26);
       var anchor = 'middle';
@@ -371,7 +372,8 @@
     if (!state.meta.h) hotelP.classList.add('hidden');
     head.appendChild(hotelP);
 
-    head.appendChild(el('div', 'res-num', res.score + '<span class="su">/100</span>'));
+    var numero = el('div', 'res-num', '<span class="cifra">0</span><span class="su">/100</span>');
+    head.appendChild(numero);
     head.appendChild(el('p', 'res-band', res.band.label));
     head.appendChild(el('p', 'res-verdict', res.band.verdict));
     head.appendChild(el('p', 'res-sub', res.band.sub));
@@ -427,7 +429,7 @@
       d.innerHTML =
         '<div class="p-row"><span class="p-name">' + segno(p.key) + p.name + '</span>' +
         '<span class="p-val">' + (na ? F.ui.na : Math.round(t.scaled) + ' / ' + p.w) + '</span></div>' +
-        '<div class="p-bar"><div class="p-fill" style="width:' + Math.min(pct, 100) + '%"></div></div>' +
+        '<div class="p-bar"><div class="p-fill" data-largh="' + Math.min(pct, 100) + '%" style="width:0"></div></div>' +
         '<p class="p-note">' + (na ? F.ui.naNote : (t.pct >= 0.75 ? p.high : t.pct >= 0.4 ? p.mid : p.low)) + '</p>';
       ps.appendChild(d);
     });
@@ -623,6 +625,78 @@
     announce(F.ui.esito + ': ' + res.score + '/100, ' + res.band.label);
     focusTitle(s);
     app.scrollIntoView({ block: 'start' });
+    rivela(s, res, numero, rb);
+  }
+
+  /* ---------- la rivelazione del verdetto ----------
+     Il punteggio non compare: si forma. Il numero sale, il poligono si disegna,
+     le barre si riempiono una dopo l'altra. È il momento per cui si fa il test. */
+
+  /* le animazioni partono solo quando la pagina è davvero sotto gli occhi:
+     in secondo piano il browser congela tutto e il verdetto resterebbe a metà */
+  function quandoVisibile(fn) {
+    if (document.visibilityState === 'visible') { fn(); return; }
+    var h = function () {
+      if (document.visibilityState !== 'visible') return;
+      document.removeEventListener('visibilitychange', h);
+      fn();
+    };
+    document.addEventListener('visibilitychange', h);
+  }
+
+  function rivela(scope, res, numero, radarBox) {
+    quandoVisibile(function () { rivelaOra(scope, res, numero, radarBox); });
+  }
+
+  function rivelaOra(scope, res, numero, radarBox) {
+    var pigro = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var cifra = numero.querySelector('.cifra');
+
+    if (pigro) {
+      cifra.textContent = res.score;
+      scope.querySelectorAll('.p-fill').forEach(function (b) {
+        b.style.width = b.dataset.largh; b.style.transition = 'none';
+      });
+      var pth = radarBox.querySelector('.radar-dati');
+      if (pth) { pth.style.strokeDashoffset = '0'; pth.style.fillOpacity = '0.18'; }
+      return;
+    }
+
+    /* il numero sale con una decelerazione, come un contachilometri che si ferma */
+    var durata = 1100 + Math.min(res.score, 100) * 4;
+    var avvio = null;
+    function conta(t) {
+      if (avvio === null) avvio = t;
+      var q = Math.min((t - avvio) / durata, 1);
+      var eased = 1 - Math.pow(1 - q, 3);
+      cifra.textContent = Math.round(res.score * eased);
+      if (q < 1) requestAnimationFrame(conta);
+      else cifra.textContent = res.score;
+    }
+    requestAnimationFrame(conta);
+
+    /* se l'animazione non gira, per esempio a scheda in secondo piano, il numero
+       non deve restare a zero: dopo il tempo previsto si scrive comunque */
+    setTimeout(function () { cifra.textContent = res.score; }, durata + 500);
+
+    /* il poligono si disegna, poi si riempie */
+    var path = radarBox.querySelector('.radar-dati');
+    if (path && path.getTotalLength) {
+      var L = path.getTotalLength();
+      path.style.strokeDasharray = L;
+      path.style.strokeDashoffset = L;
+      path.style.fillOpacity = '0';
+      requestAnimationFrame(function () {
+        path.style.transition = 'stroke-dashoffset 1.5s cubic-bezier(0.33,1,0.68,1), fill-opacity 0.9s ease 1s';
+        path.style.strokeDashoffset = '0';
+        path.style.fillOpacity = '0.18';
+      });
+    }
+
+    /* le barre partono in cascata, nell'ordine dei pilastri */
+    scope.querySelectorAll('.p-fill').forEach(function (b, i) {
+      setTimeout(function () { b.style.width = b.dataset.largh; }, 700 + i * 110);
+    });
   }
 
   function emotionLine(res) {
@@ -653,42 +727,61 @@
     s.appendChild(el('h2', 'q-text', F.ui.gate.titolo));
     s.appendChild(el('p', 'q-note', F.ui.gate.testo));
 
-    /* Il modulo ufficiale di Substack: è l'unico che mostra all'utente la
-       conferma vera ("controlla la posta") e che fa partire la mail di benvenuto.
-       Il browser non lascia leggere cosa succede dentro un riquadro di un altro
-       dominio, quindi l'iscrizione non è verificabile da qui: si rileva che la
-       persona ci ha davvero lavorato dentro, e solo allora si apre il test. */
-    var box = el('div', 'gate-box');
-    var ifr = document.createElement('iframe');
-    ifr.src = 'https://www.mattiaferro.com/embed';
-    ifr.title = F.ui.gate.titoloRiquadro;
-    ifr.setAttribute('frameborder', '0');
-    ifr.setAttribute('scrolling', 'no');
-    box.appendChild(ifr);
-    s.appendChild(box);
-
-    var avanti = el('button', 'btn hidden', F.ui.gate.iscrivi);
-    avanti.type = 'button';
-    avanti.style.marginTop = '20px';
-    avanti.addEventListener('click', function () { gatePass(); showQuestion(0); });
-    s.appendChild(avanti);
-
-    var attesa = el('p', 'gate-esito micro', F.ui.gate.attesa);
-    s.appendChild(attesa);
-
-    /* quando si scrive dentro il riquadro, il fuoco passa lì: è il segnale che
-       la persona sta compilando davvero, e non che ha solo saltato il passaggio */
-    var toccato = false;
-    function haInteragito() {
-      if (toccato) return;
-      if (document.activeElement !== ifr) return;
-      toccato = true;
-      avanti.classList.remove('hidden');
-      attesa.textContent = F.ui.gate.dopoInterazione;
-      clearInterval(vigila);
+    /* Modulo nostro: sul telefono i riquadri di terzi litigano con la tastiera,
+       e i colori di Substack non sono i nostri. L'iscrizione parte davvero verso
+       Substack, che manda la sua mail di conferma e quella di benvenuto. */
+    if (!document.getElementById('ferro-sink')) {
+      var sink = document.createElement('iframe');
+      sink.name = 'ferro-sink';
+      sink.id = 'ferro-sink';
+      sink.className = 'sink';
+      sink.setAttribute('aria-hidden', 'true');
+      sink.tabIndex = -1;
+      document.body.appendChild(sink);
     }
-    var vigila = setInterval(haInteragito, 400);
-    window.addEventListener('blur', function () { setTimeout(haInteragito, 60); });
+
+    var form = document.createElement('form');
+    form.className = 'gate-form';
+    form.action = 'https://www.mattiaferro.com/api/v1/free';
+    form.method = 'POST';
+    form.target = 'ferro-sink';
+
+    var mail = document.createElement('input');
+    mail.type = 'email';
+    mail.name = 'email';
+    mail.required = true;
+    mail.className = 'pub-input gate-mail';
+    mail.placeholder = F.ui.gate.email;
+    mail.autocomplete = 'email';
+    mail.inputMode = 'email';
+
+    var hid = document.createElement('input');
+    hid.type = 'hidden'; hid.name = 'first_url'; hid.value = F.baseURL + '/';
+    var hid2 = document.createElement('input');
+    hid2.type = 'hidden'; hid2.name = 'source'; hid2.value = 'ferro-index';
+
+    var send = el('button', 'btn', F.ui.gate.iscrivi);
+    send.type = 'submit';
+    send.style.marginTop = '12px';
+
+    form.appendChild(mail);
+    form.appendChild(hid);
+    form.appendChild(hid2);
+    form.appendChild(send);
+    s.appendChild(form);
+
+    var esito = el('p', 'gate-esito micro', F.ui.gate.attesa);
+    s.appendChild(esito);
+
+    form.addEventListener('submit', function () {
+      gatePass();
+      esito.textContent = F.ui.gate.inviato;
+      esito.classList.add('confermato');
+      send.disabled = true;
+      mail.disabled = true;
+      send.textContent = F.ui.gate.apro;
+      setTimeout(function () { showQuestion(0); }, 1500);
+    });
 
     var already = el('button', 'q-back', F.ui.gate.gia);
     already.type = 'button';

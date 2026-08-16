@@ -3,6 +3,12 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<script>
+/* Prima di ogni altra cosa: il browser non deve rimettere la pagina dove era.
+   Va dichiarato qui, in testa, perche' il ripristino puo' scattare prima che
+   il resto del codice esista. */
+try { if ('scrollRestoration' in history) history.scrollRestoration = 'manual'; } catch (e) {}
+</script>
 <title>Ferro Index: find out if a hotel is truly luxury</title>
 <meta name="description" content="23 questions about observable facts, no reviews, a score from 0 to 100. The Ferro Index is Mattia Ferro's method for telling true luxury from the merely expensive. Three minutes, free.">
 <link rel="canonical" href="https://index.mattiaferro.com/en/">
@@ -24,7 +30,7 @@
 <link rel="icon" href="/assets/favicon-32.png" sizes="32x32" type="image/png">
 <link rel="icon" href="/assets/favicon-16.png" sizes="16x16" type="image/png">
 <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
-<link rel="stylesheet" href="/assets/ferro.css?v=42">
+<link rel="stylesheet" href="/assets/ferro.css?v=47">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -517,6 +523,6 @@ window.FERRO = {
   }
 };
 </script>
-<script src="/assets/ferro.js?v=42"></script>
+<script src="/assets/ferro.js?v=47"></script>
 </body>
 </html>

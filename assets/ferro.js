@@ -1106,10 +1106,37 @@
      dove l'avevi lasciata: riapri la scheda dal telefono e ti ritrovi a metà,
      senza titolo e senza capo. Si tengono solo i due casi in cui la posizione
      è voluta davvero: un indirizzo con l'ancora e un link a un verdetto.
-     "instant" è obbligatorio, altrimenti lo scorrimento morbido del CSS
-     anima il ritorno in cima e si vede la pagina risalire da sola. */
+
+     Non basta dirlo una volta. Safari rimette la pagina a posto DOPO il
+     caricamento, quindi un solo comando all'avvio viene scavalcato subito
+     dopo; e tornando indietro la pagina può essere ripescata dalla memoria
+     senza rieseguire niente, caso che si intercetta solo con "pageshow".
+     Quindi si insiste ai quattro momenti in cui il ripristino può colpire. */
   if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
-  if (!location.hash && !shared) window.scrollTo({ top: 0, behavior: 'instant' });
+
+  function riportaInCima() {
+    if (location.hash || shared) return;
+    if (document.body.classList.contains('in-quiz')) return;
+    /* lo scorrimento morbido del CSS animerebbe anche questo, e si vedrebbe
+       la pagina risalire da sola: si spegne per il tempo di un comando */
+    var r = document.documentElement;
+    var prima = r.style.scrollBehavior;
+    r.style.scrollBehavior = 'auto';
+    window.scrollTo(0, 0);
+    r.style.scrollBehavior = prima;
+  }
+
+  riportaInCima();
+  document.addEventListener('DOMContentLoaded', riportaInCima);
+  window.addEventListener('load', function () {
+    riportaInCima();
+    requestAnimationFrame(riportaInCima);
+  });
+  window.addEventListener('pageshow', function (ev) {
+    /* persisted vuol dire che la pagina arriva dalla memoria del browser:
+       niente è stato rieseguito, la posizione è quella di prima */
+    if (ev.persisted) riportaInCima();
+  });
 
   radarVivo();
   menuVivo();

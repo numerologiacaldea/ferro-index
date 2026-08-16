@@ -586,28 +586,35 @@ section.blocco h2.reveal.armato { opacity: 1; transform: none; }
 .pub-input:focus { outline: none; border-color: var(--brass); }
 .pub-input::placeholder { color: var(--muted); opacity: 0.8; }
 
-/* il riquadro ufficiale di Substack: arriva con il suo fondo scuro, quindi gli si
-   dà una cornice della stessa tinta e legge come un blocco voluto */
+/* Il riquadro ufficiale di Substack. Porta il suo fondo scuro, quindi la
+   cornice è solo un filo: due neri leggermente diversi sembrano un errore.
+   L'altezza non si tira a indovinare: il modulo contiene occhiello, nome,
+   descrizione della newsletter, campo, pulsante e riga legale, e sotto i
+   320px la descrizione viene tagliata a metà. */
 .gate-box {
   margin-top: 26px;
+  border: 1px solid var(--line);
   border-radius: 3px;
-  background: #1a1a18;
-  padding: 10px 10px 4px;
-  max-width: 460px;
   overflow: hidden;
+  max-width: 460px;
 }
 .gate-box iframe {
   display: block;
   width: 100%;
-  height: 240px;
+  height: 340px;
   border: 0;
-  background: transparent;
+  background: #0f1720;
 }
-/* su schermo stretto il modulo di Substack impila campo e pulsante, e la
-   conferma dell'iscrizione arriva sotto: senza altezza in più resta tagliata */
 @media (max-width: 560px) {
-  .gate-box iframe { height: 320px; }
+  .gate-box iframe { height: 380px; }
 }
+
+/* Il cancello è un blocco solo: modulo, esito e pulsanti stanno nella stessa
+   colonna. Un pulsante largo il doppio del riquadro sopra spezza la lettura. */
+.gate-esito, .gate-box + .gate-esito { max-width: 460px; }
+#app .screen .gate-box ~ .btn,
+#app .screen .gate-box ~ .q-back,
+#app .screen .gate-box ~ .micro { max-width: 460px; }
 .gate-oppure { margin-top: 16px; }
 
 .gate-form { margin-top: 12px; max-width: 460px; }
@@ -849,18 +856,34 @@ body.in-quiz section.blocco,
 body.in-quiz footer,
 body.in-quiz .lang { display: none; }
 
-/* Telefono: la scheda del verdetto deve arrivare intera sotto il pollice,
-   non tagliata a metà del radar. Ogni valore qui sotto è spazio recuperato
-   sopra la scheda, misurato uno per uno. */
+/* Telefono: la prima schermata deve stare in uno schermo vero, cioè circa 750
+   punti con la barra di Safari, e la scheda del verdetto deve arrivarci intera.
+   I 164 punti di troppo si recuperano dove non costano lettura: la didascalia
+   sotto la scheda ripete quello che dice il riquadro "In breve" poche righe
+   più sotto, quindi sul telefono non serve. Il resto sono margini. */
 @media (max-width: 720px) {
-  .hero { padding: 56px 0 34px; }
-  .hero h1 { font-size: clamp(31px, 7.6vw, 40px); }
-  .hero .sotto { font-size: 17px; }
-  .hero-figura { margin-top: 20px; }
-  .anteprima { padding: 15px 20px 13px; }
-  .anteprima-num { font-size: 44px; }
-  .anteprima-nota { font-size: 14px; margin-top: 7px; }
-  .radar-vivo { max-width: 152px; margin-top: 8px; }
+  /* il cambio lingua sta in alto a destra e l'occhiello parte da sinistra:
+     su schermo stretto si incontrano a metà riga. Gli si dà una riga a testa. */
+  .lang { top: 6px; right: 16px; }
+  .hero { padding: 22px 0 18px; }
+  .hero .occhiello { margin-top: 26px; }
+  .hero h1 { font-size: clamp(30px, 7.4vw, 38px); }
+  .hero h1 { line-height: 1.07; }
+  .hero .sotto { font-size: 16.5px; line-height: 1.48; margin-top: 15px; }
+  .hero .btn { margin-top: 18px; }
+  .hero .micro { font-size: 13px; margin-top: 10px; }
+  .hero-figura { margin-top: 16px; }
+  .hero .figura-dida { display: none; }
+
+  /* La scheda si misura sull'altezza disponibile, non su un numero fisso: fra
+     iPhone corti e lunghi ballano duecento punti, e i testi inglesi occupano
+     una riga in più di quelli italiani. Così si adatta da sola invece di
+     stare giusta su un telefono solo. */
+  .anteprima { padding: 14px 18px 12px; }
+  .anteprima-eti { font-size: 10px; }
+  .anteprima-num { font-size: min(42px, 5.4svh); margin-top: 5px; }
+  .anteprima-nota { font-size: 13px; margin-top: 5px; min-height: 2em; }
+  .radar-vivo { max-width: min(124px, 16.5svh); margin-top: 5px; }
 }
 
 @media (max-width: 420px) {

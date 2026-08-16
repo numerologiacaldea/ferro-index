@@ -746,11 +746,19 @@
   /* ---------- entrata dei blocchi allo scorrimento ---------- */
 
   function osserva(nodi) {
+    /* toglie proprio la classe invece di aggiungere quella di arrivo: se una
+       transizione resta congelata, per esempio a scheda in secondo piano,
+       l'elemento torna comunque al suo stato naturale e resta leggibile */
+    function mostraTutti() {
+      nodi.forEach(function (n) { n.classList.remove('reveal'); n.classList.add('visto'); });
+    }
+
     if (!('IntersectionObserver' in window) ||
         matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      nodi.forEach(function (n) { n.classList.add('visto'); });
+      mostraTutti();
       return;
     }
+
     var io = new IntersectionObserver(function (voci) {
       voci.forEach(function (v) {
         if (!v.isIntersecting) return;
@@ -766,8 +774,20 @@
       /* i primi elementi di ogni gruppo entrano a scalare, poi il ritardo si azzera:
          serve il ritmo, non l'attesa */
       n.dataset.ritardo = String(Math.min(i, 3) * 70);
+
+      /* chi è già nel viewport o l'ha superato non deve aspettare l'osservatore:
+         succede quando si arriva con un'ancora o si ricarica a metà pagina */
+      var r = n.getBoundingClientRect();
+      if (r.top < window.innerHeight * 1.05) {
+        n.classList.add('visto');
+        return;
+      }
       io.observe(n);
     });
+
+    /* rete di sicurezza: nessun contenuto può restare invisibile,
+       qualunque cosa succeda all'osservatore */
+    setTimeout(mostraTutti, 2500);
   }
 
   function animaSezioni() {

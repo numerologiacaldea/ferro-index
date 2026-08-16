@@ -449,6 +449,42 @@ table.pesi th {
 table.pesi td { border-top: 1px solid var(--line); padding: 10px 12px 10px 0; vertical-align: top; }
 table.pesi td.num { font-weight: 700; color: var(--brass); white-space: nowrap; }
 
+.didascalia {
+  font-family: var(--sans);
+  font-size: 12.5px;
+  color: var(--muted);
+  margin-top: 12px !important;
+}
+
+blockquote.citazione {
+  margin-top: 26px;
+  border-left: 2px solid var(--brass);
+  padding: 4px 0 4px 20px;
+  font-size: 20px;
+  line-height: 1.4;
+  font-style: italic;
+  max-width: 30em;
+}
+blockquote.citazione cite {
+  display: block;
+  margin-top: 10px;
+  font-family: var(--sans);
+  font-size: 12.5px;
+  font-style: normal;
+  letter-spacing: 0.06em;
+  color: var(--muted);
+}
+
+table.pesi.domande td:first-child { font-size: 15.5px; line-height: 1.35; }
+table.pesi.domande td:nth-child(2) {
+  font-family: var(--sans);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+  white-space: nowrap;
+}
+
 ul.fonti { margin-top: 16px; list-style: none; }
 ul.fonti li { border-top: 1px solid var(--line); padding: 12px 0; font-size: 16.5px; }
 ul.fonti li:first-child { border-top: 0; }

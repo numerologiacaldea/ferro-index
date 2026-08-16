@@ -882,6 +882,35 @@ body.in-quiz .lang { display: none; }
   .inbreve { max-width: 38em; }
   table.pesi { max-width: 46em; }
 
+  /* Le sezioni in negativo, se tengono il testo in una colonna stretta, lasciano
+     due bande di colore vuote ai lati. Qui il contenuto si apre in due colonne:
+     il titolo tiene la sinistra, il ragionamento scorre a destra. */
+  section.scura > .wrap,
+  section.blu > .wrap {
+    display: grid;
+    grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+    column-gap: 64px;
+    align-items: start;
+    max-width: 1000px;
+  }
+  section.scura .occhiello,
+  section.scura .filetto,
+  section.scura h2,
+  section.blu .occhiello,
+  section.blu .filetto,
+  section.blu h2 { grid-column: 1; }
+  section.scura h2, section.blu h2 { max-width: 12em; }
+
+  section.scura > .wrap > p,
+  section.scura > .wrap > .inbreve,
+  section.blu > .wrap > p,
+  section.blu > .wrap > .inbreve { grid-column: 2; }
+
+  /* il primo blocco della colonna destra si allinea al titolo */
+  section.scura > .wrap > p:first-of-type,
+  section.blu > .wrap > p:first-of-type { grid-row: 1; margin-top: 4px; }
+  section.scura > .wrap > p, section.blu > .wrap > p { max-width: 34em; }
+
   /* durante il test la domanda resta in colonna singola, ma più in alto */
   body.in-quiz .wrap { max-width: 720px; }
   #app { padding-top: 14px; }

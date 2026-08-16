@@ -727,63 +727,26 @@
     s.appendChild(el('h2', 'q-text', F.ui.gate.titolo));
     s.appendChild(el('p', 'q-note', F.ui.gate.testo));
 
-    /* Niente riquadro di Substack: la risposta al modulo viaggia verso la home di
-       mattiaferro.com, che dichiara frame-ancestors 'self' e substack.com, quindi
-       il browser rifiuta di mostrarla su questo dominio. Verificato in console.
-       Il modulo qui sotto invece iscrive davvero, e la conferma arriva per email. */
-
-    if (!document.getElementById('ferro-sink')) {
-      var sink = document.createElement('iframe');
-      sink.name = 'ferro-sink';
-      sink.id = 'ferro-sink';
-      sink.className = 'sink';
-      sink.setAttribute('aria-hidden', 'true');
-      sink.tabIndex = -1;
-      document.body.appendChild(sink);
-    }
-
-    var form = document.createElement('form');
-    form.className = 'gate-form';
-    form.action = 'https://www.mattiaferro.com/api/v1/free';
-    form.method = 'POST';
-    form.target = 'ferro-sink';
-
-    var mail = document.createElement('input');
-    mail.type = 'email';
-    mail.name = 'email';
-    mail.required = true;
-    mail.className = 'pub-input gate-mail';
-    mail.placeholder = F.ui.gate.email;
-    mail.autocomplete = 'email';
-    mail.inputMode = 'email';
-
-    var hid = document.createElement('input');
-    hid.type = 'hidden'; hid.name = 'first_url'; hid.value = F.baseURL + '/';
-    var hid2 = document.createElement('input');
-    hid2.type = 'hidden'; hid2.name = 'source'; hid2.value = 'ferro-index';
-
-    var send = el('button', 'btn', F.ui.gate.iscrivi);
-    send.type = 'submit';
-    send.style.marginTop = '12px';
-
-    form.appendChild(mail);
-    form.appendChild(hid);
-    form.appendChild(hid2);
-    form.appendChild(send);
-    s.appendChild(form);
+    /* Il modulo ufficiale di Substack. Verificato: /embed dichiara
+       frame-ancestors *, quindi si può incorporare ovunque, e mostra dentro di sé
+       la conferma dell'iscrizione. È la mail di Substack a chiudere il giro. */
+    var box = el('div', 'gate-box');
+    var ifr = document.createElement('iframe');
+    ifr.src = 'https://www.mattiaferro.com/embed';
+    ifr.title = F.ui.gate.titoloRiquadro;
+    ifr.setAttribute('frameborder', '0');
+    ifr.setAttribute('scrolling', 'no');
+    box.appendChild(ifr);
+    s.appendChild(box);
 
     var esito = el('p', 'gate-esito micro', F.ui.gate.attesa);
     s.appendChild(esito);
 
-    form.addEventListener('submit', function () {
-      gatePass();
-      esito.textContent = F.ui.gate.inviato;
-      esito.classList.add('confermato');
-      send.disabled = true;
-      mail.disabled = true;
-      send.textContent = F.ui.gate.apro;
-      setTimeout(function () { showQuestion(0); }, 1500);
-    });
+    var avanti = el('button', 'btn', F.ui.gate.iscrivi);
+    avanti.type = 'button';
+    avanti.style.marginTop = '18px';
+    avanti.addEventListener('click', function () { gatePass(); showQuestion(0); });
+    s.appendChild(avanti);
 
     var already = el('button', 'q-back', F.ui.gate.gia);
     already.type = 'button';

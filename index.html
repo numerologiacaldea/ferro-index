@@ -24,7 +24,7 @@
 <link rel="icon" href="/assets/favicon-32.png" sizes="32x32" type="image/png">
 <link rel="icon" href="/assets/favicon-16.png" sizes="16x16" type="image/png">
 <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
-<link rel="stylesheet" href="/assets/ferro.css?v=24">
+<link rel="stylesheet" href="/assets/ferro.css?v=26">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -108,7 +108,13 @@
     <p class="micro">Tre minuti. Gratuito. Riservato ai lettori della newsletter.</p>
   </div>
   <div class="hero-figura">
-    <div id="radar-vivo" class="radar-vivo"></div>
+    <div class="anteprima">
+      <p class="anteprima-eti">Esempio di verdetto</p>
+      <div class="anteprima-num"><span class="cifra">97</span><span class="su">/100</span></div>
+      <p class="anteprima-fascia">Santuario</p>
+      <div id="radar-vivo" class="radar-vivo"></div>
+      <p class="anteprima-nota">Ti hanno letto prima che parlassi.</p>
+    </div>
     <p class="figura-dida">Sette pilastri, un punteggio. Le attenzioni sugli ospiti ne valgono 40 su 100.</p>
   </header>
 
@@ -206,6 +212,7 @@
     <p class="occhiello"><svg class="sez-segno" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4.6a3.4 3.4 0 1 1 0 6.8 3.4 3.4 0 0 1 0-6.8Z"/><path d="M5 19.4c0-3.5 3.2-5.8 7-5.8s7 2.3 7 5.8"/></svg>Chi l'ha creato</p>
     <hr class="filetto">
     <h2>Dall'altra parte del banco</h2>
+    <figure class="ritratto"><img src="/assets/mattia.jpg" alt="Mattia Ferro, fondatore del Luxury Camp at Union Lido" width="720" height="960" loading="lazy"><figcaption>Mattia Ferro, fondatore del Luxury Camp at Union Lido.</figcaption></figure>
     <p>Mattia Ferro ha passato anni a studiare i migliori hotel del mondo, da Dubai a Las Vegas a Shanghai. Poi ne ha costruito uno: il Luxury Camp at Union Lido, venti suite open air sul litorale di Venezia, che gestisce dal 2018.</p>
     <p>Forbes Life, nell'edizione cartacea di maggio 2026, lo definisce «innovatore del turismo italiano di alta gamma». <a href="https://forbes.it/2025/07/14/luxury-camp-lesperienza-esclusiva-delle-vacanze-allaria-aperta">Forbes Italia</a> aveva chiamato la struttura «la prima struttura italiana a 5 stelle di questo genere», e <a href="https://tg24.sky.it/lifestyle/2026/07/31/turismo-lusso-torna-consulente-viaggio">Sky TG24</a> ha ripreso la stessa formula nel luglio 2026.</p>
     <blockquote class="citazione">Alla fine non vince chi sorprende, ma chi riesce a non deludere.<cite>Mattia Ferro, Sky TG24, 31 luglio 2026</cite></blockquote>
@@ -283,6 +290,11 @@
 window.FERRO = {
   baseURL: 'https://index.mattiaferro.com',
   registroURL: 'https://index.mattiaferro.com/santuari/',
+  anteprima: [
+    { punteggio: 97, fascia: 'Santuario', nota: 'Ti hanno letto prima che parlassi.', valori: [0.97, 0.88, 0.95, 0.90, 0.94, 0.62, 0.55] },
+    { punteggio: 52, fascia: 'Costoso', nota: 'Tutto bello. Nessuno ti ha visto.', valori: [0.30, 0.95, 0.42, 0.55, 0.60, 1.00, 0.95] },
+    { punteggio: 31, fascia: 'Scenografia', nota: 'Una scena, e il pubblico eri tu.', valori: [0.18, 0.42, 0.25, 0.30, 0.28, 0.70, 0.50] }
+  ],
   pillars: [
     { key: 'attenzioni', name: 'Attenzioni', short: 'Attenzioni', w: 40,
       high: 'Ti hanno letto prima che parlassi: nome, preferenze, bisogni anticipati. È il cuore del lusso vero, e non si improvvisa.',
@@ -496,6 +508,6 @@ window.FERRO = {
   }
 };
 </script>
-<script src="/assets/ferro.js?v=24"></script>
+<script src="/assets/ferro.js?v=26"></script>
 </body>
 </html>

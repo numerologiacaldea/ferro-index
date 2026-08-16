@@ -909,6 +909,14 @@
   function radarVivo() {
     var casa = document.getElementById('radar-vivo');
     if (!casa) return;
+
+    /* tre esiti veri, calcolati con le stesse regole del test: si vede cosa
+       restituisce lo strumento prima ancora di cominciarlo */
+    var ESEMPI = F.anteprima || [];
+    var schedaNum = document.querySelector('.anteprima-num .cifra');
+    var schedaFascia = document.querySelector('.anteprima-fascia');
+    var schedaNota = document.querySelector('.anteprima-nota');
+
     var n = F.pillars.length, cx = 130, cy = 130, R = 96;
     var pt = function (i, r) {
       var a = -Math.PI / 2 + (i * 2 * Math.PI) / n;
@@ -953,12 +961,63 @@
     var L = tracc.getTotalLength();
     tracc.style.strokeDasharray = L;
     tracc.style.strokeDashoffset = L;
+
+    function profilo(vals) {
+      var s = '';
+      vals.forEach(function (v, i) {
+        var q = pt(i, R * v);
+        s += (i ? 'L' : 'M') + q[0].toFixed(1) + ' ' + q[1].toFixed(1);
+      });
+      return s + 'Z';
+    }
+
     quandoVisibile(function () {
       setTimeout(function () {
         tracc.style.transition = 'stroke-dashoffset 2.2s cubic-bezier(0.33,1,0.68,1), fill-opacity 1.2s ease 1.4s';
         tracc.style.strokeDashoffset = '0';
         tracc.style.fillOpacity = '0.16';
         casa.classList.add('acceso');
+
+        /* poi la scheda cambia esito: alto, medio, basso. Ogni volta il numero
+           risale e il poligono cambia forma, così si capisce che misura davvero */
+        if (!ESEMPI.length || !schedaNum || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+        var idx = 0;
+        setInterval(function () {
+          if (document.visibilityState !== 'visible') return;
+          idx = (idx + 1) % ESEMPI.length;
+          var e = ESEMPI[idx];
+
+          casa.classList.add('cambio');
+          setTimeout(function () {
+            tracc.setAttribute('d', profilo(e.valori));
+            var punti = casa.querySelectorAll('.v');
+            e.valori.forEach(function (v, i) {
+              if (!punti[i]) return;
+              var q = pt(i, R * v);
+              punti[i].setAttribute('cx', q[0].toFixed(1));
+              punti[i].setAttribute('cy', q[1].toFixed(1));
+            });
+            var da = parseInt(schedaNum.textContent, 10) || 0, t0 = null, scritta = false;
+            function sali(t) {
+              if (t0 === null) t0 = t;
+              var q = Math.min((t - t0) / 700, 1);
+              var eased = 1 - Math.pow(1 - q, 3);
+              schedaNum.textContent = Math.round(da + (e.punteggio - da) * eased);
+              /* la fascia cambia mentre il numero è già in viaggio: così non si
+                 legge mai un punteggio accanto al verdetto sbagliato */
+              if (!scritta && q > 0.5) {
+                scritta = true;
+                schedaFascia.textContent = e.fascia;
+                if (schedaNota) schedaNota.textContent = e.nota;
+              }
+              if (q < 1) requestAnimationFrame(sali);
+              else schedaNum.textContent = e.punteggio;
+            }
+            requestAnimationFrame(sali);
+            casa.classList.remove('cambio');
+          }, 340);
+        }, 4200);
       }, 420);
     });
   }

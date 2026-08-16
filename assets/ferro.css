@@ -131,11 +131,61 @@ a:hover { color: var(--brass); }
 /* la figura deve stare nella prima schermata insieme al testo, quindi si misura
    sull'altezza disponibile e non su una dimensione fissa */
 .hero-figura { margin-top: clamp(14px, 2.6vh, 40px); }
+
+/* la scheda del verdetto: si vede il prodotto finito prima di cominciare */
+.anteprima {
+  border: 1px solid var(--line);
+  border-radius: 3px;
+  background: var(--card);
+  padding: clamp(16px, 2.4vh, 26px) 22px clamp(14px, 2vh, 22px);
+  text-align: center;
+  max-width: 320px;
+  margin: 0 auto;
+  transition: opacity 0.34s ease;
+}
+.anteprima.cambio, .radar-vivo.cambio .traccia { opacity: 0.25; }
+
+.anteprima-eti {
+  font-family: var(--sans);
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.anteprima-num {
+  font-size: clamp(46px, 7vh, 62px);
+  line-height: 1;
+  font-weight: 700;
+  margin-top: 8px;
+  letter-spacing: -0.02em;
+}
+.anteprima-num .su { font-size: 0.34em; color: var(--muted); font-weight: 400; }
+.anteprima-fascia {
+  font-family: var(--sans);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--brass);
+  margin-top: 4px;
+  transition: color 0.34s ease;
+}
+.anteprima-nota {
+  margin-top: 10px;
+  font-size: 15px;
+  font-style: italic;
+  color: var(--muted);
+  line-height: 1.35;
+  min-height: 2.7em;
+}
+
 .radar-vivo {
   color: var(--ink);
-  max-width: min(215px, 24vh);
-  margin: 0 auto;
+  max-width: min(190px, 21vh);
+  margin: clamp(8px, 1.6vh, 16px) auto 0;
 }
+.radar-vivo .traccia { transition: opacity 0.34s ease; }
 .figura-dida { text-align: center; margin-left: auto; margin-right: auto; font-size: 12.5px; }
 .radar-vivo svg { width: 100%; height: auto; display: block; overflow: visible; }
 
@@ -524,6 +574,27 @@ table.pesi th {
 }
 table.pesi td { border-top: 1px solid var(--line); padding: 10px 12px 10px 0; vertical-align: top; }
 table.pesi td.num { font-weight: 700; color: var(--brass); white-space: nowrap; }
+
+figure.ritratto {
+  margin-top: 26px;
+  max-width: 260px;
+}
+figure.ritratto img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 2px;
+}
+figure.ritratto figcaption {
+  margin-top: 10px;
+  font-family: var(--sans);
+  font-size: 12.5px;
+  line-height: 1.45;
+  color: var(--muted);
+}
+@media (min-width: 1000px) {
+  figure.ritratto { float: right; margin: 6px 0 22px 34px; max-width: 250px; }
+}
 
 .didascalia {
   font-family: var(--sans);

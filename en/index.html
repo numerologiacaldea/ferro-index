@@ -24,7 +24,7 @@
 <link rel="icon" href="/assets/favicon-32.png" sizes="32x32" type="image/png">
 <link rel="icon" href="/assets/favicon-16.png" sizes="16x16" type="image/png">
 <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
-<link rel="stylesheet" href="/assets/ferro.css?v=24">
+<link rel="stylesheet" href="/assets/ferro.css?v=26">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -108,7 +108,13 @@
     <p class="micro">Three minutes. Free. Reserved for newsletter readers.</p>
   </div>
   <div class="hero-figura">
-    <div id="radar-vivo" class="radar-vivo"></div>
+    <div class="anteprima">
+      <p class="anteprima-eti">Sample verdict</p>
+      <div class="anteprima-num"><span class="cifra">97</span><span class="su">/100</span></div>
+      <p class="anteprima-fascia">Sanctuary</p>
+      <div id="radar-vivo" class="radar-vivo"></div>
+      <p class="anteprima-nota">They read you before you spoke.</p>
+    </div>
     <p class="figura-dida">Seven pillars, one score. Attention to guests is worth 40 of the 100.</p>
   </header>
 
@@ -179,6 +185,7 @@
     <p class="occhiello">Who built it</p>
     <hr class="filetto">
     <h2>From the other side of the desk</h2>
+    <figure class="ritratto"><img src="/assets/mattia.jpg" alt="Mattia Ferro, founder of Luxury Camp at Union Lido" width="720" height="960" loading="lazy"><figcaption>Mattia Ferro, founder of Luxury Camp at Union Lido.</figcaption></figure>
     <p>Mattia Ferro spent years studying the best hotels in the world, from Dubai to Las Vegas to Shanghai. Then he built one: Luxury Camp at Union Lido, twenty open air suites on the Venice coastline, which he has run since 2018.</p>
     <p>Forbes Life, in its May 2026 print edition, calls him an innovator of Italian high-end tourism.</p>
     <p>The Ferro Index is the measurable part of his craft: reading hotels from the inside. The rest he writes, one letter at a time, at <a href="https://mattiaferro.com">mattiaferro.com</a>. And if you'd rather have him pick your next hotel: <a href="https://travel.mattiaferro.com">travel.mattiaferro.com</a>.</p>
@@ -219,6 +226,11 @@
 window.FERRO = {
   baseURL: 'https://index.mattiaferro.com/en',
   registroURL: 'https://index.mattiaferro.com/en/sanctuaries/',
+  anteprima: [
+    { punteggio: 97, fascia: 'Sanctuary', nota: 'They read you before you spoke.', valori: [0.97, 0.88, 0.95, 0.90, 0.94, 0.62, 0.55] },
+    { punteggio: 52, fascia: 'Expensive', nota: 'All beautiful. Nobody saw you.', valori: [0.30, 0.95, 0.42, 0.55, 0.60, 1.00, 0.95] },
+    { punteggio: 31, fascia: 'Stage set', nota: 'A stage, and you were the audience.', valori: [0.18, 0.42, 0.25, 0.30, 0.28, 0.70, 0.50] }
+  ],
   pillars: [
     { key: 'attenzioni', name: 'Attention', short: 'Attention', w: 40,
       high: 'They read you before you spoke: your name, your preferences, your needs anticipated. That\'s the heart of true luxury, and it can\'t be improvised.',
@@ -432,6 +444,6 @@ window.FERRO = {
   }
 };
 </script>
-<script src="/assets/ferro.js?v=24"></script>
+<script src="/assets/ferro.js?v=26"></script>
 </body>
 </html>

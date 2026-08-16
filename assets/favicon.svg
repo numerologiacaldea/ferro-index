@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <rect width="64" height="64" rx="12" fill="#141414"/>
+  <!-- ettagono: i sette pilastri, il segno dello strumento -->
+  <path d="M32 11L52.3 22.6L47.4 45.6L16.6 45.6L11.7 22.6Z"
+        fill="none" stroke="#86adc4" stroke-width="2.5" stroke-linejoin="round" opacity="0.55"/>
+  <text x="32" y="44" text-anchor="middle"
+        font-family="Georgia, 'Times New Roman', serif" font-size="34" font-weight="700"
+        fill="#eae7e1">F</text>
+</svg>

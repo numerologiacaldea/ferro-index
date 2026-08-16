@@ -339,7 +339,7 @@
     progress.style.width = '100%';
     app.innerHTML = '';
 
-    var s = el('div', 'screen');
+    var s = el('div', 'screen res-screen');
 
     var head = el('div', 'res-head');
     head.appendChild(el('p', 'occhiello', F.ui.esito));
@@ -388,9 +388,13 @@
     }
     s.appendChild(head);
 
+    /* grafico e dettaglio viaggiano insieme: su schermo largo diventano
+       la colonna di lettura, e restano attaccati senza buchi in mezzo */
+    var lettura = el('div', 'res-lettura');
+
     var rb = el('div', 'radar-box');
     rb.innerHTML = radarSVG(res.per);
-    s.appendChild(rb);
+    lettura.appendChild(rb);
 
     var ps = el('div', 'pillars');
     F.pillars.forEach(function (p) {
@@ -405,7 +409,8 @@
         '<p class="p-note">' + (na ? F.ui.naNote : (t.pct >= 0.75 ? p.high : t.pct >= 0.4 ? p.mid : p.low)) + '</p>';
       ps.appendChild(d);
     });
-    s.appendChild(ps);
+    lettura.appendChild(ps);
+    s.appendChild(lettura);
 
     if (res.flags.length) {
       var fl = el('div', 'res-flags');
@@ -565,13 +570,15 @@
     copyBtn.addEventListener('click', copyLink);
     act.appendChild(copyBtn);
 
-    var redo = el('button', 'btn-quiet', isShared ? F.ui.faiTuo : F.ui.rifai);
-    redo.type = 'button';
-    redo.style.justifySelf = 'center';
-    redo.addEventListener('click', function () {
-      if (isShared) { startOwn(); } else { reset(); }
-    });
-    act.appendChild(redo);
+    /* nella vista condivisa l'invito a fare il proprio test sta già in testa,
+       accanto al verdetto: ripeterlo qui sarebbe un doppione */
+    if (!isShared) {
+      var redo = el('button', 'btn-quiet', F.ui.rifai);
+      redo.type = 'button';
+      redo.style.justifySelf = 'center';
+      redo.addEventListener('click', reset);
+      act.appendChild(redo);
+    }
     s.appendChild(act);
 
     var cta = el('div', 'res-cta');

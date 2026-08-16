@@ -465,3 +465,64 @@ body.in-quiz .lang { display: none; }
   body { font-size: 17px; }
   .hero { padding-top: 80px; }
 }
+
+/* ---------- schermi larghi ----------
+   Sotto i 1000px la colonna singola è giusta: si legge meglio.
+   Sopra, incolonnare tutto lascia metà schermo vuoto e allunga lo scorrimento,
+   quindi il verdetto va a sinistra e la lettura dei pilastri a destra. */
+
+@media (min-width: 1000px) {
+  .wrap { max-width: 1000px; }
+
+  .hero { padding: 118px 0 76px; }
+  .hero h1 { font-size: clamp(40px, 4.2vw, 52px); }
+  .hero .btn { max-width: 340px; }
+
+  .res-screen {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    column-gap: 72px;
+    align-items: start;
+  }
+
+  /* colonna sinistra: il verdetto e le azioni */
+  .res-screen > .res-head,
+  .res-screen > .res-flags,
+  .res-screen > .pub-block,
+  .res-screen > .reg-block,
+  .res-screen > .reg-hint,
+  .res-screen > .res-actions,
+  .res-screen > .res-cta { grid-column: 1; }
+
+  /* colonna destra: il grafico e il dettaglio, che è la parte da leggere */
+  .res-screen > .res-lettura {
+    grid-column: 2;
+    grid-row: 1 / span 20;
+    margin-top: 0;
+  }
+  .res-lettura .radar-box { margin-top: 0; max-width: 420px; }
+  .res-lettura .pillars { margin-top: 30px; }
+
+  /* a due colonne il testo lungo centrato si legge male */
+  .res-screen > .res-head { text-align: left; }
+  .res-head .res-verdict,
+  .res-head .res-sub,
+  .res-head .res-cap { margin-left: 0; margin-right: 0; max-width: 24em; }
+  .res-note { margin-left: 0; }
+  .res-num { line-height: 0.95; }
+  .res-screen > .res-head .btn,
+  .res-screen > .res-head .btn-quiet { max-width: 340px; }
+  .res-actions { max-width: 340px; }
+  .res-actions .btn-quiet { justify-self: start !important; }
+
+  /* le sezioni di testo non devono diventare righe lunghissime */
+  section.blocco p,
+  section.blocco h2,
+  ul.fonti,
+  .inbreve { max-width: 38em; }
+  table.pesi { max-width: 46em; }
+
+  /* durante il test la domanda resta in colonna singola, ma più in alto */
+  body.in-quiz .wrap { max-width: 720px; }
+  #app { padding-top: 14px; }
+}

@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ferro Index: find out if a hotel is truly luxury</title>
+<meta name="description" content="23 questions about observable facts, no reviews, a score from 0 to 100. The Ferro Index is Mattia Ferro's method for telling true luxury from the merely expensive. Three minutes, free.">
+<link rel="canonical" href="https://index.mattiaferro.com/en/">
+<link rel="alternate" hreflang="it" href="https://index.mattiaferro.com/">
+<link rel="alternate" hreflang="en" href="https://index.mattiaferro.com/en/">
+<link rel="alternate" hreflang="x-default" href="https://index.mattiaferro.com/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Ferro Index: is your hotel true luxury, or just expensive?">
+<meta property="og:description" content="23 questions about facts you saw with your own eyes. No reviews. A score from 0 to 100, in three minutes.">
+<meta property="og:url" content="https://index.mattiaferro.com/en/">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://index.mattiaferro.com/assets/og-ferro-index-en.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Ferro Index: is your hotel true luxury, or just expensive?">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#ebe7e0">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#141414">
+<link rel="stylesheet" href="/assets/ferro.css?v=6">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebApplication",
+      "@id": "https://index.mattiaferro.com/en/#app",
+      "name": "Ferro Index",
+      "url": "https://index.mattiaferro.com/en/",
+      "description": "A free tool that measures whether a hotel is truly luxury: 23 questions about facts a guest can observe, weighted the way luxury hospitality inspectors weight them, a 0-100 score with no reviews involved.",
+      "applicationCategory": "TravelApplication",
+      "operatingSystem": "Web",
+      "inLanguage": ["en", "it"],
+      "isAccessibleForFree": true,
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "EUR" },
+      "author": { "@id": "https://index.mattiaferro.com/en/#mattiaferro" }
+    },
+    {
+      "@type": "Person",
+      "@id": "https://index.mattiaferro.com/en/#mattiaferro",
+      "name": "Mattia Ferro",
+      "jobTitle": "Founder of Luxury Camp at Union Lido, travel advisor",
+      "description": "Founder and operator of Luxury Camp at Union Lido (Cavallino-Treporti, Venice), called an innovator of Italian high-end tourism by Forbes Life. Independent travel advisor of Fora Travel.",
+      "url": "https://mattiaferro.com",
+      "sameAs": [
+        "https://mattiaferro.com",
+        "https://travel.mattiaferro.com",
+        "https://www.linkedin.com/in/mattiaferro",
+        "https://luxurycamp.it"
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://index.mattiaferro.com/en/#faq",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "How can I tell if a hotel is truly luxury?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Look at facts, not declared stars: they call you by name unprompted, something arrives before you ask, your room number is written down and never said out loud, the juice is squeezed to order. The Ferro Index asks 23 questions about these facts and turns them into a 0-100 score." }
+        },
+        {
+          "@type": "Question",
+          "name": "Why aren't reviews enough to judge a luxury hotel?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Reviews average very different expectations: people who rarely travel reward surprise, people who travel constantly spot fake luxury in twenty minutes, don't complain and simply never come back. Online scores mix the two. A serious method asks only what happened to you, on observable facts." }
+        },
+        {
+          "@type": "Question",
+          "name": "What matters most in a luxury hotel?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Attention to guests: anticipating needs, recognition, preferences remembered across departments. In the Ferro Index it is worth 40 percent of the score on its own, the same proportion used by professional systems: Forbes Travel Guide gives service 75 percent of a five-star rating." }
+        },
+        {
+          "@type": "Question",
+          "name": "What is the Ferro Index?",
+          "acceptedAnswer": { "@type": "Answer", "text": "A free tool created by Mattia Ferro, founder of Luxury Camp at Union Lido: 23 questions about facts observed during a stay, weighted across 7 pillars (attention 40, comfort 12, privacy 12, food 12, cleanliness 11, design 8, art 5), with detractors for false notes and thresholds that cannot be compensated. The result is a 0-100 score in four bands: Sanctuary, Excellent hotel, Expensive, Stage set." }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I share my Ferro Index result?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Yes: the score travels inside the link. Whoever receives it sees the same verdict, the 7-pillar radar and the detail, without retaking the test. Nothing is stored anywhere: the answers live only in the address you choose to send." }
+        }
+      ]
+    }
+  ]
+}
+</script>
+</head>
+<body>
+
+<div class="progress" id="progress"></div>
+<a class="lang" href="/">Italiano</a>
+
+<div class="wrap">
+
+  <header class="hero" id="hero">
+    <p class="occhiello">Ferro Index · The Mattia Ferro method</p>
+    <hr class="filetto">
+    <h1>Many luxury hotels are not luxury. They're just expensive.</h1>
+    <p class="sotto">Twenty-three questions about facts you saw with your own eyes will tell you which one yours is. No reviews, no declared stars. A score from 0 to 100.</p>
+    <button class="btn" data-start type="button">Score your hotel</button>
+    <p class="micro">Three minutes. Free. Reserved for newsletter readers.</p>
+  </header>
+
+  <main id="app"></main>
+  <div id="announce" class="sr-only" aria-live="polite"></div>
+
+  <noscript><p class="micro">The test needs JavaScript. The method, though, you can read below.</p></noscript>
+
+  <section class="blocco" id="inbreve">
+    <div class="inbreve">
+      <p class="occhiello">In short</p>
+      <p>The Ferro Index measures whether a hotel is truly luxury without using reviews: 23 questions about facts you can observe during a stay, weighted the way professional inspectors weight them, a 0-100 score in four bands.</p>
+      <p>Attention to guests is worth 40 percent on its own. That is not a preference: Forbes Travel Guide gives service 75 percent of a five-star rating.</p>
+      <p>It was built by Mattia Ferro, founder of Luxury Camp at Union Lido, called an innovator of Italian high-end tourism by Forbes Life.</p>
+    </div>
+  </section>
+
+  <section class="blocco" id="metodo">
+    <p class="occhiello">The method</p>
+    <hr class="filetto">
+    <h2>How true luxury is measured</h2>
+    <p>Reviews measure everyone's satisfaction. The Ferro Index measures something else: whether what you paid for was luxury, or a stage set.</p>
+    <p>The difference is in what you look at. Not opinions: facts. They called you by name, unprompted. Something arrived before you asked. Your room number written down, never said out loud. Things you watched happen. Or not happen.</p>
+    <p>Each fact belongs to one of seven pillars. The weights aren't taste: they follow what the major inspection systems have already proven in the field.</p>
+
+    <table class="pesi">
+      <thead><tr><th>Pillar</th><th>Weight</th><th>What it looks at</th></tr></thead>
+      <tbody>
+        <tr><td>Attention</td><td class="num">40</td><td>Anticipation, recognition, memory across departments, how a problem gets solved</td></tr>
+        <tr><td>Comfort</td><td class="num">12</td><td>Real darkness, real silence, the bed</td></tr>
+        <tr><td>Privacy</td><td class="num">12</td><td>Discretion about your name, your details, your rest</td></tr>
+        <tr><td>Food</td><td class="num">12</td><td>Breakfast as the test, a dining room that knows, promises kept</td></tr>
+        <tr><td>Cleanliness</td><td class="num">11</td><td>The bathroom on arrival, the evening, the corners nobody walks through</td></tr>
+        <tr><td>Design</td><td class="num">8</td><td>Sense of place, details thought through to the end</td></tr>
+        <tr><td>Art</td><td class="num">5</td><td>Works chosen by someone, not fillers</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Three rules keep the score honest</h3>
+    <p>Flaws weigh more than extras: every false note you mark takes four points off, because one flat no cancels ten courtesies.</p>
+    <p>Thresholds can't be bought: if attention or cleanliness falls under half, the score stays out of the top bands. Whatever the marble.</p>
+    <p>Emotion doesn't score: the last question is a cross-check. Facts make the number, your gut confirms it.</p>
+  </section>
+
+  <section class="blocco" id="recensioni">
+    <p class="occhiello">The premise</p>
+    <hr class="filetto">
+    <h2>Why no reviews</h2>
+    <p>Reviews average very different expectations. People who rarely travel reward surprise. People who travel constantly spot fake luxury in twenty minutes: they don't complain, they don't write, they simply never come back. The score you read online mixes the two.</p>
+    <p>The Ferro Index asks one thing only: what happened to you. If the facts are there, the luxury is there. If they're not, no average of strangers can put them there.</p>
+  </section>
+
+  <section class="blocco" id="fonti">
+    <p class="occhiello">The foundations</p>
+    <hr class="filetto">
+    <h2>What the method stands on</h2>
+    <ul class="fonti">
+      <li><strong>Forbes Travel Guide</strong>: up to 900 standards verified incognito, one by one, yes or no. At four and five-star level, service is worth 75 percent, the property 25.</li>
+      <li><strong>LQA, Leading Quality Assurance</strong>: over 1,000 standards per stay, with a five-level emotional scale, from neglected to pampered.</li>
+      <li><strong>Michelin Keys</strong>: five criteria, none negotiable. The Key only comes if even the weakest criterion stays excellent.</li>
+      <li><strong>AAA Five Diamond</strong>: pass-or-fail requirements before any scoring begins. The top rating goes to just 0.4 percent of properties.</li>
+      <li><strong>Academic research</strong>: from SERVQUAL onwards, the studies keep repeating the same thing. How people behave predicts perceived quality better than any material.</li>
+    </ul>
+    <p>The Ferro Index translates those systems into questions a guest can answer alone, and filters them through one precise idea: luxury is made of time, exclusivity and love. Everything else is price.</p>
+  </section>
+
+  <section class="blocco" id="autore">
+    <p class="occhiello">Who built it</p>
+    <hr class="filetto">
+    <h2>From the other side of the desk</h2>
+    <p>Mattia Ferro spent years studying the best hotels in the world, from Dubai to Las Vegas to Shanghai. Then he built one: Luxury Camp at Union Lido, twenty open air suites on the Venice coastline, which he has run since 2018.</p>
+    <p>Forbes Life, in its May 2026 print edition, calls him an innovator of Italian high-end tourism.</p>
+    <p>The Ferro Index is the measurable part of his craft: reading hotels from the inside. The rest he writes, one letter at a time, at <a href="https://mattiaferro.com">mattiaferro.com</a>. And if you'd rather have him pick your next hotel: <a href="https://travel.mattiaferro.com">travel.mattiaferro.com</a>.</p>
+  </section>
+
+  <section class="blocco" id="faq">
+    <p class="occhiello">Questions</p>
+    <hr class="filetto">
+    <h2>What everyone asks</h2>
+
+    <h3>How can I tell if a hotel is truly luxury?</h3>
+    <p>Look at facts, not declared stars: they call you by name unprompted, something arrives before you ask, your room number is written down and never said out loud, the juice is squeezed to order. The Ferro Index asks 23 questions about these facts and turns them into a score.</p>
+
+    <h3>Why aren't reviews enough?</h3>
+    <p>Because they average people who are amazed by everything with people who never complain. True luxury isn't judged by other people's average: it's verified with your own facts.</p>
+
+    <h3>What matters most?</h3>
+    <p>Attention: 40 percent of the score. That's the proportion used by professional systems, not a personal taste. Materials can be bought in an afternoon; a service that anticipates takes years to build.</p>
+
+    <h3>What is it, in one sentence?</h3>
+    <p>The luxury inspectors' method, in guest form: three minutes, twenty-three facts, one number that doesn't fall for the show.</p>
+
+    <h3>Can I share the result?</h3>
+    <p>Yes. The score travels inside the link: whoever receives it sees the verdict, the radar and the detail without retaking the test. Nothing gets stored anywhere: the answers live only in the address you decide to send.</p>
+  </section>
+
+</div>
+
+<footer>
+  <div class="wrap">
+    <p>The Ferro Index is a method by Mattia Ferro. No property pays to be measured, no review enters the score. This site uses no cookies and tracks nothing: your answers stay in your browser.</p>
+    <p>Mattia Ferro is an independent travel advisor of Fora Travel, New York. Bookings never touch the score.</p>
+    <p>© 2026 Vimana Holdings · <a href="/en/sanctuaries/">Sanctuary Register</a> · <a href="https://mattiaferro.com">mattiaferro.com</a> · <a href="https://travel.mattiaferro.com">travel.mattiaferro.com</a> · <a href="https://luxurycamp.it">luxurycamp.it</a></p>
+  </div>
+</footer>
+
+<script>
+window.FERRO = {
+  baseURL: 'https://index.mattiaferro.com/en',
+  registroURL: 'https://index.mattiaferro.com/en/sanctuaries/',
+  pillars: [
+    { key: 'attenzioni', name: 'Attention', short: 'Attention', w: 40,
+      high: 'They read you before you spoke: your name, your preferences, your needs anticipated. That\'s the heart of true luxury, and it can\'t be improvised.',
+      mid:  'Plenty of courtesy, little anticipation: when you asked, it came. But true luxury starts before the request.',
+      low:  'You were served, not seen: requests were fulfilled, but nobody recognised you, anticipated you or remembered you. That is the difference between a good business and a great hotel. And this pillar alone is worth 40 percent.' },
+    { key: 'comfort', name: 'Comfort', short: 'Comfort', w: 12,
+      high: 'Darkness, silence, a proper bed. Rest is treated as a service here.',
+      mid:  'You can sleep, but something intrudes. In true luxury, sleep is protected.',
+      low:  'If sleep is not protected, the rest is decoration.' },
+    { key: 'privacy', name: 'Privacy', short: 'Privacy', w: 12,
+      high: 'Real discretion: nobody in earshot ever learned who you were.',
+      mid:  'Discretion in patches. Either it\'s constant, or it isn\'t discretion.',
+      low:  'Your privacy was treated as a detail. It isn\'t one.' },
+    { key: 'cibo', name: 'Food', short: 'Food', w: 12,
+      high: 'Cooked to order, a dining room that knows. Breakfast told the truth.',
+      mid:  'A good table, but the care flickers.',
+      low:  'Breakfast is the cheapest test to pass. They didn\'t pass it.' },
+    { key: 'pulizia', name: 'Cleanliness', short: 'Clean', w: 11,
+      high: 'Spotless even where nobody looks. That\'s where it\'s measured.',
+      mid:  'Clean where it shows, less where it doesn\'t. Luxury makes no such distinction.',
+      low:  'Cleanliness isn\'t a pillar of luxury: it\'s the ticket in. And it was missing.' },
+    { key: 'design', name: 'Design', short: 'Design', w: 8,
+      high: 'The interiors tell you where you are. No copy-paste luxury.',
+      mid:  'Beautiful, but you could be anywhere.',
+      low:  'The design shouts instead of speaking. Or says nothing at all.' },
+    { key: 'arte', name: 'Art', short: 'Art', w: 5,
+      high: 'Real works, chosen by someone. Not fillers.',
+      mid:  'Some care is there, but nothing will follow you home.',
+      low:  'Full walls, empty memory.' }
+  ],
+  questions: [
+    { id: 'a5', pillar: 'attenzioni', w: 8, type: 'scale', section: 'The arrival',
+      text: 'The first greeting.',
+      note: 'The first person from the property who welcomed you, whoever it was: how was it, honestly?',
+      options: ['Cold: I was processed like paperwork', 'Correct, nothing more', 'Polite, but by the book', 'Warm: a real smile, not a service one', 'Genuinely glad to see me: they stopped for me'] },
+    { id: 'a1', pillar: 'attenzioni', w: 8, type: 'yn', section: 'The arrival',
+      text: 'After check-in, did anyone call you by name, unprompted?',
+      note: 'It counts if it happened on its own: at the bar, at the restaurant, at the spa, from people you never introduced yourself to. Check-in itself doesn\'t count, since your name is right in front of them. Once is enough. And if there was no contact at all beyond check-in, the answer is no: recognition is exactly what was missing.',
+      options: [{ t: 'Yes', v: 1 }, { t: 'No', v: 0 }] },
+    { id: 'p1', pillar: 'privacy', w: 4, type: 'yn', section: 'The arrival',
+      text: 'Was your room number written down, never said in front of others?',
+      note: 'In the best hotels it\'s a privacy rule: the number is never spoken where others can hear it. Said quietly, only to you, counts as yes.',
+      options: [{ t: 'Yes', v: 1 }, { t: 'No', v: 0 }] },
+    { id: 'c1', pillar: 'comfort', w: 4, type: 'yn', section: 'The room',
+      text: 'At night, total darkness?',
+      note: 'No TV leds, no light leaking through the curtains.',
+      options: [{ t: 'Yes', v: 1 }, { t: 'No', v: 0 }] },
+    { id: 'c2', pillar: 'comfort', w: 4, type: 'yn', section: 'The room',
+      text: 'True silence in bed?',
+      note: 'No hum from the air conditioning or the minibar, no voices from the corridor, no traffic from the street.',
+      options: [{ t: 'Yes', v: 1 }, { t: 'No', v: 0 }] },
+    { id: 'c3', pillar: 'comfort', w: 4, type: 'scale', section: 'The room',
+      text: 'The bed.',
+      note: 'Sheets, pillows, mattress. The night is the first service you pay for.',
+      options: ['Forgettable', 'Average', 'Good', 'Very good', 'The best I\'ve slept on'] },
+    { id: 'h1', pillar: 'pulizia', w: 4, type: 'yn', section: 'The room',
+      text: 'On arrival, not a single mark or fingerprint on the taps and mirrors?',
+      options: [{ t: 'Yes', v: 1 }, { t: 'No', v: 0 }] },
+    { id: 'a2', pillar: 'attenzioni', w: 8, type: 'yn', section: 'The care',
+      text: 'Did something arrive before you asked for it?',
+      note: 'Only what you never ordered counts: the umbrella before the rain, your coffee the way you take it from day two, the taxi already arranged, the extra pillow noticed and brought. If you asked for it, that\'s not anticipation: it\'s service.',
+      options: [{ t: 'Yes', v: 1 }, { t: 'No', v: 0 }] },
+    { id: 'a3', pillar: 'attenzioni', w: 8, type: 'yn3', section: 'The care',
+      text: 'You mentioned a preference to one person. Did everyone else already know it?',
+      note: 'Example: you mentioned an allergy at the restaurant, and breakfast already knew. You asked for still water on day one, and never had to specify it again. If you never stated a preference, pick the third: the question leaves the count.',
+      options: [{ t: 'Yes', v: 1 }, { t: 'No, I had to repeat myself', v: 0 }, { t: 'I never stated a preference', v: 2 }] },
+    { id: 'p2', pillar: 'privacy', w: 4, type: 'yn', section: 'Privacy',
+      text: 'Before entering, did the staff always knock and wait?',
+      note: 'The do-not-disturb sign counts too, if you used it: ignoring it is a no. If nobody ever walked in on you, and nothing disturbed you, the answer is yes.',
+      options: [{ t: 'Yes', v: 1 }, { t: 'No', v: 0 }] },
+    { id: 'p3', pillar: 'privacy', w: 4, type: 'yn', section: 'Privacy',
+      text: 'Your details never discussed in front of other guests?',
+      note: 'Full name, how many nights, where you are from.',
+      options: [{ t: 'Yes', v: 1 }, { t: 'No', v: 0 }] },
+    { id: 'h2', pillar: 'pulizia', w: 4, type: 'yn3', section: 'The evening',
+      text: 'In the evening, while you were out of the room, was it prepared for the night without you asking?',
+      note: 'Lights low, bed turned down, fresh water. And your things handled with respect.',
+      options: [{ t: 'Yes', v: 1 }, { t: 'No', v: 0 }, { t: 'There was no chance: I stayed in, or left the next morning', v: 2 }] },
+    { id: 'h3', pillar: 'pulizia', w: 3, type: 'yn', section: 'The care',
+      text: 'Are the corners nobody walks through as spotless as the entrance?',
+      note: 'Stairs, corridors, shared bathrooms at the end of the day.',
+      options: [{ t: 'Yes', v: 1 }, { t: 'No', v: 0 }] },
+    { id: 'f1', pillar: 'cibo', w: 4, type: 'yn3', section: 'Breakfast',
+      text: 'Juice squeezed to order and eggs cooked to order?',
+      note: 'Breakfast is when a hotel tells the truth. Yes only if both.',
+      options: [{ t: 'Yes', v: 1 }, { t: 'No', v: 0 }, { t: 'I didn\'t have breakfast at the hotel', v: 2 }] },
+    { id: 'f2', pillar: 'cibo', w: 4, type: 'yn3', section: 'The table',
+      text: 'Can the people serving you describe the dishes without going to ask the kitchen?',
+      note: 'Lunch or dinner at the hotel\'s own restaurants.',
+      options: [{ t: 'Yes', v: 1 }, { t: 'No', v: 0 }, { t: 'I didn\'t eat at the hotel restaurant', v: 2 }] },
+    { id: 'f3', pillar: 'cibo', w: 4, type: 'yn3', section: 'The table',
+      text: 'Do hot dishes arrive hot, when promised?',
+      options: [{ t: 'Yes', v: 1 }, { t: 'No', v: 0 }, { t: 'I didn\'t eat at the hotel restaurant', v: 2 }] },
+    { id: 'd1', pillar: 'design', w: 4, type: 'yn', section: 'The eye',
+      text: 'Looking only at the interiors, would you know where in the world you are?',
+      note: 'The best hotels don\'t look like anywhere else. They look like where they are.',
+      options: [{ t: 'Yes', v: 1 }, { t: 'No', v: 0 }] },
+    { id: 'd2', pillar: 'design', w: 4, type: 'yn', section: 'The eye',
+      text: 'Are the small details thought through to the end?',
+      note: 'Fresh real flowers, hangers that come off the rail, no laminated signs.',
+      options: [{ t: 'Yes', v: 1 }, { t: 'No', v: 0 }] },
+    { id: 'r1', pillar: 'arte', w: 3, type: 'yn', section: 'The art',
+      text: 'Is the art on the walls original, or chosen with care?',
+      note: 'Not decorative prints from a catalogue.',
+      options: [{ t: 'Yes', v: 1 }, { t: 'No', v: 0 }] },
+    { id: 'r2', pillar: 'arte', w: 2, type: 'yn', section: 'The art',
+      text: 'Is there an object or a work you will still remember in a year?',
+      options: [{ t: 'Yes', v: 1 }, { t: 'No', v: 0 }] },
+    { id: 'a4', pillar: 'attenzioni', w: 8, type: 'yn3', section: 'When something goes wrong',
+      text: 'If you reported a problem, did the first person you told solve it?',
+      note: 'Anything counts: the lukewarm shower, the noisy table, the light that would not work. Answer yes if the person who heard you owned it to the end, without bouncing you upstairs.',
+      options: [{ t: 'Yes', v: 1 }, { t: 'No, it got passed along', v: 0 }, { t: 'I had nothing to report', v: 2 }] },
+    { id: 'flags', pillar: null, w: 0, type: 'flags', section: 'The false notes',
+      text: 'Which of these actually happened?',
+      note: 'Pick as many as apply. They count against the score: flaws weigh more than extras.',
+      options: [
+        'A flat no, with no alternative',
+        'Someone pointed out how precious or expensive something was',
+        'Plastic single-serve packets at breakfast',
+        'Charges on the bill nobody mentioned before'
+      ],
+      none: 'None of these' },
+    { id: 'emo', pillar: null, w: 0, type: 'scale', section: 'At the end',
+      text: 'How did you feel, overall?',
+      note: 'This one doesn\'t score. It\'s the cross-check: your gut confirms the facts, or it doesn\'t.',
+      options: ['Neglected', 'Served', 'Respected', 'Appreciated', 'Pampered, special'] }
+  ],
+  bands: [
+    { min: 85, label: 'Sanctuary',
+      verdict: 'True luxury: the kind that doesn\'t show off. You feel it.',
+      sub: 'This band is rare by design, as in the professional systems: the Five Diamond reaches 0.4 percent of properties. If the facts you marked are true, this place deserves the only measure that counts: going back.' },
+    { min: 65, label: 'Excellent hotel',
+      verdict: 'An excellent hotel. Not luxury yet.',
+      sub: 'The technique is there, the anticipation comes and goes. The difference between excellent and luxury lives entirely in what happens before you ask.' },
+    { min: 40, label: 'Expensive',
+      verdict: 'It\'s not luxury. It\'s just expensive.',
+      sub: 'A high price without the attention is just a high price. Marble stays stone if nobody truly sees you.' },
+    { min: 0, label: 'Stage set',
+      verdict: 'It\'s not hospitality. It\'s a stage. And you were the audience.',
+      sub: 'What you paid went into the hotel telling its own story, not into taking care of you.' }
+  ],
+  flagEcho: [
+    'A flat no with no alternative: great hotels do not have one.',
+    'Ostentation announced: luxury that points at itself is just show.',
+    'Plastic single-serve packets: breakfast said it all.',
+    'Undisclosed charges: transparency is the first courtesy.'
+  ],
+  ui: {
+    continua: 'Continue',
+    indietro: 'Back',
+    annulla: 'Back to start',
+    esito: 'The verdict',
+    condividi: 'Share the result',
+    copia: 'Copy the link',
+    copiato: 'Copied',
+    rifai: 'Take it again',
+    faiTuo: 'Now measure your own hotel',
+    na: 'n/a',
+    naNote: 'Not put to the test on this stay: it stays out of the count.',
+    domandaDi: function (n, tot) { return 'Question ' + n + ' of ' + tot; },
+    flagsTitle: 'The false notes you marked',
+    capNote: function (reasons) {
+      var what = reasons.length === 2 ? 'attention and cleanliness fell' :
+        (reasons[0] === 'attenzioni' ? 'attention fell' : 'cleanliness fell');
+      return 'Score capped below the top bands: ' + what + ' under half. It\'s a rule of the method: some thresholds can\'t be bought with the rest.';
+    },
+    shareText: function (score, band, name) {
+      if (name) return name + ': ' + score + '/100 on the Ferro Index. ' + band + '.';
+      return 'My hotel scored ' + score + '/100 on the Ferro Index: ' + band + '.';
+    },
+    pubOcchiello: 'Give it a name',
+    pubTitolo: 'Turn it into a review that carries weight',
+    pubTesto: 'Add the hotel\'s name and two lines of reasoning: they travel inside the link you share, and whoever opens it sees the full verdict. Nobody stores them: the review is yours, you publish it, wherever you want.',
+    pubNome: 'Hotel name (optional)',
+    pubNota: 'Your reasoning, two lines (optional)',
+    notaLabel: 'The reasoning of the person who measured',
+    gate: {
+      occhiello: 'For readers',
+      titolo: 'The test is a chapter of the newsletter.',
+      testo: 'The Ferro Index comes from the letters Mattia writes every week about luxury and hospitality. The test is reserved for the people who receive them: subscribing is free, and that is all it takes.',
+      fatto: 'Done, I subscribed: let\'s start',
+      gia: 'I\'m already a subscriber, take me to the test',
+      micro: 'Free, cancel anytime. The verdict stays yours: nothing is stored here.'
+    },
+    reg: {
+      occhiello: 'The Sanctuary Register',
+      titolo: 'This verdict can enter the Register',
+      testo: 'The Sanctuary Register collects, with name and reasoning, only the hotels that clear 85: true luxury, verified by someone who lived it. Every candidacy goes through a human check before publication.',
+      hotel: 'Hotel name (in full)',
+      email: 'Your reader email',
+      motivazione: 'The reasoning: what makes this place a sanctuary',
+      invia: 'Submit this verdict to the Register',
+      nota: 'Only argued, verifiable verdicts enter the Register. Scores under 85 stay anonymous: the Register names excellence, it exposes no one.',
+      solo: 'Only the Sanctuary band (85+) can apply to the <a href="/en/sanctuaries/">Sanctuary Register</a>.'
+    },
+    emo: {
+      concordaAlto: 'The facts and your gut agree. When that happens, the enchantment was real.',
+      freddo: 'The facts are there, the warmth less so. Technique without warmth shows.',
+      scenografia: 'You felt pampered, but the facts do not hold up. When emotion beats substance, it is a stage set.',
+      concordaBasso: 'Your gut says the same: the care just wasn\'t there.'
+    },
+    ctaOcchiello: 'The method, every week',
+    ctaTesto: 'The Ferro Index is the measurable part of a craft: reading hotels from the inside. The rest I write one letter at a time.',
+    ctaBottone: 'Subscribe at mattiaferro.com',
+    ctaSecondaria: 'Rather have me pick your next hotel? <a href="https://travel.mattiaferro.com">travel.mattiaferro.com</a>'
+  }
+};
+</script>
+<script src="/assets/ferro.js?v=6"></script>
+</body>
+</html>

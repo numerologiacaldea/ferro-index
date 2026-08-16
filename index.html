@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ferro Index: misura se un hotel è davvero di lusso</title>
+<meta name="description" content="23 domande su fatti osservabili, nessuna recensione, un punteggio da 0 a 100. Il Ferro Index è il metodo di Mattia Ferro per capire se un hotel è lusso vero o soltanto costoso. Tre minuti, gratuito.">
+<link rel="canonical" href="https://index.mattiaferro.com/">
+<link rel="alternate" hreflang="it" href="https://index.mattiaferro.com/">
+<link rel="alternate" hreflang="en" href="https://index.mattiaferro.com/en/">
+<link rel="alternate" hreflang="x-default" href="https://index.mattiaferro.com/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Ferro Index: il tuo hotel è lusso vero o soltanto costoso?">
+<meta property="og:description" content="23 domande su fatti che hai visto con i tuoi occhi. Nessuna recensione. Un punteggio da 0 a 100, in tre minuti.">
+<meta property="og:url" content="https://index.mattiaferro.com/">
+<meta property="og:locale" content="it_IT">
+<meta property="og:image" content="https://index.mattiaferro.com/assets/og-ferro-index.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Ferro Index: il tuo hotel è lusso vero, o soltanto costoso?">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#ebe7e0">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#141414">
+<link rel="stylesheet" href="/assets/ferro.css?v=6">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebApplication",
+      "@id": "https://index.mattiaferro.com/#app",
+      "name": "Ferro Index",
+      "url": "https://index.mattiaferro.com/",
+      "description": "Strumento gratuito che misura se un hotel è davvero di lusso: 23 domande su fatti osservabili dall'ospite, pesati secondo gli standard dell'ospitalità di lusso, un punteggio da 0 a 100 senza usare le recensioni.",
+      "applicationCategory": "TravelApplication",
+      "operatingSystem": "Web",
+      "inLanguage": ["it", "en"],
+      "isAccessibleForFree": true,
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "EUR" },
+      "author": { "@id": "https://index.mattiaferro.com/#mattiaferro" }
+    },
+    {
+      "@type": "Person",
+      "@id": "https://index.mattiaferro.com/#mattiaferro",
+      "name": "Mattia Ferro",
+      "jobTitle": "Fondatore del Luxury Camp at Union Lido, travel advisor",
+      "description": "Fondatore e gestore del Luxury Camp at Union Lido (Cavallino-Treporti, Venezia), definito da Forbes Life «innovatore del turismo italiano di alta gamma». Independent travel advisor di Fora Travel.",
+      "url": "https://mattiaferro.com",
+      "sameAs": [
+        "https://mattiaferro.com",
+        "https://travel.mattiaferro.com",
+        "https://www.linkedin.com/in/mattiaferro",
+        "https://luxurycamp.it"
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://index.mattiaferro.com/#faq",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Come capisco se un hotel è davvero di lusso?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Guarda i fatti, non le stelle dichiarate: ti chiamano per nome senza che sia tu a ricordarlo, qualcosa arriva prima che tu lo chieda, il numero della camera viene scritto e mai detto ad alta voce, la spremuta è fatta al momento. Il Ferro Index fa 23 domande su questi fatti e le trasforma in un punteggio da 0 a 100." }
+        },
+        {
+          "@type": "Question",
+          "name": "Perché le recensioni non bastano per giudicare un hotel di lusso?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Le recensioni sono una media di aspettative diverse: chi viaggia poco premia lo stupore, chi viaggia molto riconosce il lusso falso in venti minuti, non si lamenta e non torna. Il punteggio online mescola i due. Un metodo serio chiede solo cosa è successo a te, su fatti osservabili." }
+        },
+        {
+          "@type": "Question",
+          "name": "Cosa conta di più in un hotel di lusso?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Le attenzioni sugli ospiti: anticipazione dei bisogni, riconoscimento, memoria delle preferenze tra i reparti. Nel Ferro Index valgono da sole il 40 per cento del punteggio, la stessa proporzione dei sistemi professionali: Forbes Travel Guide assegna al servizio il 75 per cento del rating di un cinque stelle." }
+        },
+        {
+          "@type": "Question",
+          "name": "Cos'è il Ferro Index?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Uno strumento gratuito creato da Mattia Ferro, fondatore del Luxury Camp at Union Lido: 23 domande su fatti osservati durante un soggiorno, pesate su 7 pilastri (attenzioni 40, comfort 12, privacy 12, cibo 12, pulizia 11, design 8, arte 5), con detrattori per le stonature e soglie non compensabili. Il risultato è un punteggio 0-100 in quattro fasce: Santuario, Ottimo hotel, Costoso, Scenografia." }
+        },
+        {
+          "@type": "Question",
+          "name": "Il risultato del Ferro Index si può condividere?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Sì: il punteggio viaggia dentro il link. Chi lo riceve vede lo stesso verdetto, il radar dei 7 pilastri e il dettaglio, senza rifare il test e senza che nessun dato venga salvato da qualche parte: le risposte vivono solo nell'indirizzo." }
+        }
+      ]
+    }
+  ]
+}
+</script>
+</head>
+<body>
+
+<div class="progress" id="progress"></div>
+<a class="lang" href="/en/">English</a>
+
+<div class="wrap">
+
+  <header class="hero" id="hero">
+    <p class="occhiello">Ferro Index · Metodo Mattia Ferro</p>
+    <hr class="filetto">
+    <h1>Molti hotel di lusso non sono di lusso. Sono soltanto costosi.</h1>
+    <p class="sotto">Il tuo lo scopri con ventitré domande su fatti che hai visto con i tuoi occhi. Nessuna recensione, nessuna stella dichiarata. Un punteggio da 0 a 100.</p>
+    <button class="btn" data-start type="button">Misura il tuo hotel</button>
+    <p class="micro">Tre minuti. Gratuito. Riservato ai lettori della newsletter.</p>
+  </header>
+
+  <main id="app"></main>
+  <div id="announce" class="sr-only" aria-live="polite"></div>
+
+  <noscript><p class="micro">Il test ha bisogno di JavaScript. Il metodo, però, lo leggi comunque qui sotto.</p></noscript>
+
+  <section class="blocco" id="inbreve">
+    <div class="inbreve">
+      <p class="occhiello">In breve</p>
+      <p>Il Ferro Index misura se un hotel è davvero di lusso senza usare le recensioni: 23 domande su fatti osservabili durante il soggiorno, pesati come li pesano gli ispettori professionali, un punteggio da 0 a 100 in quattro fasce.</p>
+      <p>Le attenzioni sugli ospiti valgono da sole il 40 per cento. Non è una preferenza: Forbes Travel Guide assegna al servizio il 75 per cento del rating di un cinque stelle.</p>
+      <p>Lo ha costruito Mattia Ferro, fondatore del Luxury Camp at Union Lido, definito da Forbes Life «innovatore del turismo italiano di alta gamma».</p>
+    </div>
+  </section>
+
+  <section class="blocco" id="metodo">
+    <p class="occhiello">Il metodo</p>
+    <hr class="filetto">
+    <h2>Come si misura il lusso vero</h2>
+    <p>Le recensioni misurano la soddisfazione di chiunque. Il Ferro Index misura un'altra cosa: se quello che hai pagato era lusso, o scenografia.</p>
+    <p>La differenza sta in ciò che guardi. Non opinioni: fatti. Ti hanno chiamato per nome senza che fossi tu a ricordarlo. Qualcosa è arrivato prima che lo chiedessi. Il numero della camera scritto, mai detto ad alta voce. Sono cose che hai visto succedere. O non succedere.</p>
+    <p>Ogni fatto appartiene a uno di sette pilastri. I pesi non sono simpatie: seguono quello che i grandi sistemi di ispezione hanno già dimostrato sul campo.</p>
+
+    <table class="pesi">
+      <thead><tr><th>Pilastro</th><th>Peso</th><th>Cosa guarda</th></tr></thead>
+      <tbody>
+        <tr><td>Attenzioni</td><td class="num">40</td><td>Anticipazione, riconoscimento, memoria tra i reparti, come si risolve un problema</td></tr>
+        <tr><td>Comfort</td><td class="num">12</td><td>Buio vero, silenzio vero, il letto</td></tr>
+        <tr><td>Privacy</td><td class="num">12</td><td>Discrezione sul tuo nome, i tuoi dati, il tuo riposo</td></tr>
+        <tr><td>Cibo</td><td class="num">12</td><td>La colazione come test, la sala che sa, i tempi mantenuti</td></tr>
+        <tr><td>Pulizia</td><td class="num">11</td><td>Il bagno all'arrivo, la sera, gli angoli dove nessuno passa</td></tr>
+        <tr><td>Design</td><td class="num">8</td><td>Senso del luogo, dettagli pensati fino in fondo</td></tr>
+        <tr><td>Arte</td><td class="num">5</td><td>Opere scelte da qualcuno, non riempitivi</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Tre regole tengono onesto il punteggio</h3>
+    <p>I difetti pesano più degli extra: ogni stonatura segnata toglie quattro punti, perché un no secco cancella dieci gentilezze.</p>
+    <p>Le soglie non si comprano: se attenzioni o pulizia scendono sotto la metà, il punteggio resta fuori dalle fasce alte. Qualunque sia il marmo.</p>
+    <p>L'emozione non fa punteggio: l'ultima domanda serve da controprova. I fatti fanno il numero, la pelle lo verifica.</p>
+  </section>
+
+  <section class="blocco" id="recensioni">
+    <p class="occhiello">La premessa</p>
+    <hr class="filetto">
+    <h2>Perché senza recensioni</h2>
+    <p>Le recensioni sono una media di aspettative diverse. Chi viaggia poco premia lo stupore. Chi viaggia molto riconosce il lusso falso in venti minuti: non si lamenta, non scrive, semplicemente non torna. Il punteggio che leggi online mescola i due.</p>
+    <p>Il Ferro Index chiede una cosa sola: cosa è successo a te. Se i fatti ci sono, il lusso c'è. Se non ci sono, nessuna media di sconosciuti può metterceli.</p>
+  </section>
+
+  <section class="blocco" id="fonti">
+    <p class="occhiello">Le fondamenta</p>
+    <hr class="filetto">
+    <h2>Su cosa poggia il metodo</h2>
+    <ul class="fonti">
+      <li><strong>Forbes Travel Guide</strong>: fino a 900 standard verificati in incognito, uno per uno, sì o no. Ai livelli quattro e cinque stelle il servizio pesa il 75 per cento, la struttura il 25.</li>
+      <li><strong>LQA, Leading Quality Assurance</strong>: oltre 1.000 standard per soggiorno, con una scala emozionale a cinque livelli, da trascurato a coccolato.</li>
+      <li><strong>Michelin Keys</strong>: cinque criteri, nessuno negoziabile. La Chiave arriva solo se anche il criterio più debole resta eccellente.</li>
+      <li><strong>AAA Five Diamond</strong>: requisiti eliminatori prima del punteggio. La fascia più alta tocca lo 0,4 per cento delle strutture.</li>
+      <li><strong>La ricerca accademica</strong>: da SERVQUAL in poi gli studi ripetono la stessa cosa. Il comportamento delle persone predice la qualità percepita più di qualunque materiale.</li>
+    </ul>
+    <p>Il Ferro Index traduce questi sistemi in domande a cui un ospite sa rispondere da solo, e li filtra con un'idea precisa: il lusso è una spremuta di tre elementi, tempo, esclusività e amore. Tutto il resto è prezzo.</p>
+  </section>
+
+  <section class="blocco" id="autore">
+    <p class="occhiello">Chi l'ha creato</p>
+    <hr class="filetto">
+    <h2>Dall'altra parte del banco</h2>
+    <p>Mattia Ferro ha passato anni a studiare i migliori hotel del mondo, da Dubai a Las Vegas a Shanghai. Poi ne ha costruito uno: il Luxury Camp at Union Lido, venti suite open air sul litorale di Venezia, che gestisce dal 2018.</p>
+    <p>Forbes Life, nell'edizione cartacea di maggio 2026, lo definisce «innovatore del turismo italiano di alta gamma».</p>
+    <p>Il Ferro Index è la parte misurabile del suo mestiere: leggere gli alberghi da dentro. Il resto lo scrive, una lettera alla volta, su <a href="https://mattiaferro.com">mattiaferro.com</a>. E per chi preferisce che il prossimo albergo lo scelga lui: <a href="https://travel.mattiaferro.com">travel.mattiaferro.com</a>.</p>
+  </section>
+
+  <section class="blocco" id="faq">
+    <p class="occhiello">Domande</p>
+    <hr class="filetto">
+    <h2>Quello che chiedono tutti</h2>
+
+    <h3>Come capisco se un hotel è davvero di lusso?</h3>
+    <p>Guarda i fatti, non le stelle dichiarate: ti chiamano per nome senza che sia tu a ricordarlo, qualcosa arriva prima che tu lo chieda, il numero della camera viene scritto e mai detto ad alta voce, la spremuta è fatta al momento. Il Ferro Index fa 23 domande su questi fatti e le trasforma in un punteggio.</p>
+
+    <h3>Perché le recensioni non bastano?</h3>
+    <p>Perché fanno la media tra chi si stupisce di tutto e chi non si lamenta mai. Il lusso vero non si giudica con la media degli altri: si verifica con i fatti tuoi.</p>
+
+    <h3>Cosa conta di più?</h3>
+    <p>Le attenzioni: il 40 per cento del punteggio. È la proporzione dei sistemi professionali, non un gusto personale. I materiali si comprano in un pomeriggio; un servizio che anticipa si costruisce in anni.</p>
+
+    <h3>Cos'è, in una frase?</h3>
+    <p>Il metodo degli ispettori di lusso, in versione ospite: tre minuti, ventitré fatti, un numero che non si fa incantare.</p>
+
+    <h3>Il risultato si può condividere?</h3>
+    <p>Sì. Il punteggio viaggia dentro il link: chi lo riceve vede verdetto, radar e dettaglio senza rifare il test. Nessun dato viene salvato da nessuna parte: le risposte vivono solo nell'indirizzo che decidi tu di mandare.</p>
+  </section>
+
+</div>
+
+<footer>
+  <div class="wrap">
+    <p>Ferro Index è un metodo di Mattia Ferro. Nessuna struttura paga per essere misurata, nessuna recensione entra nel punteggio. Questo sito non usa cookie e non traccia nulla: le risposte restano nel tuo browser.</p>
+    <p>Mattia Ferro è independent travel advisor di Fora Travel, New York. Le prenotazioni non influenzano il punteggio.</p>
+    <p>© 2026 Vimana Holdings · <a href="/santuari/">Registro dei Santuari</a> · <a href="https://mattiaferro.com">mattiaferro.com</a> · <a href="https://travel.mattiaferro.com">travel.mattiaferro.com</a> · <a href="https://luxurycamp.it">luxurycamp.it</a></p>
+  </div>
+</footer>
+
+<script>
+window.FERRO = {
+  baseURL: 'https://index.mattiaferro.com',
+  registroURL: 'https://index.mattiaferro.com/santuari/',
+  pillars: [
+    { key: 'attenzioni', name: 'Attenzioni', short: 'Attenzioni', w: 40,
+      high: 'Ti hanno letto prima che parlassi: nome, preferenze, bisogni anticipati. È il cuore del lusso vero, e non si improvvisa.',
+      mid:  'Cortesia sì, anticipazione poca: quando chiedevi, arrivava. Ma il lusso vero comincia prima della richiesta.',
+      low:  'Ti hanno servito, non ti hanno visto: le richieste venivano esaudite, ma nessuno ti ha riconosciuto, anticipato o ricordato. È la differenza tra una buona struttura e un grande hotel. E questo pilastro vale da solo il 40 per cento.' },
+    { key: 'comfort', name: 'Comfort', short: 'Comfort', w: 12,
+      high: 'Buio, silenzio, un letto giusto. Il riposo qui è un servizio.',
+      mid:  'Si dorme, ma qualcosa disturba. Nel lusso vero il sonno è protetto.',
+      low:  'Se il sonno non è protetto, il resto è decorazione.' },
+    { key: 'privacy', name: 'Privacy', short: 'Privacy', w: 12,
+      high: 'Discrezione vera: nessuno ha fatto sapere agli altri chi sei.',
+      mid:  'Riservatezza a tratti. La discrezione o è costante, o non è.',
+      low:  'La tua privacy è stata trattata come un dettaglio. Non lo è.' },
+    { key: 'cibo', name: 'Cibo', short: 'Cibo', w: 12,
+      high: 'Cucina espressa, sala che sa. La colazione ha detto la verità.',
+      mid:  'Buona tavola, ma la cura va a intermittenza.',
+      low:  'La colazione è il test più economico da superare. Non l\'hanno superato.' },
+    { key: 'pulizia', name: 'Pulizia', short: 'Pulizia', w: 11,
+      high: 'Impeccabile anche dove nessuno guarda. È lì che si misura.',
+      mid:  'Pulito dove serve, meno dove non si vede. Il lusso non fa questa differenza.',
+      low:  'La pulizia non è un pilastro del lusso: è il biglietto d\'ingresso. E mancava.' },
+    { key: 'design', name: 'Design', short: 'Design', w: 8,
+      high: 'Gli interni raccontano il luogo. Niente lusso copia-incollato.',
+      mid:  'Bello, ma potresti essere ovunque.',
+      low:  'Il design urla invece di parlare. O tace del tutto.' },
+    { key: 'arte', name: 'Arte', short: 'Arte', w: 5,
+      high: 'Opere vere, scelte da qualcuno. Non riempitivi.',
+      mid:  'Qualcosa di curato c\'è, ma non ti seguirà a casa.',
+      low:  'Pareti piene, memoria vuota.' }
+  ],
+  questions: [
+    { id: 'a5', pillar: 'attenzioni', w: 8, type: 'scale', section: 'L\'arrivo',
+      text: 'Il primo saluto.',
+      note: 'La prima persona della struttura che ti ha accolto, chiunque fosse: com\'era, davvero?',
+      options: ['Freddo: mi ha sbrigato come una pratica', 'Corretto, niente di più', 'Cortese, ma da manuale', 'Caldo: un sorriso vero, non di servizio', 'Genuinamente contento di vedermi: si è fermato per me'] },
+    { id: 'a1', pillar: 'attenzioni', w: 8, type: 'yn', section: 'L\'arrivo',
+      text: 'Dopo il check-in, ti hanno chiamato per nome senza che fossi tu a ricordarlo?',
+      note: 'Conta se è successo da solo: al bar, al ristorante, alla spa, da persone a cui non ti eri presentato. Non conta il momento del check-in, quando il nome ce l\'hanno davanti. Basta una volta. E se oltre il check-in non c\'è stato nessun contatto, la risposta è no: il riconoscimento è esattamente quello che è mancato.',
+      options: [{ t: 'Sì', v: 1 }, { t: 'No', v: 0 }] },
+    { id: 'p1', pillar: 'privacy', w: 4, type: 'yn', section: 'L\'arrivo',
+      text: 'Il numero della tua camera è stato scritto, mai detto davanti ad altri?',
+      note: 'Nei migliori hotel è una regola di riservatezza: il numero non si pronuncia dove altri possono sentirlo. Detto solo a te, a bassa voce, vale sì.',
+      options: [{ t: 'Sì', v: 1 }, { t: 'No', v: 0 }] },
+    { id: 'c1', pillar: 'comfort', w: 4, type: 'yn', section: 'La camera',
+      text: 'Di notte, buio totale?',
+      note: 'Niente led della TV, niente spifferi di luce dalle tende.',
+      options: [{ t: 'Sì', v: 1 }, { t: 'No', v: 0 }] },
+    { id: 'c2', pillar: 'comfort', w: 4, type: 'yn', section: 'La camera',
+      text: 'A letto, silenzio vero?',
+      note: 'Nessun ronzio di climatizzatore o frigobar, niente voci dal corridoio, niente traffico dalla strada.',
+      options: [{ t: 'Sì', v: 1 }, { t: 'No', v: 0 }] },
+    { id: 'c3', pillar: 'comfort', w: 4, type: 'scale', section: 'La camera',
+      text: 'Il letto.',
+      note: 'Lenzuola, cuscini, materasso. La notte è il primo servizio che paghi.',
+      options: ['Da dimenticare', 'Normale', 'Buono', 'Molto buono', 'Il migliore su cui abbia dormito'] },
+    { id: 'h1', pillar: 'pulizia', w: 4, type: 'yn', section: 'La camera',
+      text: 'All\'arrivo, rubinetteria e specchi senza una macchia o un\'impronta?',
+      options: [{ t: 'Sì', v: 1 }, { t: 'No', v: 0 }] },
+    { id: 'a2', pillar: 'attenzioni', w: 8, type: 'yn', section: 'Le attenzioni',
+      text: 'Qualcosa è arrivato prima che lo chiedessi?',
+      note: 'Conta solo ciò che non hai mai ordinato: l\'ombrello prima della pioggia, il caffè come lo prendi dal secondo giorno, il taxi già avvisato, il cuscino in più notato e portato. Se l\'hai chiesto tu, non è anticipazione: è servizio.',
+      options: [{ t: 'Sì', v: 1 }, { t: 'No', v: 0 }] },
+    { id: 'a3', pillar: 'attenzioni', w: 8, type: 'yn3', section: 'Le attenzioni',
+      text: 'Una preferenza detta a una persona sola era conosciuta da tutte le altre?',
+      note: 'Esempio: hai detto al ristorante di un\'allergia, e la colazione lo sapeva già. Hai chiesto acqua non gasata il primo giorno, e non l\'hai più dovuta specificare. Se non hai espresso preferenze, scegli la terza: la domanda esce dal conto.',
+      options: [{ t: 'Sì', v: 1 }, { t: 'No, ho dovuto ripetermi', v: 0 }, { t: 'Non ho espresso preferenze', v: 2 }] },
+    { id: 'p2', pillar: 'privacy', w: 4, type: 'yn', section: 'La privacy',
+      text: 'Prima di entrare, il personale ha sempre bussato e aspettato?',
+      note: 'Vale anche il cartello "non disturbare", se l\'hai usato: ignorarlo è un no. Se nessuno è mai entrato mentre c\'eri, e niente ti ha disturbato, la risposta è sì.',
+      options: [{ t: 'Sì', v: 1 }, { t: 'No', v: 0 }] },
+    { id: 'p3', pillar: 'privacy', w: 4, type: 'yn', section: 'La privacy',
+      text: 'I tuoi dati mai discussi davanti ad altri ospiti?',
+      note: 'Nome completo, quante notti, da dove arrivi.',
+      options: [{ t: 'Sì', v: 1 }, { t: 'No', v: 0 }] },
+    { id: 'h2', pillar: 'pulizia', w: 4, type: 'yn3', section: 'La sera',
+      text: 'La sera, mentre eri fuori dalla camera, è stata preparata per la notte senza che lo chiedessi?',
+      note: 'Luci abbassate, letto aperto, acqua fresca. E i tuoi oggetti trattati con rispetto.',
+      options: [{ t: 'Sì', v: 1 }, { t: 'No', v: 0 }, { t: 'Non ne ho avuto occasione: ero in camera, o sono partito il mattino dopo', v: 2 }] },
+    { id: 'h3', pillar: 'pulizia', w: 3, type: 'yn', section: 'La cura',
+      text: 'Gli angoli dove nessuno passa sono impeccabili quanto l\'ingresso?',
+      note: 'Scale, corridoi, bagni comuni a fine giornata.',
+      options: [{ t: 'Sì', v: 1 }, { t: 'No', v: 0 }] },
+    { id: 'f1', pillar: 'cibo', w: 4, type: 'yn3', section: 'La colazione',
+      text: 'Spremuta fatta al momento e uova cucinate espresse?',
+      note: 'La colazione è il momento in cui un hotel dice la verità. Sì solo se tutte e due.',
+      options: [{ t: 'Sì', v: 1 }, { t: 'No', v: 0 }, { t: 'Non ho fatto colazione in hotel', v: 2 }] },
+    { id: 'f2', pillar: 'cibo', w: 4, type: 'yn3', section: 'La tavola',
+      text: 'Chi ti serve sa raccontare i piatti senza andare a chiedere in cucina?',
+      note: 'Vale pranzo o cena nei ristoranti della struttura.',
+      options: [{ t: 'Sì', v: 1 }, { t: 'No', v: 0 }, { t: 'Non ho mangiato al ristorante dell\'hotel', v: 2 }] },
+    { id: 'f3', pillar: 'cibo', w: 4, type: 'yn3', section: 'La tavola',
+      text: 'I piatti caldi arrivano caldi, nei tempi promessi?',
+      options: [{ t: 'Sì', v: 1 }, { t: 'No', v: 0 }, { t: 'Non ho mangiato al ristorante dell\'hotel', v: 2 }] },
+    { id: 'd1', pillar: 'design', w: 4, type: 'yn', section: 'Lo sguardo',
+      text: 'Guardando solo gli interni, capiresti in che parte del mondo sei?',
+      note: 'I migliori hotel non sembrano di nessun luogo. Sembrano del loro.',
+      options: [{ t: 'Sì', v: 1 }, { t: 'No', v: 0 }] },
+    { id: 'd2', pillar: 'design', w: 4, type: 'yn', section: 'Lo sguardo',
+      text: 'I dettagli minori sono pensati fino in fondo?',
+      note: 'Fiori veri e freschi, grucce che si staccano dall\'asta, nessun cartello plastificato.',
+      options: [{ t: 'Sì', v: 1 }, { t: 'No', v: 0 }] },
+    { id: 'r1', pillar: 'arte', w: 3, type: 'yn', section: 'L\'arte',
+      text: 'Le opere alle pareti sono originali, o scelte con cura?',
+      note: 'Non stampe decorative da catalogo.',
+      options: [{ t: 'Sì', v: 1 }, { t: 'No', v: 0 }] },
+    { id: 'r2', pillar: 'arte', w: 2, type: 'yn', section: 'L\'arte',
+      text: 'C\'è un oggetto o un\'opera che ricorderai tra un anno?',
+      options: [{ t: 'Sì', v: 1 }, { t: 'No', v: 0 }] },
+    { id: 'a4', pillar: 'attenzioni', w: 8, type: 'yn3', section: 'Quando qualcosa va storto',
+      text: 'Se hai segnalato un problema, l\'ha risolto la prima persona a cui l\'hai detto?',
+      note: 'Vale qualunque cosa: la doccia tiepida, il tavolo rumoroso, la luce che non funziona. Conta il "sì" se chi ti ha ascoltato se n\'è fatto carico fino in fondo, senza rimbalzarti a qualcuno di sopra.',
+      options: [{ t: 'Sì', v: 1 }, { t: 'No, è rimbalzato', v: 0 }, { t: 'Non ho avuto problemi da segnalare', v: 2 }] },
+    { id: 'flags', pillar: null, w: 0, type: 'flags', section: 'Le stonature',
+      text: 'Quali di queste sono successe davvero?',
+      note: 'Puoi segnarne più di una. Contano in negativo: i difetti pesano più degli extra.',
+      options: [
+        'Un no secco, senza alternativa',
+        'Mi hanno fatto notare quanto fosse pregiato o costoso qualcosa',
+        'Monoporzioni industriali in plastica a colazione',
+        'Costi comparsi al conto, mai dichiarati prima'
+      ],
+      none: 'Niente di tutto questo' },
+    { id: 'emo', pillar: null, w: 0, type: 'scale', section: 'Alla fine',
+      text: 'Come ti sei sentito, complessivamente?',
+      note: 'Questa non fa punteggio. Serve da controprova: la pelle conferma o smentisce i fatti.',
+      options: ['Trascurato', 'Servito', 'Rispettato', 'Apprezzato', 'Coccolato, speciale'] }
+  ],
+  bands: [
+    { min: 85, label: 'Santuario',
+      verdict: 'Il lusso vero: quello che non si fa vedere. Si sente.',
+      sub: 'Fascia rara per costruzione, come nei sistemi professionali: il Five Diamond tocca lo 0,4 per cento delle strutture. Se i fatti che hai segnato sono veri, questo posto merita la sola misura che conta: il ritorno.' },
+    { min: 65, label: 'Ottimo hotel',
+      verdict: 'Ottimo. Non ancora lusso.',
+      sub: 'La tecnica c\'è, l\'anticipazione va a tratti. La differenza tra ottimo e lusso sta tutta in quello che accade prima che tu chieda.' },
+    { min: 40, label: 'Costoso',
+      verdict: 'Non è lusso. È soltanto costoso.',
+      sub: 'Il prezzo alto senza le attenzioni è solo un prezzo alto. Il marmo resta pietra, se nessuno ti vede davvero.' },
+    { min: 0, label: 'Scenografia',
+      verdict: 'Non è ospitalità. È una scena. E il pubblico eri tu.',
+      sub: 'Quello che hai pagato è servito alla struttura per raccontarsi, non per prendersi cura di te.' }
+  ],
+  flagEcho: [
+    'Un no secco senza alternativa: nei grandi hotel non esiste.',
+    'L\'ostentazione dichiarata: il lusso che si fa notare è sfarzo.',
+    'Le monoporzioni in plastica: la colazione ha parlato.',
+    'I costi non dichiarati: la trasparenza è la prima cortesia.'
+  ],
+  ui: {
+    continua: 'Continua',
+    indietro: 'Indietro',
+    annulla: 'Torna all\'inizio',
+    esito: 'Il verdetto',
+    condividi: 'Condividi il risultato',
+    copia: 'Copia il link',
+    copiato: 'Copiato',
+    rifai: 'Rifai il test',
+    faiTuo: 'Misura anche il tuo hotel',
+    na: 'n.a.',
+    naNote: 'Non messo alla prova in questo soggiorno: non entra nel conto.',
+    domandaDi: function (n, tot) { return 'Domanda ' + n + ' di ' + tot; },
+    flagsTitle: 'Le stonature che hai segnato',
+    capNote: function (reasons) {
+      var che = reasons.length === 2 ? 'le attenzioni e la pulizia sono scese' :
+        (reasons[0] === 'attenzioni' ? 'le attenzioni sono scese' : 'la pulizia è scesa');
+      return 'Punteggio bloccato sotto le fasce alte: ' + che + ' sotto la metà. È una regola del metodo: certe soglie non si comprano con il resto.';
+    },
+    shareText: function (score, band, name) {
+      if (name) return name + ': ' + score + '/100 al Ferro Index. ' + band + '.';
+      return 'Il mio hotel ha fatto ' + score + '/100 al Ferro Index: ' + band + '.';
+    },
+    pubOcchiello: 'Dagli un nome',
+    pubTitolo: 'Trasformalo in una recensione che pesa',
+    pubTesto: 'Aggiungi il nome dell\'hotel e due righe di motivazione: entrano nel link che condividi, e chi lo apre vede il verdetto completo. Non li salva nessuno: la recensione è tua, la pubblichi tu, dove vuoi.',
+    pubNome: 'Nome dell\'hotel (facoltativo)',
+    pubNota: 'La tua motivazione, due righe (facoltativa)',
+    notaLabel: 'La motivazione di chi ha misurato',
+    gate: {
+      occhiello: 'Riservato ai lettori',
+      titolo: 'Il test è un capitolo della newsletter.',
+      testo: 'Il Ferro Index nasce dalle lettere che Mattia scrive ogni settimana su lusso e ospitalità. Il test è riservato a chi le riceve: l\'iscrizione è gratuita, e basta quella.',
+      fatto: 'Fatto, sono iscritto: iniziamo',
+      gia: 'Sono già iscritto, vado al test',
+      micro: 'Gratuita, si annulla quando vuoi. Il verdetto resta comunque tuo: qui non si salva niente.'
+    },
+    reg: {
+      occhiello: 'Il Registro dei Santuari',
+      titolo: 'Questo verdetto può entrare nel Registro',
+      testo: 'Il Registro dei Santuari raccoglie, con nome e motivazione, solo gli hotel che superano quota 85: il lusso vero, verificato da chi l\'ha vissuto. Ogni candidatura passa da una verifica umana prima di essere pubblicata.',
+      hotel: 'Nome dell\'hotel (per esteso)',
+      email: 'La tua email di lettore',
+      motivazione: 'La motivazione: cosa rende questo posto un santuario',
+      invia: 'Candida questo verdetto al Registro',
+      nota: 'Nel Registro entrano solo verdetti argomentati e verificabili. I punteggi sotto quota 85 restano anonimi: il Registro nomina l\'eccellenza, non espone nessuno.',
+      solo: 'Solo la fascia Santuario (85+) può candidarsi al <a href="/santuari/">Registro dei Santuari</a>.'
+    },
+    emo: {
+      concordaAlto: 'I fatti e la pelle dicono la stessa cosa. Quando succede, l\'incanto è fatto bene.',
+      freddo: 'I fatti ci sono, il calore meno. La tecnica senza calore si sente.',
+      scenografia: 'Ti sei sentito coccolato, ma i fatti non reggono. Quando l\'emozione supera la sostanza, è scenografia.',
+      concordaBasso: 'Anche la pelle lo conferma: qui la cura non c\'era.'
+    },
+    ctaOcchiello: 'Il metodo, ogni settimana',
+    ctaTesto: 'Il Ferro Index è la parte misurabile di un mestiere: leggere gli alberghi da dentro. Il resto lo scrivo una lettera alla volta.',
+    ctaBottone: 'Iscriviti a mattiaferro.com',
+    ctaSecondaria: 'Preferisci che il prossimo albergo lo scelga io? <a href="https://travel.mattiaferro.com">travel.mattiaferro.com</a>'
+  }
+};
+</script>
+<script src="/assets/ferro.js?v=6"></script>
+</body>
+</html>

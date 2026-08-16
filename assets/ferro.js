@@ -291,6 +291,28 @@
     setURL(location.pathname + shareQuery(r));
   }
 
+  /* ---------- segni dei pilastri ----------
+     Disegni a tratto, uno per pilastro: servono a distinguere i sette blocchi
+     mentre si scorre, non a decorare. Stessa gabbia 24x24 e stesso spessore. */
+
+  var SEGNI = {
+    attenzioni: '<path d="M12 4.5a3.2 3.2 0 1 1 0 6.4 3.2 3.2 0 0 1 0-6.4Z"/><path d="M5 19.5c0-3.3 3.1-5.6 7-5.6s7 2.3 7 5.6"/><path d="M17.6 6.6c1.4.8 1.4 3 0 3.8"/>',
+    comfort:    '<path d="M3.5 17.5v-4.2a2 2 0 0 1 2-2h13a2 2 0 0 1 2 2v4.2"/><path d="M3.5 17.5h17"/><path d="M6.5 11.3V8.6a1.8 1.8 0 0 1 1.8-1.8h7.4a1.8 1.8 0 0 1 1.8 1.8v2.7"/>',
+    privacy:    '<path d="M12 3.8c2.6 1.6 4.6 2.2 6.8 2.3.2 5.9-1.9 10-6.8 12.1-4.9-2.1-7-6.2-6.8-12.1 2.2-.1 4.2-.7 6.8-2.3Z"/><path d="M9.6 11.6l1.7 1.7 3.3-3.4"/>',
+    cibo:       '<path d="M6.6 4v6.4a2 2 0 0 0 2 2h.2a2 2 0 0 0 2-2V4"/><path d="M8.7 12.4V20"/><path d="M16.6 4c-1.4 1-2.1 2.7-2.1 5s.7 3.2 2.1 3.4V20"/>',
+    pulizia:    '<path d="M12 3.6l1.9 1.9-1.9 1.9-1.9-1.9 1.9-1.9Z"/><path d="M8.4 12.5h7.2l1 7.9H7.4l1-7.9Z"/><path d="M12 7.4v5.1"/>',
+    design:     '<path d="M4.2 19.8L9 7.2a3.2 3.2 0 0 1 6 0l4.8 12.6"/><path d="M7.6 15.8h8.8"/>',
+    arte:       '<rect x="4.2" y="4.6" width="15.6" height="12.4" rx="1.4"/><path d="M6.8 17V4.6M12 20.2v-3.2"/><path d="M8.6 13.4l2.6-3.2 2 2.4 1.6-1.8 2.4 2.6"/>'
+  };
+
+  function segno(chiave) {
+    var d = SEGNI[chiave];
+    if (!d) return '';
+    return '<svg class="p-segno" viewBox="0 0 24 24" aria-hidden="true" fill="none" ' +
+      'stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round">' +
+      d + '</svg>';
+  }
+
   /* ---------- radar ---------- */
 
   function radarSVG(per) {
@@ -403,7 +425,7 @@
       var pct = Math.round(t.pct * 100);
       var d = el('div', 'pillar');
       d.innerHTML =
-        '<div class="p-row"><span class="p-name">' + p.name + '</span>' +
+        '<div class="p-row"><span class="p-name">' + segno(p.key) + p.name + '</span>' +
         '<span class="p-val">' + (na ? F.ui.na : Math.round(t.scaled) + ' / ' + p.w) + '</span></div>' +
         '<div class="p-bar"><div class="p-fill" style="width:' + Math.min(pct, 100) + '%"></div></div>' +
         '<p class="p-note">' + (na ? F.ui.naNote : (t.pct >= 0.75 ? p.high : t.pct >= 0.4 ? p.mid : p.low)) + '</p>';
@@ -412,13 +434,17 @@
     lettura.appendChild(ps);
     s.appendChild(lettura);
 
+    /* tutto ciò che segue è azione, non lettura: sta in un blocco solo, così la
+       griglia ha esattamente tre figli e non può generare righe vuote */
+    var azioni = el('div', 'res-azioni');
+
     if (res.flags.length) {
       var fl = el('div', 'res-flags');
       fl.appendChild(el('p', 'occhiello', F.ui.flagsTitle));
       var ul = el('ul');
       res.flags.forEach(function (fi) { ul.appendChild(el('li', null, F.flagEcho[fi])); });
       fl.appendChild(ul);
-      s.appendChild(fl);
+      azioni.appendChild(fl);
     }
 
     function currentURL() { return F.baseURL + '/' + shareQuery(rcode); }
@@ -462,7 +488,7 @@
       inNote.addEventListener('input', syncMeta);
       pub.appendChild(inName);
       pub.appendChild(inNote);
-      s.appendChild(pub);
+      azioni.appendChild(pub);
 
       /* Registro dei Santuari: si candida solo la fascia più alta */
       if (res.score >= 85) {
@@ -521,9 +547,9 @@
         form.appendChild(rSend);
         reg.appendChild(form);
         reg.appendChild(el('p', 'micro', F.ui.reg.nota));
-        s.appendChild(reg);
+        azioni.appendChild(reg);
       } else {
-        s.appendChild(el('p', 'reg-hint micro', F.ui.reg.solo));
+        azioni.appendChild(el('p', 'reg-hint micro', F.ui.reg.solo));
       }
     }
 
@@ -579,7 +605,7 @@
       redo.addEventListener('click', reset);
       act.appendChild(redo);
     }
-    s.appendChild(act);
+    azioni.appendChild(act);
 
     var cta = el('div', 'res-cta');
     cta.appendChild(el('p', 'occhiello', F.ui.ctaOcchiello));
@@ -590,7 +616,8 @@
     cta.appendChild(a);
     cta.appendChild(el('p', 'micro', F.ui.ctaSecondaria));
     cta.style.textAlign = 'left';
-    s.appendChild(cta);
+    azioni.appendChild(cta);
+    s.appendChild(azioni);
 
     app.appendChild(s);
     announce(F.ui.esito + ': ' + res.score + '/100, ' + res.band.label);
@@ -716,6 +743,45 @@
     if (!isNaN(idx) && idx >= 0 && idx < buttons.length) buttons[idx].click();
   });
 
+  /* ---------- entrata dei blocchi allo scorrimento ---------- */
+
+  function osserva(nodi) {
+    if (!('IntersectionObserver' in window) ||
+        matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      nodi.forEach(function (n) { n.classList.add('visto'); });
+      return;
+    }
+    var io = new IntersectionObserver(function (voci) {
+      voci.forEach(function (v) {
+        if (!v.isIntersecting) return;
+        var n = v.target;
+        var ritardo = parseInt(n.dataset.ritardo || '0', 10);
+        setTimeout(function () { n.classList.add('visto'); }, ritardo);
+        io.unobserve(n);
+      });
+    }, { rootMargin: '0px 0px -12% 0px', threshold: 0.08 });
+
+    nodi.forEach(function (n, i) {
+      n.classList.add('reveal');
+      /* i primi elementi di ogni gruppo entrano a scalare, poi il ritardo si azzera:
+         serve il ritmo, non l'attesa */
+      n.dataset.ritardo = String(Math.min(i, 3) * 70);
+      io.observe(n);
+    });
+  }
+
+  function animaSezioni() {
+    var nodi = [];
+    document.querySelectorAll('section.blocco').forEach(function (sez) {
+      var figli = sez.querySelectorAll(':scope > *');
+      if (figli.length) { figli.forEach(function (f) { nodi.push(f); }); }
+      else { nodi.push(sez); }
+    });
+    var piede = document.querySelector('footer .wrap');
+    if (piede) nodi.push(piede);
+    osserva(nodi);
+  }
+
   /* il back del telefono torna alla domanda precedente, non fuori dal sito */
   window.addEventListener('popstate', function () {
     if (state.i > 0) { showQuestion(state.i - 1, true); }
@@ -730,6 +796,8 @@
       startOwn();
     });
   });
+
+  animaSezioni();
 
   var params = new URLSearchParams(location.search);
   var shared = decode(params.get('r'));

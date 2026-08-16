@@ -163,12 +163,31 @@ a:hover { color: var(--brass); }
 
 /* ---------- quiz ---------- */
 
-#app { min-height: 60vh; padding: 26px 0 70px; }
+/* nessuna altezza minima: se il contenuto è corto la pagina deve essere corta,
+   altrimenti si aprono voragini sotto le domande e sui monitor alti */
+#app { padding: 26px 0 64px; }
+#app:empty { padding: 0; }
 
-.screen { animation: enter 0.24s ease both; }
+.screen { animation: enter 0.28s cubic-bezier(0.22, 0.61, 0.36, 1) both; }
 @keyframes enter {
-  from { opacity: 0; transform: translateY(8px); }
+  from { opacity: 0; transform: translateY(10px); }
   to { opacity: 1; transform: none; }
+}
+
+/* i blocchi entrano mentre si scorre, con un ritardo crescente: dà ritmo
+   al passaggio invece di far comparire tutto insieme come una stampa */
+.reveal {
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity 0.5s cubic-bezier(0.22, 0.61, 0.36, 1),
+              transform 0.5s cubic-bezier(0.22, 0.61, 0.36, 1);
+  will-change: opacity, transform;
+}
+.reveal.visto { opacity: 1; transform: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal { opacity: 1; transform: none; transition: none; }
+  .screen { animation: none; }
 }
 
 .q-count {
@@ -282,7 +301,20 @@ a:hover { color: var(--brass); }
   display: flex; justify-content: space-between; align-items: baseline;
   font-family: var(--sans); font-size: 13px;
 }
-.pillar .p-name { letter-spacing: 0.08em; text-transform: uppercase; font-weight: 600; }
+.pillar .p-name {
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+}
+.p-segno {
+  width: 17px; height: 17px;
+  flex: none;
+  color: var(--brass);
+  opacity: 0.9;
+}
 .pillar .p-val { color: var(--muted); }
 .pillar .p-bar { margin-top: 7px; height: 2px; background: var(--line); border-radius: 1px; }
 .pillar .p-fill { height: 2px; background: var(--brass); border-radius: 1px; }
@@ -478,28 +510,19 @@ body.in-quiz .lang { display: none; }
   .hero h1 { font-size: clamp(40px, 4.2vw, 52px); }
   .hero .btn { max-width: 340px; }
 
+  /* Tre figli soli: verdetto e azioni a sinistra, lettura a destra.
+     Le righe sono due e dichiarate, quindi la griglia non può inventarne di vuote. */
   .res-screen {
     display: grid;
     grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    grid-template-rows: auto auto;
     column-gap: 72px;
     align-items: start;
   }
+  .res-screen > .res-head { grid-column: 1; grid-row: 1; }
+  .res-screen > .res-azioni { grid-column: 1; grid-row: 2; }
+  .res-screen > .res-lettura { grid-column: 2; grid-row: 1 / span 2; margin-top: 0; }
 
-  /* colonna sinistra: il verdetto e le azioni */
-  .res-screen > .res-head,
-  .res-screen > .res-flags,
-  .res-screen > .pub-block,
-  .res-screen > .reg-block,
-  .res-screen > .reg-hint,
-  .res-screen > .res-actions,
-  .res-screen > .res-cta { grid-column: 1; }
-
-  /* colonna destra: il grafico e il dettaglio, che è la parte da leggere */
-  .res-screen > .res-lettura {
-    grid-column: 2;
-    grid-row: 1 / span 20;
-    margin-top: 0;
-  }
   .res-lettura .radar-box { margin-top: 0; max-width: 420px; }
   .res-lettura .pillars { margin-top: 30px; }
 

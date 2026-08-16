@@ -19,6 +19,15 @@
   --brass-soft: rgba(29, 78, 107, 0.09);
   --serif: Georgia, 'Times New Roman', Times, serif;
   --sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+
+  /* Le tre misure della pagina, in pixel e non in "em".
+     "em" si calcola sul corpo di ogni elemento, quindi la stessa regola dava
+     722px a un paragrafo, 726 a un titolo, 805 a una tabella e 532 a una
+     didascalia: undici larghezze diverse che si leggono come disordine.
+     Qui sono tre, scelte, e ogni blocco ne usa una. */
+  --lettura: 720px;   /* il testo e i titoli che lo introducono */
+  --stretta: 560px;   /* testi piccoli: didascalie, note, occhielli */
+  --larga: 860px;     /* tabelle e figure, che hanno bisogno di respiro */
 }
 
 /* Un tema solo, uguale su ogni schermo.
@@ -709,10 +718,10 @@ section.blocco h2 {
   font-size: clamp(27px, 6vw, 33px);
   line-height: 1.2;
   margin-top: 6px;
-  max-width: 18em;
+  max-width: var(--lettura);
 }
 
-section.blocco p { margin-top: 16px; max-width: 34em; }
+section.blocco p { margin-top: 16px; max-width: var(--lettura); }
 section.blocco p + h3 { margin-top: 30px; }
 section.blocco h3 { font-size: 21.5px; margin-top: 28px; }
 section.blocco h3 + p { margin-top: 8px; }
@@ -941,19 +950,38 @@ body.in-quiz .lang { display: none; }
   .res-actions { max-width: 340px; }
   .res-actions .btn-quiet { justify-self: start !important; }
 
-  /* le sezioni di testo non devono diventare righe lunghissime */
+  /* Tutto il contenuto si allinea a una delle tre misure. Il bordo sinistro
+     è già comune: quello che mancava era il destro. */
   section.blocco p,
   section.blocco h2,
-  ul.fonti,
-  .inbreve { max-width: 38em; }
-  table.pesi { max-width: 46em; }
+  section.blocco h3,
+  section.blocco ul,
+  section.blocco ol,
+  section.blocco blockquote,
+  .inbreve { max-width: var(--lettura); }
 
-  /* Il titolo non deve correre più largo del testo che introduce: "em" si
-     misura sul corpo di ciascun elemento, quindi 38em su un h2 da 33px valgono
-     il doppio che su un paragrafo da 19. */
-  section.blocco h2 { max-width: 22em; }
+  section.blocco p.micro,
+  section.blocco p.didascalia { max-width: var(--stretta); }
 
-  /* durante il test la domanda resta in colonna singola, ma più in alto */
+  /* Il ritratto resta fuori: ha un posto suo, a lato del testo, e non c'entra
+     con la misura larga delle tabelle. */
+  table.pesi,
+  .tabella-scorre { max-width: var(--larga); }
+
+  /* Durante il test la pagina è solo la domanda, quindi la colonna si centra:
+     su uno schermo largo non c'è nient'altro rispetto a cui allinearsi, e
+     tenerla a sinistra lascia mezzo schermo vuoto senza motivo.
+     Una misura sola per tutto quello che sta dentro: prima occhiello, titolo,
+     nota, riquadro e pulsanti avevano cinque larghezze diverse, perché
+     nascevano da "em" su corpi di testo diversi. */
   body.in-quiz .wrap { max-width: 720px; }
-  #app { padding-top: 14px; }
+  #app { padding-top: 52px; }
+
+  #app .screen:not(.res-screen) { max-width: 540px; margin-left: auto; margin-right: auto; }
+  #app .screen:not(.res-screen) .q-text,
+  #app .screen:not(.res-screen) .q-note,
+  #app .screen:not(.res-screen) .gate-box,
+  #app .screen:not(.res-screen) .gate-esito,
+  #app .screen:not(.res-screen) .btn,
+  #app .screen:not(.res-screen) .micro { max-width: none; }
 }

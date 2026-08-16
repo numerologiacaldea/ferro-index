@@ -1082,6 +1082,21 @@
       return document.querySelector(a.getAttribute('href'));
     });
 
+    /* Il menu porta alla sezione senza lasciare l'ancora nell'indirizzo.
+       Se la lascia, quell'indirizzo finisce nella cronologia e nei preferiti,
+       e riaprendo il sito non si arriva più all'inizio ma a metà pagina.
+       Chi arriva da fuori con un'ancora la vede comunque rispettata: quello
+       lo decide l'avvio, qui si tratta solo dei tocchi dentro la pagina. */
+    voci.forEach(function (a, i) {
+      a.addEventListener('click', function (ev) {
+        var meta = mete[i];
+        if (!meta) return;
+        ev.preventDefault();
+        meta.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        try { history.replaceState(null, '', location.pathname + location.search); } catch (e) {}
+      });
+    });
+
     /* la comparsa la gestisce il CSS: qui resta solo la voce attiva */
     if (!('IntersectionObserver' in window)) return;
     var dentro = [];
@@ -1102,40 +1117,88 @@
   var params = new URLSearchParams(location.search);
   var shared = decode(params.get('r'));
 
-  /* Il sito si apre dall'inizio. Il browser, lasciato a sé, rimette la pagina
-     dove l'avevi lasciata: riapri la scheda dal telefono e ti ritrovi a metà,
-     senza titolo e senza capo. Si tengono solo i due casi in cui la posizione
-     è voluta davvero: un indirizzo con l'ancora e un link a un verdetto.
+  /* ---------- la pagina si apre sempre dall'inizio ----------
 
-     Non basta dirlo una volta. Safari rimette la pagina a posto DOPO il
-     caricamento, quindi un solo comando all'avvio viene scavalcato subito
-     dopo; e tornando indietro la pagina può essere ripescata dalla memoria
-     senza rieseguire niente, caso che si intercetta solo con "pageshow".
-     Quindi si insiste ai quattro momenti in cui il ripristino può colpire. */
+     Due cose la spostavano, e servivano due risposte diverse.
+
+     La prima è l'ancora. Toccando una voce del menu l'indirizzo diventa
+     ".../#metodo" e ci resta: al ricaricamento il browser fa il suo dovere e
+     salta là. Un'ancora ha senso solo quando si arriva da fuori, cioè a una
+     navigazione vera. Se è un ricaricamento o un ritorno indietro l'ancora è
+     un residuo, quindi si ignora e si toglie dall'indirizzo.
+
+     La seconda è Safari, che rimette la pagina dove era anche dopo che il
+     caricamento è finito, e a volte dopo il primo fotogramma. Un comando solo
+     viene scavalcato. Quindi per un secondo si tiene la pagina in cima,
+     smettendo subito appena il visitatore tocca lo schermo o la rotella: da
+     quel momento la posizione è sua e non si tocca più. */
+
   if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
 
+  function tipoDiArrivo() {
+    try {
+      var e = performance.getEntriesByType('navigation')[0];
+      if (e && e.type) return e.type;
+      /* browser vecchi: 0 navigazione, 1 ricaricamento, 2 avanti e indietro */
+      var n = performance.navigation;
+      if (n) return ['navigate', 'reload', 'back_forward'][n.type] || 'navigate';
+    } catch (e) {}
+    return 'navigate';
+  }
+
+  var arrivo = tipoDiArrivo();
+  var ancoraVoluta = !!location.hash && arrivo === 'navigate';
+
+  /* un'ancora rimasta da prima non deve sopravvivere al ricaricamento */
+  if (location.hash && !ancoraVoluta) {
+    try { history.replaceState(null, '', location.pathname + location.search); } catch (e) {}
+  }
+
   function riportaInCima() {
-    if (location.hash || shared) return;
+    if (ancoraVoluta || shared) return;
     if (document.body.classList.contains('in-quiz')) return;
+    if (window.scrollY === 0 && window.pageYOffset === 0) return;
     /* lo scorrimento morbido del CSS animerebbe anche questo, e si vedrebbe
        la pagina risalire da sola: si spegne per il tempo di un comando */
     var r = document.documentElement;
     var prima = r.style.scrollBehavior;
     r.style.scrollBehavior = 'auto';
     window.scrollTo(0, 0);
+    if (document.body) document.body.scrollTop = 0;
     r.style.scrollBehavior = prima;
+  }
+
+  /* Il primo gesto del visitatore chiude la faccenda: da lì la posizione è sua
+     e non si tocca più. Si ascolta da subito, non da quando la pagina ha finito
+     di caricare: su un telefono si comincia a scorrere prima, e trovarsi
+     ributtati in cima mentre si scorre è peggio del difetto che sto curando. */
+  var comandaLui = false;
+  ['touchstart', 'wheel', 'keydown', 'pointerdown', 'mousedown'].forEach(function (e) {
+    window.addEventListener(e, function () { comandaLui = true; }, { passive: true, once: true });
+  });
+
+  function tieniInCima(quantoDura) {
+    if (ancoraVoluta || shared || comandaLui) return;
+    var scade = quantoDura;
+    var battito = setInterval(function () {
+      scade -= 60;
+      if (comandaLui || scade <= 0) { clearInterval(battito); return; }
+      riportaInCima();
+    }, 60);
   }
 
   riportaInCima();
   document.addEventListener('DOMContentLoaded', riportaInCima);
   window.addEventListener('load', function () {
     riportaInCima();
-    requestAnimationFrame(riportaInCima);
+    /* Safari può rimettere a posto dopo il caricamento: si insiste per un
+       secondo, e si smette al primo gesto del visitatore */
+    tieniInCima(700);
   });
   window.addEventListener('pageshow', function (ev) {
     /* persisted vuol dire che la pagina arriva dalla memoria del browser:
        niente è stato rieseguito, la posizione è quella di prima */
-    if (ev.persisted) riportaInCima();
+    if (ev.persisted) { riportaInCima(); tieniInCima(600); }
   });
 
   radarVivo();

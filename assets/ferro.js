@@ -727,9 +727,21 @@
     s.appendChild(el('h2', 'q-text', F.ui.gate.titolo));
     s.appendChild(el('p', 'q-note', F.ui.gate.testo));
 
-    /* Modulo nostro: sul telefono i riquadri di terzi litigano con la tastiera,
-       e i colori di Substack non sono i nostri. L'iscrizione parte davvero verso
-       Substack, che manda la sua mail di conferma e quella di benvenuto. */
+    /* Il modulo ufficiale di Substack, che mostra la conferma vera dentro di sé.
+       Sotto resta il nostro, perché su alcuni telefoni la tastiera non entra nei
+       riquadri di altri domini e senza alternativa la persona resterebbe bloccata. */
+    var box = el('div', 'gate-box');
+    var ifr = document.createElement('iframe');
+    ifr.src = 'https://www.mattiaferro.com/embed';
+    ifr.title = F.ui.gate.titoloRiquadro;
+    ifr.setAttribute('frameborder', '0');
+    ifr.setAttribute('scrolling', 'no');
+    box.appendChild(ifr);
+    s.appendChild(box);
+
+    var oppure = el('p', 'gate-oppure micro', F.ui.gate.oppure);
+    s.appendChild(oppure);
+
     if (!document.getElementById('ferro-sink')) {
       var sink = document.createElement('iframe');
       sink.name = 'ferro-sink';
@@ -889,6 +901,69 @@
     });
   });
 
+  /* ---------- lo strumento in funzione, nella prima schermata ----------
+     Il radar si disegna da solo e i sette vertici si accendono uno alla volta.
+     Non è decorazione: è quello che il visitatore otterrà, mostrato invece che
+     promesso, e dice in due secondi cosa fa questo sito. */
+
+  function radarVivo() {
+    var casa = document.getElementById('radar-vivo');
+    if (!casa) return;
+    var n = F.pillars.length, cx = 130, cy = 130, R = 96;
+    var pt = function (i, r) {
+      var a = -Math.PI / 2 + (i * 2 * Math.PI) / n;
+      return [cx + r * Math.cos(a), cy + r * Math.sin(a)];
+    };
+    var anello = function (f) {
+      var d = '';
+      for (var k = 0; k < n; k++) { var p = pt(k, R * f); d += (k ? 'L' : 'M') + p[0].toFixed(1) + ' ' + p[1].toFixed(1); }
+      return '<path d="' + d + 'Z" fill="none" stroke="currentColor" stroke-opacity="0.14" stroke-width="1"/>';
+    };
+    /* un profilo credibile, non perfetto: un albergo forte sulle persone */
+    var valori = [0.97, 0.80, 0.92, 0.74, 0.88, 0.55, 0.42];
+    var d = '';
+    valori.forEach(function (v, i) {
+      var q = pt(i, R * v);
+      d += (i ? 'L' : 'M') + q[0].toFixed(1) + ' ' + q[1].toFixed(1);
+    });
+    var raggi = '';
+    for (var k = 0; k < n; k++) {
+      var o = pt(k, R);
+      raggi += '<line x1="' + cx + '" y1="' + cy + '" x2="' + o[0].toFixed(1) + '" y2="' + o[1].toFixed(1) +
+        '" stroke="currentColor" stroke-opacity="0.1" stroke-width="1"/>';
+    }
+    var punti = '';
+    valori.forEach(function (v, i) {
+      var q = pt(i, R * v);
+      punti += '<circle class="v" style="--i:' + i + '" cx="' + q[0].toFixed(1) + '" cy="' + q[1].toFixed(1) +
+        '" r="3.4" fill="var(--brass)"/>';
+    });
+
+    casa.innerHTML = '<svg viewBox="0 0 260 260" aria-hidden="true">' +
+      anello(1) + anello(0.66) + anello(0.33) + raggi +
+      '<path class="traccia" d="' + d + 'Z" fill="var(--brass)" fill-opacity="0" ' +
+      'stroke="var(--brass)" stroke-width="1.8" stroke-linejoin="round"/>' + punti + '</svg>';
+
+    var tracc = casa.querySelector('.traccia');
+    if (!tracc.getTotalLength || matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      tracc.style.fillOpacity = '0.16';
+      casa.classList.add('acceso');
+      return;
+    }
+    var L = tracc.getTotalLength();
+    tracc.style.strokeDasharray = L;
+    tracc.style.strokeDashoffset = L;
+    quandoVisibile(function () {
+      setTimeout(function () {
+        tracc.style.transition = 'stroke-dashoffset 2.2s cubic-bezier(0.33,1,0.68,1), fill-opacity 1.2s ease 1.4s';
+        tracc.style.strokeDashoffset = '0';
+        tracc.style.fillOpacity = '0.16';
+        casa.classList.add('acceso');
+      }, 420);
+    });
+  }
+
+  radarVivo();
   animaSezioni();
 
   var params = new URLSearchParams(location.search);

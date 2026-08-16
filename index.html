@@ -24,7 +24,7 @@
 <link rel="icon" href="/assets/favicon-32.png" sizes="32x32" type="image/png">
 <link rel="icon" href="/assets/favicon-16.png" sizes="16x16" type="image/png">
 <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
-<link rel="stylesheet" href="/assets/ferro.css?v=21">
+<link rel="stylesheet" href="/assets/ferro.css?v=24">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -99,12 +99,17 @@
 <div class="wrap">
 
   <header class="hero" id="hero">
+    <div class="hero-testo">
     <p class="occhiello">Ferro Index · Metodo Mattia Ferro</p>
     <hr class="filetto">
     <h1>Molti hotel di lusso non sono di lusso. Sono soltanto costosi.</h1>
     <p class="sotto">Il tuo lo scopri con ventitré domande su fatti che hai visto con i tuoi occhi. Nessuna recensione, nessuna stella dichiarata. Un punteggio da 0 a 100.</p>
     <button class="btn" data-start type="button">Misura il tuo hotel</button>
     <p class="micro">Tre minuti. Gratuito. Riservato ai lettori della newsletter.</p>
+  </div>
+  <div class="hero-figura">
+    <div id="radar-vivo" class="radar-vivo"></div>
+    <p class="figura-dida">Sette pilastri, un punteggio. Le attenzioni sugli ospiti ne valgono 40 su 100.</p>
   </header>
 
   <main id="app"></main>
@@ -458,6 +463,8 @@ window.FERRO = {
       occhiello: 'Riservato ai lettori',
       titolo: 'Il test è un capitolo della newsletter.',
       testo: 'Il Ferro Index nasce dalle lettere che Mattia scrive ogni settimana su lusso e ospitalità. Il test è riservato a chi le riceve: l\'iscrizione è gratuita, e basta quella.',
+      titoloRiquadro: 'Iscrizione alla newsletter di Mattia Ferro',
+      oppure: 'Se il modulo qui sopra non risponde sul telefono, l\'email la puoi lasciare qui sotto.',
       attesa: 'Ti arriva la conferma da Substack, con la mail di benvenuto.',
       inviato: 'Fatto. Controlla la posta: Substack ti manda la conferma.',
       apro: 'Apro il test...',
@@ -489,6 +496,6 @@ window.FERRO = {
   }
 };
 </script>
-<script src="/assets/ferro.js?v=21"></script>
+<script src="/assets/ferro.js?v=24"></script>
 </body>
 </html>

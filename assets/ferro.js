@@ -636,12 +636,18 @@
      in secondo piano il browser congela tutto e il verdetto resterebbe a metà */
   function quandoVisibile(fn) {
     if (document.visibilityState === 'visible') { fn(); return; }
-    var h = function () {
-      if (document.visibilityState !== 'visible') return;
+    var fatto = false;
+    var vai = function () {
+      if (fatto) return;
+      fatto = true;
       document.removeEventListener('visibilitychange', h);
       fn();
     };
+    var h = function () { if (document.visibilityState === 'visible') vai(); };
     document.addEventListener('visibilitychange', h);
+    /* se il segnale di visibilità non arriva mai, si parte lo stesso: meglio
+       un'animazione che il visitatore si è persa che una figura mai disegnata */
+    setTimeout(vai, 4000);
   }
 
   function rivela(scope, res, numero, radarBox) {
@@ -783,48 +789,74 @@
   /* ---------- entrata dei blocchi allo scorrimento ---------- */
 
   function osserva(nodi) {
-    /* toglie proprio la classe invece di aggiungere quella di arrivo: se una
-       transizione resta congelata, per esempio a scheda in secondo piano,
-       l'elemento torna comunque al suo stato naturale e resta leggibile */
-    function mostraTutti() {
-      nodi.forEach(function (n) { n.classList.remove('reveal'); n.classList.add('visto'); });
-    }
+    /* Il movimento serve il contenuto, non viceversa. Quindi due regole:
+       si nasconde solo ciò che è lontano dallo schermo, e la comparsa la guida
+       un battito periodico invece dell'osservatore. L'osservatore smette di
+       lavorare quando la scheda va in secondo piano e lascia il testo bianco
+       su bianco; un intervallo continua a girare e rimedia da solo. */
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
-    if (!('IntersectionObserver' in window) ||
-        matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      mostraTutti();
-      return;
-    }
-
-    var io = new IntersectionObserver(function (voci) {
-      voci.forEach(function (v) {
-        if (!v.isIntersecting) return;
-        var n = v.target;
-        var ritardo = parseInt(n.dataset.ritardo || '0', 10);
-        setTimeout(function () { n.classList.add('visto'); }, ritardo);
-        io.unobserve(n);
-      });
-    }, { rootMargin: '0px 0px -12% 0px', threshold: 0.08 });
+    var soglia = function () { return window.innerHeight * 0.88; };
+    var attesa = [];
 
     nodi.forEach(function (n, i) {
-      n.classList.add('reveal');
-      /* i primi elementi di ogni gruppo entrano a scalare, poi il ritardo si azzera:
+      /* chi è già in pagina non si nasconde: non c'è nessuna entrata da fare,
+         e nasconderlo significherebbe farlo sparire sotto gli occhi */
+      if (n.getBoundingClientRect().top < soglia()) return;
+      n.classList.add('reveal', 'armato');
+      /* i primi di ogni gruppo entrano a scalare, poi il ritardo si azzera:
          serve il ritmo, non l'attesa */
       n.dataset.ritardo = String(Math.min(i, 3) * 70);
-
-      /* chi è già nel viewport o l'ha superato non deve aspettare l'osservatore:
-         succede quando si arriva con un'ancora o si ricarica a metà pagina */
-      var r = n.getBoundingClientRect();
-      if (r.top < window.innerHeight * 1.05) {
-        n.classList.add('visto');
-        return;
-      }
-      io.observe(n);
+      attesa.push(n);
     });
 
-    /* rete di sicurezza: nessun contenuto può restare invisibile,
-       qualunque cosa succeda all'osservatore */
-    setTimeout(mostraTutti, 2500);
+    if (!attesa.length) return;
+
+    function controlla() {
+      /* in fondo alla pagina non c'è più scorrimento che possa portare gli
+         ultimi blocchi oltre la soglia: lì si rivela quel che resta */
+      var fine = window.innerHeight + window.scrollY >=
+                 document.documentElement.scrollHeight - 4;
+      var lim = fine ? Infinity : soglia();
+      for (var k = attesa.length - 1; k >= 0; k--) {
+        var n = attesa[k];
+        if (n.getBoundingClientRect().top >= lim) continue;
+        attesa.splice(k, 1);
+        (function (el) {
+          setTimeout(function () {
+            el.classList.add('visto');
+            /* a entrata finita si toglie proprio la classe che nascondeva:
+               l'elemento torna al suo stato naturale e non dipende più da una
+               transizione, che una scheda in secondo piano lascia a metà */
+            setTimeout(function () { el.classList.remove('armato'); }, 1400);
+          }, parseInt(el.dataset.ritardo || '0', 10));
+        })(n);
+      }
+      if (!attesa.length) {
+        window.removeEventListener('scroll', chiamata);
+        window.removeEventListener('resize', chiamata);
+        clearInterval(battito);
+      }
+    }
+
+    /* lo scorrimento chiama a ogni fotogramma, non a ogni evento: l'entrata
+       segue il dito invece di arrivare a scatti */
+    var inCoda = false;
+    function chiamata() {
+      if (inCoda) return;
+      inCoda = true;
+      requestAnimationFrame(function () { inCoda = false; controlla(); });
+    }
+
+    var battito = setInterval(controlla, 200);
+    window.addEventListener('scroll', chiamata, { passive: true });
+    window.addEventListener('resize', chiamata);
+    /* tornando sulla scheda si recupera quello che è rimasto indietro mentre
+       il browser dormiva */
+    document.addEventListener('visibilitychange', function () {
+      if (!document.hidden) controlla();
+    });
+    controlla();
   }
 
   /* i titoli non compaiono: salgono parola per parola, come se venissero scritti.
@@ -833,6 +865,9 @@
   function preparaTitoli() {
     if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     document.querySelectorAll('section.blocco h2').forEach(function (h) {
+      /* qui le parole si separano soltanto. A nasconderle è "armato", che lo
+         mette osserva() e solo ai titoli ancora lontani: un titolo già in
+         pagina resta leggibile invece di aspettare un'entrata che non arriva */
       if (h.dataset.pronto) return;
       h.dataset.pronto = '1';
       var parole = h.textContent.split(/\s+/);

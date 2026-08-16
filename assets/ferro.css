@@ -356,38 +356,51 @@ body.in-quiz .menu { display: none; }
   to { opacity: 1; transform: none; }
 }
 
-/* i blocchi entrano mentre si scorre, con un ritardo crescente: dà ritmo
-   al passaggio invece di far comparire tutto insieme come una stampa */
-.reveal {
+/* I blocchi entrano mentre si scorre. Regola di sicurezza: il contenuto non
+   parte mai nascosto. Si nasconde solo dopo che il codice ha verificato di
+   poterlo far riapparire, aggiungendo la classe "armato". Se qualcosa non
+   funziona, si vede tutto: un testo invisibile è un danno, un fade mancato no. */
+/* La transizione sta sullo stato di arrivo, mai su quello di partenza: così
+   nascondere è istantaneo e solo l'entrata si vede. Al contrario il blocco
+   sfumerebbe via sotto gli occhi prima di rientrare. */
+.reveal.armato {
   opacity: 0;
   transform: translateY(18px);
-  transition: opacity 0.5s cubic-bezier(0.22, 0.61, 0.36, 1),
-              transform 0.5s cubic-bezier(0.22, 0.61, 0.36, 1);
   will-change: opacity, transform;
 }
-.reveal.visto { opacity: 1; transform: none; }
+.reveal.armato.visto {
+  opacity: 1;
+  transform: none;
+  transition: opacity 0.55s cubic-bezier(0.22, 0.61, 0.36, 1),
+              transform 0.55s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
 
 /* i titoli salgono parola per parola: ogni parola ha una finestra che la copre
    finché non è il suo turno */
-section.blocco h2 .parola {
-  display: inline-block;
+section.blocco h2 .parola { display: inline-block; }
+section.blocco h2.armato .parola {
   overflow: hidden;
   vertical-align: bottom;
+  /* la finestra ritaglia la salita, non le lettere: il margine negativo
+     restituisce lo spazio alle code di g, p, q senza spostare la riga */
+  padding-bottom: 0.14em;
+  margin-bottom: -0.14em;
 }
-section.blocco h2 .parola > span {
+section.blocco h2.armato .parola > span {
   display: inline-block;
   transform: translateY(105%);
+}
+section.blocco h2.armato.visto .parola > span {
+  transform: none;
   transition: transform 0.62s cubic-bezier(0.16, 1, 0.3, 1);
   transition-delay: calc(var(--w) * 0.055s);
 }
-section.blocco h2.reveal.visto .parola > span,
-section.blocco h2.visto .parola > span { transform: none; }
 
-/* il titolo non deve sfumare insieme alle parole: si occupa solo del movimento */
-section.blocco h2.reveal { opacity: 1; transform: none; }
+/* il titolo non sfuma insieme alle parole: si occupa solo del movimento */
+section.blocco h2.reveal.armato { opacity: 1; transform: none; }
 
 @media (prefers-reduced-motion: reduce) {
-  .reveal { opacity: 1; transform: none; transition: none; }
+  .reveal, .reveal.armato { opacity: 1; transform: none; transition: none; }
   .screen { animation: none; }
 }
 
@@ -585,9 +598,14 @@ section.blocco h2.reveal { opacity: 1; transform: none; }
 .gate-box iframe {
   display: block;
   width: 100%;
-  height: 200px;
+  height: 240px;
   border: 0;
   background: transparent;
+}
+/* su schermo stretto il modulo di Substack impila campo e pulsante, e la
+   conferma dell'iscrizione arriva sotto: senza altezza in più resta tagliata */
+@media (max-width: 560px) {
+  .gate-box iframe { height: 320px; }
 }
 .gate-oppure { margin-top: 16px; }
 
@@ -642,7 +660,10 @@ section.blocco { padding: 58px 0; border-top: 1px solid var(--line); }
    chi cita) vanno in negativo. I contrasti sono verificati uno per uno. */
 
 section.blocco { position: relative; }
-section.blocco > .wrap { position: relative; z-index: 1; }
+/* La fascia di fondo è un ::before assoluto, quindi si dipinge sopra il
+   contenuto in flusso: ogni figlio va sollevato, o la sezione resta una
+   banda di colore piatto con il testo sepolto sotto. */
+section.blocco > * { position: relative; z-index: 1; }
 
 section.blocco::before {
   content: '';

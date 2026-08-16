@@ -37,12 +37,12 @@ body {
   background: var(--paper);
   color: var(--ink);
   font-family: var(--serif);
-  font-size: 18px;
-  line-height: 1.55;
+  font-size: 19px;
+  line-height: 1.62;
   -webkit-font-smoothing: antialiased;
 }
 
-.wrap { max-width: 660px; margin: 0 auto; padding: 0 22px; }
+.wrap { max-width: 680px; margin: 0 auto; padding: 0 22px; }
 
 a { color: inherit; text-decoration-color: var(--brass); text-underline-offset: 3px; }
 a:hover { color: var(--brass); }
@@ -76,7 +76,8 @@ a:hover { color: var(--brass); }
 
 .micro {
   font-family: var(--sans);
-  font-size: 13px;
+  font-size: 14px;
+  line-height: 1.5;
   color: var(--muted);
 }
 
@@ -119,8 +120,8 @@ a:hover { color: var(--brass); }
 }
 
 .hero h1 {
-  font-size: clamp(30px, 6.4vw, 44px);
-  line-height: 1.13;
+  font-size: clamp(34px, 8.2vw, 46px);
+  line-height: 1.1;
   font-weight: 700;
   letter-spacing: -0.005em;
   max-width: 15em;
@@ -218,8 +219,8 @@ a:hover { color: var(--brass); }
 }
 
 .hero .sotto {
-  margin-top: 20px;
-  font-size: clamp(18px, 3.4vw, 21px);
+  margin-top: 22px;
+  font-size: clamp(19px, 4.4vw, 22px);
   color: var(--muted);
   max-width: 27em;
 }
@@ -285,6 +286,25 @@ a:hover { color: var(--brass); }
 }
 .reveal.visto { opacity: 1; transform: none; }
 
+/* i titoli salgono parola per parola: ogni parola ha una finestra che la copre
+   finché non è il suo turno */
+section.blocco h2 .parola {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: bottom;
+}
+section.blocco h2 .parola > span {
+  display: inline-block;
+  transform: translateY(105%);
+  transition: transform 0.62s cubic-bezier(0.16, 1, 0.3, 1);
+  transition-delay: calc(var(--w) * 0.055s);
+}
+section.blocco h2.reveal.visto .parola > span,
+section.blocco h2.visto .parola > span { transform: none; }
+
+/* il titolo non deve sfumare insieme alle parole: si occupa solo del movimento */
+section.blocco h2.reveal { opacity: 1; transform: none; }
+
 @media (prefers-reduced-motion: reduce) {
   .reveal { opacity: 1; transform: none; transition: none; }
   .screen { animation: none; }
@@ -299,13 +319,13 @@ a:hover { color: var(--brass); }
 }
 
 .q-text {
-  font-size: clamp(23px, 4.6vw, 29px);
-  line-height: 1.22;
+  font-size: clamp(26px, 6.2vw, 31px);
+  line-height: 1.2;
   font-weight: 700;
   max-width: 18em;
 }
 
-.q-note { margin-top: 12px; font-size: 16px; color: var(--muted); max-width: 30em; }
+.q-note { margin-top: 13px; font-size: 17px; line-height: 1.5; color: var(--muted); max-width: 30em; }
 
 .answers { margin-top: 30px; display: grid; gap: 10px; }
 
@@ -316,8 +336,8 @@ a:hover { color: var(--brass); }
   background: var(--card);
   padding: 15px 46px 15px 18px;
   font-family: var(--serif);
-  font-size: 17.5px;
-  line-height: 1.35;
+  font-size: 18.5px;
+  line-height: 1.38;
   text-align: left;
   color: var(--ink);
   cursor: pointer;
@@ -536,7 +556,7 @@ iframe.sink {
 section.blocco { padding: 58px 0; border-top: 1px solid var(--line); }
 
 section.blocco h2 {
-  font-size: clamp(24px, 4.6vw, 30px);
+  font-size: clamp(27px, 6vw, 33px);
   line-height: 1.2;
   margin-top: 6px;
   max-width: 18em;
@@ -544,7 +564,7 @@ section.blocco h2 {
 
 section.blocco p { margin-top: 16px; max-width: 34em; }
 section.blocco p + h3 { margin-top: 30px; }
-section.blocco h3 { font-size: 20px; margin-top: 26px; }
+section.blocco h3 { font-size: 21.5px; margin-top: 28px; }
 section.blocco h3 + p { margin-top: 8px; }
 
 .inbreve {
@@ -560,7 +580,7 @@ table.pesi {
   margin-top: 22px;
   width: 100%;
   border-collapse: collapse;
-  font-size: 16.5px;
+  font-size: 17.5px;
 }
 table.pesi th {
   font-family: var(--sans);
@@ -576,14 +596,17 @@ table.pesi td { border-top: 1px solid var(--line); padding: 10px 12px 10px 0; ve
 table.pesi td.num { font-weight: 700; color: var(--brass); white-space: nowrap; }
 
 figure.ritratto {
-  margin-top: 26px;
-  max-width: 260px;
+  margin-top: 30px;
+  max-width: none;
 }
 figure.ritratto img {
   display: block;
   width: 100%;
   height: auto;
-  border-radius: 2px;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  object-position: center 22%;
+  border-radius: 3px;
 }
 figure.ritratto figcaption {
   margin-top: 10px;
@@ -633,7 +656,7 @@ table.pesi.domande td:nth-child(2) {
 }
 
 ul.fonti { margin-top: 16px; list-style: none; }
-ul.fonti li { border-top: 1px solid var(--line); padding: 12px 0; font-size: 16.5px; }
+ul.fonti li { border-top: 1px solid var(--line); padding: 14px 0; font-size: 17.5px; }
 ul.fonti li:first-child { border-top: 0; }
 
 /* ---------- footer ---------- */
@@ -677,7 +700,7 @@ body.in-quiz footer,
 body.in-quiz .lang { display: none; }
 
 @media (max-width: 420px) {
-  body { font-size: 17px; }
+  body { font-size: 18px; }
   .hero { padding-top: 80px; }
 }
 

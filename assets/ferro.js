@@ -874,7 +874,31 @@
     setTimeout(mostraTutti, 2500);
   }
 
+  /* i titoli non compaiono: salgono parola per parola, come se venissero scritti.
+     È l'unico punto in cui vale la pena spendere movimento, perché è dove
+     l'occhio si ferma quando smette di scorrere. */
+  function preparaTitoli() {
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    document.querySelectorAll('section.blocco h2').forEach(function (h) {
+      if (h.dataset.pronto) return;
+      h.dataset.pronto = '1';
+      var parole = h.textContent.split(/\s+/);
+      h.textContent = '';
+      parole.forEach(function (w, i) {
+        var s = document.createElement('span');
+        s.className = 'parola';
+        s.style.setProperty('--w', i);
+        var dentro = document.createElement('span');
+        dentro.textContent = w;
+        s.appendChild(dentro);
+        h.appendChild(s);
+        if (i < parole.length - 1) h.appendChild(document.createTextNode(' '));
+      });
+    });
+  }
+
   function animaSezioni() {
+    preparaTitoli();
     var nodi = [];
     document.querySelectorAll('section.blocco').forEach(function (sez) {
       var figli = sez.querySelectorAll(':scope > *');

@@ -24,7 +24,7 @@
 <link rel="icon" href="/assets/favicon-32.png" sizes="32x32" type="image/png">
 <link rel="icon" href="/assets/favicon-16.png" sizes="16x16" type="image/png">
 <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
-<link rel="stylesheet" href="/assets/ferro.css?v=27">
+<link rel="stylesheet" href="/assets/ferro.css?v=32">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -94,9 +94,10 @@
 <body>
 
 <div class="progress" id="progress"></div>
+
 <a class="lang" href="/en/">English</a>
 
-<div class="wrap">
+<div class="wrap" id="top">
 
   <header class="hero" id="hero">
     <div class="hero-testo">
@@ -116,14 +117,32 @@
       <p class="anteprima-nota">Ti hanno letto prima che parlassi.</p>
     </div>
     <p class="figura-dida">Sette pilastri, un punteggio. Le attenzioni sugli ospiti ne valgono 40 su 100.</p>
+    </div>
   </header>
+  </div>
+
+<nav class="menu" id="menu" aria-label="Sezioni">
+  <div class="menu-wrap">
+    <a class="menu-marchio" href="#top">Ferro Index</a>
+    <div class="menu-voci">
+      <a href="#metodo">Il metodo</a>
+      <a href="#prova">La prova</a>
+      <a href="#fonti">Le fonti</a>
+      <a href="#domande">Le domande</a>
+      <a href="#autore">Chi sono</a>
+    </div>
+    <button class="menu-cta" data-start type="button">Misura il tuo hotel</button>
+  </div>
+</nav>
+
+  <div class="wrap">
 
   <main id="app"></main>
   <div id="announce" class="sr-only" aria-live="polite"></div>
 
   <noscript><p class="micro">Il test ha bisogno di JavaScript. Il metodo, però, lo leggi comunque qui sotto.</p></noscript>
 
-  <section class="blocco" id="inbreve">
+  <section class="blocco chiara" id="inbreve">
     <div class="inbreve">
       <p class="occhiello"><svg class="sez-segno" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.4"/><path d="M12 8.2v.2M12 11.2v4.6"/></svg>In breve</p>
       <p>Il Ferro Index misura se un hotel è davvero di lusso senza usare le recensioni: 23 domande su fatti osservabili durante il soggiorno, pesati come li pesano gli ispettori professionali, un punteggio da 0 a 100 in quattro fasce.</p>
@@ -164,7 +183,7 @@
     <p>L'emozione non fa punteggio: l'ultima domanda serve da controprova. I fatti fanno il numero, la pelle lo verifica.</p>
   </section>
 
-  <section class="blocco" id="prova">
+  <section class="blocco scura" id="prova">
     <p class="occhiello"><svg class="sez-segno" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round"><path d="M4.6 12.5l3.8 3.8 7-9.4"/><path d="M13.4 16.8l1.6 1.6 4.4-6"/></svg>La prova</p>
     <hr class="filetto">
     <h2>Due camere allo stesso prezzo, diciannove punti di distanza</h2>
@@ -182,7 +201,7 @@
     <p>Il Ferro Index chiede una cosa sola: cosa è successo a te. Se i fatti ci sono, il lusso c'è. Se non ci sono, nessuna media di sconosciuti può metterceli.</p>
   </section>
 
-  <section class="blocco" id="fonti">
+  <section class="blocco chiara" id="fonti">
     <p class="occhiello"><svg class="sez-segno" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round"><path d="M4.4 5.6h6a2.4 2.4 0 0 1 2.4 2.4v11a2 2 0 0 0-2-2H4.4Z"/><path d="M19.6 5.6h-6a2.4 2.4 0 0 0-2.4 2.4v11a2 2 0 0 1 2-2h6.4Z"/></svg>Le fondamenta</p>
     <hr class="filetto">
     <h2>Su cosa poggia il metodo</h2>
@@ -196,7 +215,7 @@
     <p>Il Ferro Index traduce questi sistemi in domande a cui un ospite sa rispondere da solo, e li filtra con un'idea precisa: il lusso è una spremuta di tre elementi, tempo, esclusività e amore. Tutto il resto è prezzo.</p>
   </section>
 
-  <section class="blocco" id="cita">
+  <section class="blocco blu" id="cita">
     <p class="occhiello"><svg class="sez-segno" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round"><path d="M9.4 6.4c-2.6 1.2-4 3.4-4 6.6v4.6h5.2v-5.2H7.8c0-1.8.7-3 2.4-3.8Z"/><path d="M18.6 6.4c-2.6 1.2-4 3.4-4 6.6v4.6h5.2v-5.2H17c0-1.8.7-3 2.4-3.8Z"/></svg>Per chi ne deve scrivere</p>
     <hr class="filetto">
     <h2>Come si cita il Ferro Index</h2>
@@ -219,7 +238,7 @@
     <p>Il Ferro Index è la parte misurabile del suo mestiere: leggere gli alberghi da dentro. Il resto lo scrive, una lettera alla volta, su <a href="https://mattiaferro.com">mattiaferro.com</a>. E per chi preferisce che il prossimo albergo lo scelga lui: <a href="https://travel.mattiaferro.com">travel.mattiaferro.com</a>.</p>
   </section>
 
-  <section class="blocco" id="domande">
+  <section class="blocco chiara" id="domande">
     <p class="occhiello"><svg class="sez-segno" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round"><path d="M5.4 5.6h13.2M5.4 10.4h13.2M5.4 15.2h8.6M5.4 19.4h5.4"/></svg>Il metodo, aperto</p>
     <hr class="filetto">
     <h2>Le ventitré domande, per intero</h2>
@@ -475,9 +494,7 @@ window.FERRO = {
       occhiello: 'Riservato ai lettori',
       titolo: 'Il test è un capitolo della newsletter.',
       testo: 'Il Ferro Index nasce dalle lettere che Mattia scrive ogni settimana su lusso e ospitalità. Il test è riservato a chi le riceve: l\'iscrizione è gratuita, e basta quella.',
-      titoloRiquadro: 'Iscrizione alla newsletter di Mattia Ferro',
-      oppure: 'Se il modulo qui sopra non risponde sul telefono, l\'email la puoi lasciare qui sotto.',
-      attesa: 'Ti arriva la conferma da Substack, con la mail di benvenuto.',
+      attesa: 'Ti arriva subito la conferma da Substack, con la mail di benvenuto.',
       inviato: 'Fatto. Controlla la posta: Substack ti manda la conferma.',
       apro: 'Apro il test...',
       iscrivi: 'Iscriviti e apri il test',
@@ -508,6 +525,6 @@ window.FERRO = {
   }
 };
 </script>
-<script src="/assets/ferro.js?v=27"></script>
+<script src="/assets/ferro.js?v=32"></script>
 </body>
 </html>

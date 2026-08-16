@@ -24,7 +24,7 @@
 <link rel="icon" href="/assets/favicon-32.png" sizes="32x32" type="image/png">
 <link rel="icon" href="/assets/favicon-16.png" sizes="16x16" type="image/png">
 <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
-<link rel="stylesheet" href="/assets/ferro.css?v=27">
+<link rel="stylesheet" href="/assets/ferro.css?v=32">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -94,9 +94,10 @@
 <body>
 
 <div class="progress" id="progress"></div>
+
 <a class="lang" href="/">Italiano</a>
 
-<div class="wrap">
+<div class="wrap" id="top">
 
   <header class="hero" id="hero">
     <div class="hero-testo">
@@ -116,14 +117,32 @@
       <p class="anteprima-nota">They read you before you spoke.</p>
     </div>
     <p class="figura-dida">Seven pillars, one score. Attention to guests is worth 40 of the 100.</p>
+    </div>
   </header>
+  </div>
+
+<nav class="menu" id="menu" aria-label="Sections">
+  <div class="menu-wrap">
+    <a class="menu-marchio" href="#top">Ferro Index</a>
+    <div class="menu-voci">
+      <a href="#metodo">The method</a>
+      <a href="#recensioni">No reviews</a>
+      <a href="#fonti">The sources</a>
+      <a href="#autore">Who built it</a>
+      <a href="#faq">Questions</a>
+    </div>
+    <button class="menu-cta" data-start type="button">Score your hotel</button>
+  </div>
+</nav>
+
+  <div class="wrap">
 
   <main id="app"></main>
   <div id="announce" class="sr-only" aria-live="polite"></div>
 
   <noscript><p class="micro">The test needs JavaScript. The method, though, you can read below.</p></noscript>
 
-  <section class="blocco" id="inbreve">
+  <section class="blocco chiara" id="inbreve">
     <div class="inbreve">
       <p class="occhiello">In short</p>
       <p>The Ferro Index measures whether a hotel is truly luxury without using reviews: 23 questions about facts you can observe during a stay, weighted the way professional inspectors weight them, a 0-100 score in four bands.</p>
@@ -167,7 +186,7 @@
     <p>The Ferro Index asks one thing only: what happened to you. If the facts are there, the luxury is there. If they're not, no average of strangers can put them there.</p>
   </section>
 
-  <section class="blocco" id="fonti">
+  <section class="blocco chiara" id="fonti">
     <p class="occhiello">The foundations</p>
     <hr class="filetto">
     <h2>What the method stands on</h2>
@@ -411,9 +430,7 @@ window.FERRO = {
       occhiello: 'For readers',
       titolo: 'The test is a chapter of the newsletter.',
       testo: 'The Ferro Index comes from the letters Mattia writes every week about luxury and hospitality. The test is reserved for the people who receive them: subscribing is free, and that is all it takes.',
-      titoloRiquadro: 'Subscribe to Mattia Ferro\'s newsletter',
-      oppure: 'If the box above does not respond on your phone, leave your email below instead.',
-      attesa: 'Substack sends you the confirmation, with the welcome email.',
+      attesa: 'Substack sends the confirmation right away, with the welcome email.',
       inviato: 'Done. Check your inbox: Substack is sending the confirmation.',
       apro: 'Opening the test...',
       iscrivi: 'Subscribe and open the test',
@@ -444,6 +461,6 @@ window.FERRO = {
   }
 };
 </script>
-<script src="/assets/ferro.js?v=27"></script>
+<script src="/assets/ferro.js?v=32"></script>
 </body>
 </html>

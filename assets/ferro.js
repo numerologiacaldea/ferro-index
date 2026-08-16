@@ -727,20 +727,10 @@
     s.appendChild(el('h2', 'q-text', F.ui.gate.titolo));
     s.appendChild(el('p', 'q-note', F.ui.gate.testo));
 
-    /* Il modulo ufficiale di Substack, che mostra la conferma vera dentro di sé.
-       Sotto resta il nostro, perché su alcuni telefoni la tastiera non entra nei
-       riquadri di altri domini e senza alternativa la persona resterebbe bloccata. */
-    var box = el('div', 'gate-box');
-    var ifr = document.createElement('iframe');
-    ifr.src = 'https://www.mattiaferro.com/embed';
-    ifr.title = F.ui.gate.titoloRiquadro;
-    ifr.setAttribute('frameborder', '0');
-    ifr.setAttribute('scrolling', 'no');
-    box.appendChild(ifr);
-    s.appendChild(box);
-
-    var oppure = el('p', 'gate-oppure micro', F.ui.gate.oppure);
-    s.appendChild(oppure);
+    /* Niente riquadro di Substack: la risposta al modulo viaggia verso la home di
+       mattiaferro.com, che dichiara frame-ancestors 'self' e substack.com, quindi
+       il browser rifiuta di mostrarla su questo dominio. Verificato in console.
+       Il modulo qui sotto invece iscrive davvero, e la conferma arriva per email. */
 
     if (!document.getElementById('ferro-sink')) {
       var sink = document.createElement('iframe');
@@ -1046,7 +1036,35 @@
     });
   }
 
+  /* ---------- il menu segue la lettura ---------- */
+
+  function menuVivo() {
+    var menu = document.getElementById('menu');
+    if (!menu) return;
+    var voci = [].slice.call(menu.querySelectorAll('.menu-voci a'));
+    var mete = voci.map(function (a) {
+      return document.querySelector(a.getAttribute('href'));
+    });
+
+    /* la comparsa la gestisce il CSS: qui resta solo la voce attiva */
+    if (!('IntersectionObserver' in window)) return;
+    var dentro = [];
+    var io = new IntersectionObserver(function (v) {
+      v.forEach(function (e) {
+        var i = mete.indexOf(e.target);
+        if (i < 0) return;
+        var pos = dentro.indexOf(i);
+        if (e.isIntersecting && pos < 0) dentro.push(i);
+        if (!e.isIntersecting && pos > -1) dentro.splice(pos, 1);
+      });
+      var attiva = dentro.length ? Math.max.apply(null, dentro) : -1;
+      voci.forEach(function (a, i) { a.classList.toggle('qui', i === attiva); });
+    }, { rootMargin: '-18% 0px -68% 0px', threshold: 0 });
+    mete.forEach(function (m) { if (m) io.observe(m); });
+  }
+
   radarVivo();
+  menuVivo();
   animaSezioni();
 
   var params = new URLSearchParams(location.search);

@@ -153,11 +153,10 @@
     progress.style.width = pct + '%';
   }
 
-  function showQuestion(i, fromPop) {
+  function showQuestion(i) {
     state.i = i;
     setProgress(i);
     document.body.classList.add('in-quiz');
-    if (!fromPop) pushURL({ q: i });
     var q = F.questions[i];
     app.innerHTML = '';
     renderedAt = Date.now();
@@ -249,7 +248,7 @@
     var back = el('button', 'q-back', i === 0 ? F.ui.annulla : F.ui.indietro);
     back.type = 'button';
     back.addEventListener('click', function () {
-      if (i === 0) { reset(); } else { showQuestion(i - 1, true); }
+      if (i === 0) { reset(); } else { showQuestion(i - 1); }
     });
     nav.appendChild(back);
     s.appendChild(nav);
@@ -282,6 +281,11 @@
     state = { i: -1, answers: {}, meta: { h: '', n: '' } };
     hero.classList.add('hidden');
     setURL(location.pathname);
+    /* Una voce di cronologia sola per tutto il test. Prima ne veniva impilata
+       una per domanda: dal verdetto il gesto indietro rimetteva dentro
+       l'ultima domanda, e per uscire ne servivano ventitré. Per tornare a una
+       domanda c'è il pulsante Indietro, che si vede. */
+    pushURL({ ferro: 'test' });
     if (gateOK()) { showQuestion(0); } else { showGate(); }
   }
 
@@ -624,7 +628,10 @@
     app.appendChild(s);
     announce(F.ui.esito + ': ' + res.score + '/100, ' + res.band.label);
     focusTitle(s);
-    app.scrollIntoView({ block: 'start' });
+    /* Qui il menu è visibile, quindi portarsi sull'inizio del riquadro
+       lascerebbe l'occhiello "Il verdetto" nascosto dietro la barra: si va
+       in cima al documento, dove il verdetto comincia davvero. */
+    window.scrollTo({ top: 0, behavior: 'instant' });
     rivela(s, res, numero, rb);
   }
 
@@ -796,17 +803,24 @@
        su bianco; un intervallo continua a girare e rimedia da solo. */
     if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
-    var soglia = function () { return window.innerHeight * 0.88; };
+    /* Senza argomento è la regola semplice, quella giusta per decidere chi
+       nascondere. Con l'altezza di un blocco diventa più severa: un riquadro
+       alto non deve entrare appena ne spunta il bordo, o l'entrata si consuma
+       tutta sotto lo schermo e chi legge trova la cosa già ferma. */
+    var soglia = function (h) {
+      var ih = window.innerHeight;
+      return h ? Math.min(ih * 0.88, ih - Math.min(h, ih) * 0.34) : ih * 0.88;
+    };
     var attesa = [];
 
-    nodi.forEach(function (n, i) {
-      /* chi è già in pagina non si nasconde: non c'è nessuna entrata da fare,
-         e nasconderlo significherebbe farlo sparire sotto gli occhi */
-      if (n.getBoundingClientRect().top < soglia()) return;
+    nodi.forEach(function (n) {
+      /* La misura è in coordinate del DOCUMENTO, non dello schermo: se il
+         browser riapre la pagina a metà, quello che si trova sopra la piega
+         non è una proprietà del contenuto ma di dove ci ha buttati il
+         ripristino. Prima si decideva così, e bastava riaprire il sito a
+         pagina scorsa perché un blocco restasse fermo per tutta la visita. */
+      if (n.getBoundingClientRect().top + window.scrollY < soglia()) return;
       n.classList.add('reveal', 'armato');
-      /* i primi di ogni gruppo entrano a scalare, poi il ritardo si azzera:
-         serve il ritmo, non l'attesa */
-      n.dataset.ritardo = String(Math.min(i, 3) * 70);
       attesa.push(n);
     });
 
@@ -817,10 +831,15 @@
          ultimi blocchi oltre la soglia: lì si rivela quel che resta */
       var fine = window.innerHeight + window.scrollY >=
                  document.documentElement.scrollHeight - 4;
-      var lim = fine ? Infinity : soglia();
       for (var k = attesa.length - 1; k >= 0; k--) {
         var n = attesa[k];
-        if (n.getBoundingClientRect().top >= lim) continue;
+        var r = n.getBoundingClientRect();
+        /* Durante il test le sezioni vanno a display:none e il loro rettangolo
+           si azzera: senza questa guardia risulterebbero tutte entrate mentre
+           il visitatore guarda tutt'altro, e tornando alla pagina la
+           troverebbe già consumata, ferma come una stampa. */
+        if (!r.width && !r.height) continue;
+        if (r.top >= (fine ? Infinity : soglia(r.height))) continue;
         attesa.splice(k, 1);
         (function (el) {
           setTimeout(function () {
@@ -888,20 +907,39 @@
   function animaSezioni() {
     preparaTitoli();
     var nodi = [];
+
+    /* Il ritardo va contato dentro la sezione, non su tutta la pagina: con un
+       indice unico i primi tre nodi scalavano e gli altri sessanta partivano
+       tutti insieme con lo stesso ritardo, che è il contrario del ritmo. */
+    function aggiungi(elenco) {
+      elenco.forEach(function (f, j) {
+        f.dataset.ritardo = String(j < 4 ? j * 70 : 0);
+        nodi.push(f);
+      });
+    }
+
     document.querySelectorAll('section.blocco').forEach(function (sez) {
-      var figli = sez.querySelectorAll(':scope > *');
-      if (figli.length) { figli.forEach(function (f) { nodi.push(f); }); }
-      else { nodi.push(sez); }
+      var figli = [].slice.call(sez.querySelectorAll(':scope > *'));
+      /* Una sezione con un solo figlio contenitore non ha cascata: si muove
+         come un blocco unico e sembra ferma accanto alle altre. In quel caso
+         si scende di un livello e a entrare sono i suoi contenuti, dentro una
+         cornice già disegnata. È il caso del riquadro "In breve". */
+      if (figli.length === 1 && figli[0].children.length > 1) {
+        figli = [].slice.call(figli[0].children);
+      }
+      if (figli.length) { aggiungi(figli); }
+      else { sez.dataset.ritardo = '0'; nodi.push(sez); }
     });
+
     var piede = document.querySelector('footer .wrap');
-    if (piede) nodi.push(piede);
+    if (piede) { piede.dataset.ritardo = '0'; nodi.push(piede); }
     osserva(nodi);
   }
 
   /* il back del telefono torna alla domanda precedente, non fuori dal sito */
+  /* il gesto indietro chiude il test e riporta alla pagina, mai fuori dal sito */
   window.addEventListener('popstate', function () {
-    if (state.i > 0) { showQuestion(state.i - 1, true); }
-    else if (state.i === 0) { reset(); }
+    if (state.i >= 0 || document.body.classList.contains('in-quiz')) reset();
   });
 
   /* ---------- avvio ---------- */
@@ -1061,12 +1099,22 @@
     mete.forEach(function (m) { if (m) io.observe(m); });
   }
 
+  var params = new URLSearchParams(location.search);
+  var shared = decode(params.get('r'));
+
+  /* Il sito si apre dall'inizio. Il browser, lasciato a sé, rimette la pagina
+     dove l'avevi lasciata: riapri la scheda dal telefono e ti ritrovi a metà,
+     senza titolo e senza capo. Si tengono solo i due casi in cui la posizione
+     è voluta davvero: un indirizzo con l'ancora e un link a un verdetto.
+     "instant" è obbligatorio, altrimenti lo scorrimento morbido del CSS
+     anima il ritorno in cima e si vede la pagina risalire da sola. */
+  if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+  if (!location.hash && !shared) window.scrollTo({ top: 0, behavior: 'instant' });
+
   radarVivo();
   menuVivo();
   animaSezioni();
 
-  var params = new URLSearchParams(location.search);
-  var shared = decode(params.get('r'));
   if (shared) {
     state.answers = shared;
     state.meta = {

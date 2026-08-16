@@ -190,10 +190,11 @@ body.in-quiz .menu { display: none; }
 
 /* ---------- hero ---------- */
 
-/* la prima schermata è tutta sua: nessuna sezione deve affacciarsi da sotto */
+/* La prima schermata è tutta sua: nessuna sezione deve affacciarsi da sotto.
+   Su telefono l'altezza minima non serve, perché il contenuto è già più alto
+   dello schermo: imporla aggiungerebbe vuoto sotto e nient'altro. */
 .hero {
   position: relative;
-  min-height: 100svh;
   padding: 92px 0 64px;
   display: flex;
   flex-direction: column;
@@ -737,6 +738,13 @@ table.pesi th {
 table.pesi td { border-top: 1px solid var(--line); padding: 10px 12px 10px 0; vertical-align: top; }
 table.pesi td.num { font-weight: 700; color: var(--brass); white-space: nowrap; }
 
+/* Rete per le tabelle su schermo stretto: scorrono dentro il proprio riquadro
+   invece di trascinare di lato tutta la pagina. Una pagina che si sposta in
+   orizzontale scopre anche il bordo delle fasce di colore, che sono larghe
+   quanto lo schermo e non quanto il documento. */
+.tabella-scorre { max-width: 100%; overflow-x: auto; }
+.tabella-scorre table { margin-top: 22px; }
+
 figure.ritratto {
   margin-top: 30px;
   max-width: none;
@@ -841,9 +849,22 @@ body.in-quiz section.blocco,
 body.in-quiz footer,
 body.in-quiz .lang { display: none; }
 
+/* Telefono: la scheda del verdetto deve arrivare intera sotto il pollice,
+   non tagliata a metà del radar. Ogni valore qui sotto è spazio recuperato
+   sopra la scheda, misurato uno per uno. */
+@media (max-width: 720px) {
+  .hero { padding: 56px 0 34px; }
+  .hero h1 { font-size: clamp(31px, 7.6vw, 40px); }
+  .hero .sotto { font-size: 17px; }
+  .hero-figura { margin-top: 20px; }
+  .anteprima { padding: 15px 20px 13px; }
+  .anteprima-num { font-size: 44px; }
+  .anteprima-nota { font-size: 14px; margin-top: 7px; }
+  .radar-vivo { max-width: 152px; margin-top: 8px; }
+}
+
 @media (max-width: 420px) {
   body { font-size: 18px; }
-  .hero { padding-top: 80px; }
 }
 
 /* ---------- schermi larghi ----------
@@ -855,6 +876,7 @@ body.in-quiz .lang { display: none; }
   .wrap { max-width: 1000px; }
 
   .hero {
+    min-height: 100svh;
     padding: 118px 0 76px;
     display: grid;
     grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
@@ -903,34 +925,10 @@ body.in-quiz .lang { display: none; }
   .inbreve { max-width: 38em; }
   table.pesi { max-width: 46em; }
 
-  /* Le sezioni in negativo, se tengono il testo in una colonna stretta, lasciano
-     due bande di colore vuote ai lati. Qui il contenuto si apre in due colonne:
-     il titolo tiene la sinistra, il ragionamento scorre a destra. */
-  section.scura > .wrap,
-  section.blu > .wrap {
-    display: grid;
-    grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
-    column-gap: 64px;
-    align-items: start;
-    max-width: 1000px;
-  }
-  section.scura .occhiello,
-  section.scura .filetto,
-  section.scura h2,
-  section.blu .occhiello,
-  section.blu .filetto,
-  section.blu h2 { grid-column: 1; }
-  section.scura h2, section.blu h2 { max-width: 12em; }
-
-  section.scura > .wrap > p,
-  section.scura > .wrap > .inbreve,
-  section.blu > .wrap > p,
-  section.blu > .wrap > .inbreve { grid-column: 2; }
-
-  /* il primo blocco della colonna destra si allinea al titolo */
-  section.scura > .wrap > p:first-of-type,
-  section.blu > .wrap > p:first-of-type { grid-row: 1; margin-top: 4px; }
-  section.scura > .wrap > p, section.blu > .wrap > p { max-width: 34em; }
+  /* Il titolo non deve correre più largo del testo che introduce: "em" si
+     misura sul corpo di ciascun elemento, quindi 38em su un h2 da 33px valgono
+     il doppio che su un paragrafo da 19. */
+  section.blocco h2 { max-width: 22em; }
 
   /* durante il test la domanda resta in colonna singola, ma più in alto */
   body.in-quiz .wrap { max-width: 720px; }

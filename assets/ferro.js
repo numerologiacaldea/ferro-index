@@ -619,23 +619,67 @@
     s.appendChild(el('h2', 'q-text', F.ui.gate.titolo));
     s.appendChild(el('p', 'q-note', F.ui.gate.testo));
 
-    var box = el('div', 'gate-box');
-    var ifr = document.createElement('iframe');
-    ifr.src = 'https://mattiaferro.com/embed';
-    ifr.title = 'Newsletter di Mattia Ferro';
-    ifr.loading = 'lazy';
-    box.appendChild(ifr);
-    s.appendChild(box);
+    /* L'iscrizione avviene davvero: il modulo fa POST verso Substack e la
+       risposta finisce in un riquadro nascosto, così la pagina resta la nostra.
+       I moduli non sono soggetti al blocco CORS, quindi non serve alcun server.
+       Il riquadro vive fuori dall'area del quiz: se restasse dentro, verrebbe
+       distrutto al passaggio alla prima domanda e l'invio si interromperebbe. */
+    if (!document.getElementById('ferro-sink')) {
+      var sink = document.createElement('iframe');
+      sink.name = 'ferro-sink';
+      sink.id = 'ferro-sink';
+      sink.className = 'sink';
+      sink.setAttribute('aria-hidden', 'true');
+      sink.tabIndex = -1;
+      document.body.appendChild(sink);
+    }
 
-    var go = el('button', 'btn', F.ui.gate.fatto);
-    go.type = 'button';
-    go.style.marginTop = '22px';
-    go.addEventListener('click', function () { gatePass(); showQuestion(0); });
-    s.appendChild(go);
+    var form = document.createElement('form');
+    form.className = 'gate-form';
+    form.action = 'https://www.mattiaferro.com/api/v1/free';
+    form.method = 'POST';
+    form.target = 'ferro-sink';
+
+    var mail = document.createElement('input');
+    mail.type = 'email';
+    mail.name = 'email';
+    mail.required = true;
+    mail.className = 'pub-input';
+    mail.placeholder = F.ui.gate.email;
+    mail.autocomplete = 'email';
+
+    var hid = document.createElement('input');
+    hid.type = 'hidden'; hid.name = 'first_url'; hid.value = F.baseURL + '/';
+    var hid2 = document.createElement('input');
+    hid2.type = 'hidden'; hid2.name = 'source'; hid2.value = 'ferro-index';
+
+    var send = el('button', 'btn', F.ui.gate.iscrivi);
+    send.type = 'submit';
+    send.style.marginTop = '12px';
+
+    form.appendChild(mail);
+    form.appendChild(hid);
+    form.appendChild(hid2);
+    form.appendChild(send);
+
+    var esito = el('p', 'gate-esito micro hidden');
+
+    form.addEventListener('submit', function () {
+      /* il submit parte comunque verso Substack: qui si accompagna l'utente */
+      gatePass();
+      esito.textContent = F.ui.gate.inviato;
+      esito.classList.remove('hidden');
+      send.disabled = true;
+      mail.disabled = true;
+      setTimeout(function () { showQuestion(0); }, 1400);
+    });
+
+    s.appendChild(form);
+    s.appendChild(esito);
 
     var already = el('button', 'q-back', F.ui.gate.gia);
     already.type = 'button';
-    already.style.marginTop = '10px';
+    already.style.marginTop = '14px';
     already.addEventListener('click', function () { gatePass(); showQuestion(0); });
     s.appendChild(already);
 

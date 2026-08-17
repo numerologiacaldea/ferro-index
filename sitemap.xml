@@ -3,24 +3,28 @@
         xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://index.mattiaferro.com/</loc>
+    <lastmod>2026-08-17</lastmod>
     <xhtml:link rel="alternate" hreflang="it" href="https://index.mattiaferro.com/"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://index.mattiaferro.com/en/"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://index.mattiaferro.com/"/>
   </url>
   <url>
     <loc>https://index.mattiaferro.com/en/</loc>
+    <lastmod>2026-08-17</lastmod>
     <xhtml:link rel="alternate" hreflang="it" href="https://index.mattiaferro.com/"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://index.mattiaferro.com/en/"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://index.mattiaferro.com/"/>
   </url>
   <url>
     <loc>https://index.mattiaferro.com/santuari/</loc>
+    <lastmod>2026-08-17</lastmod>
     <xhtml:link rel="alternate" hreflang="it" href="https://index.mattiaferro.com/santuari/"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://index.mattiaferro.com/en/sanctuaries/"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://index.mattiaferro.com/santuari/"/>
   </url>
   <url>
     <loc>https://index.mattiaferro.com/en/sanctuaries/</loc>
+    <lastmod>2026-08-17</lastmod>
     <xhtml:link rel="alternate" hreflang="it" href="https://index.mattiaferro.com/santuari/"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://index.mattiaferro.com/en/sanctuaries/"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://index.mattiaferro.com/santuari/"/>

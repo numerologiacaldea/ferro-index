@@ -947,9 +947,20 @@
   }
 
   /* il back del telefono torna alla domanda precedente, non fuori dal sito */
-  /* il gesto indietro chiude il test e riporta alla pagina, mai fuori dal sito */
+  /* Il gesto indietro del telefono, dentro il test, torna alla domanda
+     precedente con le risposte conservate: e' il gesto naturale su Android, e
+     azzerare tutto per un colpo di pollice e' una punizione. La voce di
+     cronologia si rimette subito, cosi' il gesto successivo puo' fare lo
+     stesso. Alla prima domanda, al cancello e sul verdetto si esce invece
+     con un colpo solo: il giro delle ventitre' pressioni non torna. */
   window.addEventListener('popstate', function () {
-    if (state.i >= 0 || document.body.classList.contains('in-quiz')) reset();
+    var inQuiz = document.body.classList.contains('in-quiz');
+    if (inQuiz && state.i > 0) {
+      pushURL({ ferro: 'test' });
+      showQuestion(state.i - 1);
+    } else if (inQuiz || state.i >= 0 || document.querySelector('.res-num')) {
+      reset();
+    }
   });
 
   /* ---------- avvio ---------- */

@@ -448,7 +448,12 @@ section.blocco h2.reveal.armato { opacity: 1; transform: none; }
   touch-action: manipulation;
   transition: border-color 0.14s ease;
 }
-.answer:hover { border-color: var(--brass); }
+/* Solo dove un puntatore puo' davvero passare sopra: sul touch lo stato hover
+   resta appiccicato dopo il tocco, e con lo stesso bordo di .selected la
+   domanda successiva sembrava arrivare con una risposta gia' scelta. */
+@media (hover: hover) {
+  .answer:hover { border-color: var(--brass); }
+}
 .answer.selected { border-color: var(--brass); background: var(--brass-soft); }
 .answer .k {
   position: absolute;

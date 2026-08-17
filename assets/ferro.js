@@ -256,7 +256,7 @@
     app.appendChild(s);
     announce(F.ui.domandaDi(i + 1, F.questions.length));
     focusTitle(s);
-    app.scrollIntoView({ block: 'start' });
+    app.scrollIntoView({ block: 'start', behavior: 'instant' });
   }
 
   function advance() {
@@ -274,7 +274,7 @@
     document.body.classList.remove('in-quiz');
     hero.classList.remove('hidden');
     setURL(location.pathname);
-    window.scrollTo({ top: 0 });
+    window.scrollTo({ top: 0, behavior: 'instant' });
   }
 
   function startOwn() {
@@ -528,7 +528,7 @@
         var rMail = document.createElement('input');
         rMail.type = 'email'; rMail.name = 'email'; rMail.required = true;
         rMail.className = 'pub-input';
-        rMail.placeholder = F.ui.reg.email;
+        rMail.placeholder = F.ui.reg.email || '';
 
         var rWhy = document.createElement('textarea');
         rWhy.name = 'motivazione'; rWhy.required = true;
@@ -748,12 +748,22 @@
     ifr.src = 'https://www.mattiaferro.com/embed';
     ifr.title = F.ui.gate.titoloRiquadro;
     ifr.setAttribute('frameborder', '0');
-    ifr.setAttribute('scrolling', 'no');
+    /* la lettera è in italiano anche sulla pagina inglese: dichiararlo evita
+       che un lettore di schermo pronunci l'italiano con voce inglese */
+    ifr.setAttribute('lang', 'it');
     box.appendChild(ifr);
     s.appendChild(box);
 
+    /* Una via d'uscita fuori dal riquadro. Mentre il cancello è aperto il resto
+       della pagina è nascosto: se il modulo non carica, per rete lenta o per un
+       blocco dei tracker, senza questa riga non esiste nessun altro modo di
+       iscriversi e il test resta chiuso per sempre. */
     var esito = el('p', 'gate-esito micro', F.ui.gate.attesa);
     s.appendChild(esito);
+
+    if (F.ui.gate.scampo) {
+      s.appendChild(el('p', 'gate-scampo micro', F.ui.gate.scampo));
+    }
 
     var avanti = el('button', 'btn', F.ui.gate.iscrivi);
     avanti.type = 'button';
@@ -770,7 +780,7 @@
     s.appendChild(el('p', 'micro', F.ui.gate.micro));
     app.appendChild(s);
     focusTitle(s);
-    app.scrollIntoView({ block: 'start' });
+    app.scrollIntoView({ block: 'start', behavior: 'instant' });
   }
 
   /* ---------- tastiera ---------- */
@@ -1147,25 +1157,31 @@
   }
 
   var arrivo = tipoDiArrivo();
-  var ancoraVoluta = !!location.hash && arrivo === 'navigate';
+  /* Un'ancora vale se non l'hai chiesta tu ricaricando. Su un ritorno indietro
+     va rispettata: chi era arrivato su /#domande e torna dal sito di un link
+     esterno deve ritrovarsi dov'era, non in cima con l'indirizzo ripulito. */
+  var ancoraVoluta = !!location.hash && arrivo !== 'reload';
 
   /* un'ancora rimasta da prima non deve sopravvivere al ricaricamento */
   if (location.hash && !ancoraVoluta) {
     try { history.replaceState(null, '', location.pathname + location.search); } catch (e) {}
   }
 
+  /* Non ci si può fidare di una fotografia scattata all'avvio: il verdetto
+     scrive il suo "?r=" nell'indirizzo DOPO, quando il test finisce, e in quel
+     momento la variabile letta al caricamento vale ancora falso. Risultato: la
+     pagina del verdetto veniva strattonata in cima. Si guarda l'indirizzo vivo,
+     e in più se in pagina c'è già qualcosa (cancello, domanda o verdetto) la
+     posizione appartiene a chi legge. */
+  function schermataSua() {
+    try { if (new URLSearchParams(location.search).get('r')) return true; } catch (e) {}
+    return !!(app && app.firstChild);
+  }
+
   function riportaInCima() {
-    if (ancoraVoluta || shared) return;
-    if (document.body.classList.contains('in-quiz')) return;
+    if (ancoraVoluta || schermataSua()) return;
     if (window.scrollY === 0 && window.pageYOffset === 0) return;
-    /* lo scorrimento morbido del CSS animerebbe anche questo, e si vedrebbe
-       la pagina risalire da sola: si spegne per il tempo di un comando */
-    var r = document.documentElement;
-    var prima = r.style.scrollBehavior;
-    r.style.scrollBehavior = 'auto';
-    window.scrollTo(0, 0);
-    if (document.body) document.body.scrollTop = 0;
-    r.style.scrollBehavior = prima;
+    window.scrollTo({ top: 0, behavior: 'instant' });
   }
 
   /* Il primo gesto del visitatore chiude la faccenda: da lì la posizione è sua
@@ -1178,7 +1194,7 @@
   });
 
   function tieniInCima(quantoDura) {
-    if (ancoraVoluta || shared || comandaLui) return;
+    if (ancoraVoluta || comandaLui || schermataSua()) return;
     var scade = quantoDura;
     var battito = setInterval(function () {
       scade -= 60;
@@ -1191,15 +1207,23 @@
   document.addEventListener('DOMContentLoaded', riportaInCima);
   window.addEventListener('load', function () {
     riportaInCima();
-    /* Safari può rimettere a posto dopo il caricamento: si insiste per un
-       secondo, e si smette al primo gesto del visitatore */
+    /* Safari rimette la pagina a posto anche dopo il caricamento: si insiste
+       per sette decimi, e si smette al primo gesto del visitatore */
     tieniInCima(700);
   });
-  window.addEventListener('pageshow', function (ev) {
-    /* persisted vuol dire che la pagina arriva dalla memoria del browser:
-       niente è stato rieseguito, la posizione è quella di prima */
-    if (ev.persisted) { riportaInCima(); tieniInCima(600); }
-  });
+  /* Nessun gestore su "pageshow": una pagina ripescata dalla memoria arriva da
+     un avanti o un indietro, e lì la posizione è del visitatore, non
+     un'apertura. Il ricaricamento e la navigazione fresca sono già coperti. */
+
+  /* Su uno schermo molto corto la scheda del verdetto non entra: si toglie il
+     radar e restano numero, fascia e frase. Meglio un oggetto intero e piccolo
+     che un ettagono segato a metà dal bordo. */
+  function misuraSchermo() {
+    document.body.classList.toggle('schermo-corto', window.innerHeight < 620);
+  }
+  misuraSchermo();
+  window.addEventListener('resize', misuraSchermo);
+  window.addEventListener('orientationchange', misuraSchermo);
 
   radarVivo();
   menuVivo();

@@ -30,7 +30,7 @@ try { if ('scrollRestoration' in history) history.scrollRestoration = 'manual'; 
 <link rel="icon" href="/assets/favicon-32.png" sizes="32x32" type="image/png">
 <link rel="icon" href="/assets/favicon-16.png" sizes="16x16" type="image/png">
 <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
-<link rel="stylesheet" href="/assets/ferro.css?v=59">
+<link rel="stylesheet" href="/assets/ferro.css?v=60">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -564,26 +564,26 @@ window.FERRO = {
     { id: 'p1', pillar: 'privacy', w: 4, type: 'yn', section: 'L\'arrivo',
       text: 'Il numero della tua camera è stato scritto, mai detto davanti ad altri?',
       note: 'Nei migliori hotel è una regola di riservatezza: il numero non si pronuncia dove altri possono sentirlo. Detto solo a te, a bassa voce, vale sì.',
-      options: [{ t: 'Sì', v: 1 }, { t: 'No', v: 0 }] },
-    { id: 'c1', pillar: 'comfort', w: 4, type: 'yn', section: 'La camera',
+      options: [{ t: 'Sì, sempre per iscritto', v: 1 }, { t: 'No, è stato detto ad alta voce', v: 0 }] },
+    { id: 'c1', pillar: 'comfort', w: 4, type: 'ynp', section: 'La camera',
       text: 'Di notte, buio totale?',
       note: 'Niente led della TV, niente spifferi di luce dalle tende.',
-      options: [{ t: 'Sì', v: 1 }, { t: 'No', v: 0 }] },
-    { id: 'c2', pillar: 'comfort', w: 4, type: 'yn', section: 'La camera',
+      options: [{ t: 'Sì', v: 1 }, { t: 'No', v: 0 }, { t: 'Quasi: solo un led o uno spiraglio dalle tende', v: 2 }] },
+    { id: 'c2', pillar: 'comfort', w: 4, type: 'ynp', section: 'La camera',
       text: 'A letto, silenzio vero?',
       note: 'Nessun ronzio di climatizzatore o frigobar, niente voci dal corridoio, niente traffico dalla strada.',
-      options: [{ t: 'Sì', v: 1 }, { t: 'No', v: 0 }] },
+      options: [{ t: 'Sì', v: 1 }, { t: 'No', v: 0 }, { t: 'Quasi: solo un ronzio di fondo, niente voci né traffico', v: 2 }] },
     { id: 'c3', pillar: 'comfort', w: 4, type: 'scale', section: 'La camera',
       text: 'Il letto.',
       note: 'Lenzuola, cuscini, materasso. La notte è il primo servizio che paghi.',
       options: ['Da dimenticare', 'Normale', 'Buono', 'Molto buono', 'Il migliore su cui abbia dormito'] },
     { id: 'h1', pillar: 'pulizia', w: 4, type: 'yn', section: 'La camera',
       text: 'All\'arrivo, rubinetteria e specchi senza una macchia o un\'impronta?',
-      options: [{ t: 'Sì', v: 1 }, { t: 'No', v: 0 }] },
+      options: [{ t: 'Impeccabili', v: 1 }, { t: 'Qualche segno c\'era', v: 0 }] },
     { id: 'a2', pillar: 'attenzioni', w: 8, type: 'yn', section: 'Le attenzioni',
       text: 'Qualcosa è arrivato prima che lo chiedessi?',
       note: 'Conta solo ciò che non hai mai ordinato: l\'ombrello prima della pioggia, il caffè come lo prendi dal secondo giorno, il taxi già avvisato, il cuscino in più notato e portato. Se l\'hai chiesto tu, non è anticipazione: è servizio.',
-      options: [{ t: 'Sì', v: 1 }, { t: 'No', v: 0 }] },
+      options: [{ t: 'Sì, senza che lo chiedessi', v: 1 }, { t: 'No, solo quello che ho chiesto', v: 0 }] },
     { id: 'a3', pillar: 'attenzioni', w: 8, type: 'yn3', section: 'Le attenzioni',
       text: 'Una preferenza detta a una persona sola era conosciuta da tutte le altre?',
       note: 'Esempio: hai detto al ristorante di un\'allergia, e la colazione lo sapeva già. Hai chiesto acqua non gasata il primo giorno, e non l\'hai più dovuta specificare. Se non hai espresso preferenze, scegli la terza: la domanda esce dal conto.',
@@ -595,7 +595,7 @@ window.FERRO = {
     { id: 'p3', pillar: 'privacy', w: 4, type: 'yn', section: 'La privacy',
       text: 'I tuoi dati mai discussi davanti ad altri ospiti?',
       note: 'Nome completo, quante notti, da dove arrivi.',
-      options: [{ t: 'Sì', v: 1 }, { t: 'No', v: 0 }] },
+      options: [{ t: 'Mai davanti ad altri', v: 1 }, { t: 'È successo almeno una volta', v: 0 }] },
     { id: 'h2', pillar: 'pulizia', w: 4, type: 'yn3', section: 'La sera',
       text: 'La sera, mentre eri fuori dalla camera, è stata preparata per la notte senza che lo chiedessi?',
       note: 'Luci abbassate, letto aperto, acqua fresca. E i tuoi oggetti trattati con rispetto.',
@@ -615,10 +615,10 @@ window.FERRO = {
     { id: 'f3', pillar: 'cibo', w: 4, type: 'yn3', section: 'La tavola',
       text: 'I piatti caldi arrivano caldi, nei tempi promessi?',
       options: [{ t: 'Sì', v: 1 }, { t: 'No', v: 0 }, { t: 'Non ho mangiato al ristorante dell\'hotel', v: 2 }] },
-    { id: 'd1', pillar: 'design', w: 4, type: 'yn', section: 'Lo sguardo',
+    { id: 'd1', pillar: 'design', w: 4, type: 'ynp', section: 'Lo sguardo',
       text: 'Guardando solo gli interni, capiresti in che parte del mondo sei?',
       note: 'I migliori hotel non sembrano di nessun luogo. Sembrano del loro.',
-      options: [{ t: 'Sì', v: 1 }, { t: 'No', v: 0 }] },
+      options: [{ t: 'Sì', v: 1 }, { t: 'No', v: 0 }, { t: 'Il Paese sì, questo luogo no', v: 2 }] },
     { id: 'd2', pillar: 'design', w: 4, type: 'yn', section: 'Lo sguardo',
       text: 'I dettagli minori sono pensati fino in fondo?',
       note: 'Fiori veri e freschi, grucce che si staccano dall\'asta, nessun cartello plastificato.',
@@ -733,6 +733,6 @@ window.FERRO = {
   }
 };
 </script>
-<script src="/assets/ferro.js?v=59"></script>
+<script src="/assets/ferro.js?v=60"></script>
 </body>
 </html>

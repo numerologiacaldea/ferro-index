@@ -50,6 +50,17 @@
         if (a === 2) return; /* non applicabile: il peso esce dal pilastro */
         per[q.pillar].max += q.w;
         if (a === 1) per[q.pillar].earned += q.w;
+      } else if (q.type === 'ynp') {
+        /* la terza via vale meta': il fatto di mezzo esiste (il led solo, il
+           ronzio di fondo) e il binario secco lo buttava nello stesso No
+           dell'insegna del bar in faccia. Il peso resta nel pilastro.
+           REGOLA IRREVERSIBILE: nel link la cifra 2 significa meta' in ynp ed
+           esclusione in yn3. Una domanda pubblicata con terza opzione non deve
+           mai piu' cambiare tipo, o i link gia' condivisi cambierebbero
+           punteggio in silenzio. */
+        per[q.pillar].max += q.w;
+        if (a === 1) per[q.pillar].earned += q.w;
+        else if (a === 2) per[q.pillar].earned += q.w / 2;
       } else if (q.type === 'scale') {
         per[q.pillar].max += q.w;
         if (a >= 1) per[q.pillar].earned += q.w * (Math.min(a, 5) - 1) / 4;
@@ -125,6 +136,7 @@
         if (isNaN(v)) return null;
         if (q.type === 'yn' && v > 1) return null;
         if (q.type === 'yn3' && v > 2) return null;
+        if (q.type === 'ynp' && v > 2) return null;
         if (q.type === 'scale' && v > 5) return null;
         answers[q.id] = v;
       }

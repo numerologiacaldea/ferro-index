@@ -30,7 +30,7 @@ try { if ('scrollRestoration' in history) history.scrollRestoration = 'manual'; 
 <link rel="icon" href="/assets/favicon-32.png" sizes="32x32" type="image/png">
 <link rel="icon" href="/assets/favicon-16.png" sizes="16x16" type="image/png">
 <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
-<link rel="stylesheet" href="/assets/ferro.css?v=59">
+<link rel="stylesheet" href="/assets/ferro.css?v=60">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -562,26 +562,26 @@ window.FERRO = {
     { id: 'p1', pillar: 'privacy', w: 4, type: 'yn', section: 'The arrival',
       text: 'Was your room number written down, never said in front of others?',
       note: 'In the best hotels it\'s a privacy rule: the number is never spoken where others can hear it. Said quietly, only to you, counts as yes.',
-      options: [{ t: 'Yes', v: 1 }, { t: 'No', v: 0 }] },
-    { id: 'c1', pillar: 'comfort', w: 4, type: 'yn', section: 'The room',
+      options: [{ t: 'Yes, always in writing', v: 1 }, { t: 'No, it was said out loud', v: 0 }] },
+    { id: 'c1', pillar: 'comfort', w: 4, type: 'ynp', section: 'The room',
       text: 'At night, total darkness?',
-      note: 'No TV leds, no light leaking through the curtains.',
-      options: [{ t: 'Yes', v: 1 }, { t: 'No', v: 0 }] },
-    { id: 'c2', pillar: 'comfort', w: 4, type: 'yn', section: 'The room',
+      note: 'No TV LEDs, no light leaking through the curtains.',
+      options: [{ t: 'Yes', v: 1 }, { t: 'No', v: 0 }, { t: 'Almost: just a stray LED or a sliver of light through the curtains', v: 2 }] },
+    { id: 'c2', pillar: 'comfort', w: 4, type: 'ynp', section: 'The room',
       text: 'True silence in bed?',
       note: 'No hum from the air conditioning or the minibar, no voices from the corridor, no traffic from the street.',
-      options: [{ t: 'Yes', v: 1 }, { t: 'No', v: 0 }] },
+      options: [{ t: 'Yes', v: 1 }, { t: 'No', v: 0 }, { t: 'Almost: just a background hum, no voices or traffic', v: 2 }] },
     { id: 'c3', pillar: 'comfort', w: 4, type: 'scale', section: 'The room',
       text: 'The bed.',
       note: 'Sheets, pillows, mattress. The night is the first service you pay for.',
       options: ['Forgettable', 'Average', 'Good', 'Very good', 'The best I\'ve slept on'] },
     { id: 'h1', pillar: 'pulizia', w: 4, type: 'yn', section: 'The room',
       text: 'On arrival, not a single mark or fingerprint on the taps and mirrors?',
-      options: [{ t: 'Yes', v: 1 }, { t: 'No', v: 0 }] },
+      options: [{ t: 'Spotless', v: 1 }, { t: 'There were marks', v: 0 }] },
     { id: 'a2', pillar: 'attenzioni', w: 8, type: 'yn', section: 'The care',
       text: 'Did something arrive before you asked for it?',
       note: 'Only what you never ordered counts: the umbrella before the rain, your coffee the way you take it from day two, the taxi already arranged, the extra pillow noticed and brought. If you asked for it, that\'s not anticipation: it\'s service.',
-      options: [{ t: 'Yes', v: 1 }, { t: 'No', v: 0 }] },
+      options: [{ t: 'Yes, without my asking', v: 1 }, { t: 'No, only what I asked for', v: 0 }] },
     { id: 'a3', pillar: 'attenzioni', w: 8, type: 'yn3', section: 'The care',
       text: 'You mentioned a preference to one person. Did everyone else already know it?',
       note: 'Example: you mentioned an allergy at the restaurant, and breakfast already knew. You asked for still water on day one, and never had to specify it again. If you never stated a preference, pick the third: the question leaves the count.',
@@ -593,7 +593,7 @@ window.FERRO = {
     { id: 'p3', pillar: 'privacy', w: 4, type: 'yn', section: 'Privacy',
       text: 'Your details never discussed in front of other guests?',
       note: 'Full name, how many nights, where you are from.',
-      options: [{ t: 'Yes', v: 1 }, { t: 'No', v: 0 }] },
+      options: [{ t: 'Never in front of others', v: 1 }, { t: 'It happened at least once', v: 0 }] },
     { id: 'h2', pillar: 'pulizia', w: 4, type: 'yn3', section: 'The evening',
       text: 'In the evening, while you were out of the room, was it prepared for the night without you asking?',
       note: 'Lights low, bed turned down, fresh water. And your things handled with respect.',
@@ -613,10 +613,10 @@ window.FERRO = {
     { id: 'f3', pillar: 'cibo', w: 4, type: 'yn3', section: 'The table',
       text: 'Do hot dishes arrive hot, when promised?',
       options: [{ t: 'Yes', v: 1 }, { t: 'No', v: 0 }, { t: 'I didn\'t eat at the hotel restaurant', v: 2 }] },
-    { id: 'd1', pillar: 'design', w: 4, type: 'yn', section: 'The eye',
+    { id: 'd1', pillar: 'design', w: 4, type: 'ynp', section: 'The eye',
       text: 'Looking only at the interiors, would you know where in the world you are?',
       note: 'The best hotels don\'t look like anywhere else. They look like where they are.',
-      options: [{ t: 'Yes', v: 1 }, { t: 'No', v: 0 }] },
+      options: [{ t: 'Yes', v: 1 }, { t: 'No', v: 0 }, { t: 'I\'d guess the country, not the place', v: 2 }] },
     { id: 'd2', pillar: 'design', w: 4, type: 'yn', section: 'The eye',
       text: 'Are the small details thought through to the end?',
       note: 'Fresh real flowers, hangers that come off the rail, no laminated signs.',
@@ -731,6 +731,6 @@ window.FERRO = {
   }
 };
 </script>
-<script src="/assets/ferro.js?v=59"></script>
+<script src="/assets/ferro.js?v=60"></script>
 </body>
 </html>

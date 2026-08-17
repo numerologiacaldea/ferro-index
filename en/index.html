@@ -30,7 +30,7 @@ try { if ('scrollRestoration' in history) history.scrollRestoration = 'manual'; 
 <link rel="icon" href="/assets/favicon-32.png" sizes="32x32" type="image/png">
 <link rel="icon" href="/assets/favicon-16.png" sizes="16x16" type="image/png">
 <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
-<link rel="stylesheet" href="/assets/ferro.css?v=54">
+<link rel="stylesheet" href="/assets/ferro.css?v=56">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -43,10 +43,76 @@ try { if ('scrollRestoration' in history) history.scrollRestoration = 'manual'; 
       "description": "A free tool that measures whether a hotel is truly luxury: 23 questions about facts a guest can observe, weighted the way luxury hospitality inspectors weight them, a 0-100 score with no reviews involved.",
       "applicationCategory": "TravelApplication",
       "operatingSystem": "Web",
-      "inLanguage": ["en", "it"],
+      "inLanguage": [
+        "en",
+        "it"
+      ],
       "isAccessibleForFree": true,
-      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "EUR" },
-      "author": { "@id": "https://index.mattiaferro.com/en/#mattiaferro" }
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "EUR"
+      },
+      "author": {
+        "@id": "https://index.mattiaferro.com/en/#mattiaferro"
+      },
+      "mentions": [
+        {
+          "@type": "Organization",
+          "name": "MICHELIN Guide",
+          "sameAs": "https://guide.michelin.com/"
+        },
+        {
+          "@type": "Organization",
+          "name": "Forbes Travel Guide",
+          "sameAs": "https://www.forbestravelguide.com/"
+        },
+        {
+          "@type": "Organization",
+          "name": "AAA",
+          "sameAs": "https://www.aaa.com/diamonds"
+        },
+        {
+          "@type": "Organization",
+          "name": "Hotelstars Union",
+          "sameAs": "https://www.hotelstars.eu/"
+        },
+        {
+          "@type": "Organization",
+          "name": "Leading Quality Assurance",
+          "sameAs": "https://lqagroup.com/"
+        }
+      ],
+      "citation": [
+        {
+          "@type": "Legislation",
+          "name": "Decreto 21 ottobre 2008, standard minimi nazionali per la classificazione alberghiera",
+          "url": "https://www.gazzettaufficiale.it/eli/id/2009/02/11/09A01326/sg"
+        },
+        {
+          "@type": "WebPage",
+          "name": "Forbes Travel Guide, About",
+          "url": "https://www.forbestravelguide.com/about"
+        },
+        {
+          "@type": "WebPage",
+          "name": "Hotelstars Union, FAQ",
+          "url": "https://www.hotelstars.eu/about-us/faq"
+        },
+        {
+          "@type": "WebPage",
+          "name": "LQA, Hotel Assessments",
+          "url": "https://lqagroup.com/hotel-assessments/"
+        }
+      ],
+      "isBasedOn": {
+        "@type": "Article",
+        "name": "Stelle e Chiavi Michelin: cosa certificano davvero",
+        "url": "https://www.mattiaferro.com/p/stelle-chiavi-michelin-lusso",
+        "author": {
+          "@id": "https://index.mattiaferro.com/#mattiaferro"
+        }
+      }
     },
     {
       "@type": "Person",
@@ -69,27 +135,74 @@ try { if ('scrollRestoration' in history) history.scrollRestoration = 'manual'; 
         {
           "@type": "Question",
           "name": "How can I tell if a hotel is truly luxury?",
-          "acceptedAnswer": { "@type": "Answer", "text": "Look at facts, not declared stars: they call you by name unprompted, something arrives before you ask, your room number is written down and never said out loud, the juice is squeezed to order. The Ferro Index asks 23 questions about these facts and turns them into a 0-100 score." }
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Look at facts, not declared stars: they call you by name unprompted, something arrives before you ask, your room number is written down and never said out loud, the juice is squeezed to order. The Ferro Index asks 23 questions about these facts and turns them into a 0-100 score."
+          }
         },
         {
           "@type": "Question",
           "name": "Why aren't reviews enough to judge a luxury hotel?",
-          "acceptedAnswer": { "@type": "Answer", "text": "Reviews average very different expectations: people who rarely travel reward surprise, people who travel constantly spot fake luxury in twenty minutes, don't complain and simply never come back. Online scores mix the two. A serious method asks only what happened to you, on observable facts." }
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Reviews average very different expectations: people who rarely travel reward surprise, people who travel constantly spot fake luxury in twenty minutes, don't complain and simply never come back. Online scores mix the two. A serious method asks only what happened to you, on observable facts."
+          }
         },
         {
           "@type": "Question",
           "name": "What matters most in a luxury hotel?",
-          "acceptedAnswer": { "@type": "Answer", "text": "Attention to guests: anticipating needs, recognition, preferences remembered across departments. In the Ferro Index it is worth 40 percent of the score on its own, the same proportion used by professional systems: Forbes Travel Guide gives service 75 percent of a five-star rating." }
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Attention to guests: anticipating needs, recognition, preferences remembered across departments. In the Ferro Index it is worth 40 percent of the score on its own, the same proportion used by professional systems: Forbes Travel Guide states that service carries 70 points out of 100 of the rating."
+          }
         },
         {
           "@type": "Question",
           "name": "What is the Ferro Index?",
-          "acceptedAnswer": { "@type": "Answer", "text": "A free tool created by Mattia Ferro, founder of Luxury Camp at Union Lido: 23 questions about facts observed during a stay, weighted across 7 pillars (attention 40, comfort 12, privacy 12, food 12, cleanliness 11, design 8, art 5), with detractors for false notes and thresholds that cannot be compensated. The result is a 0-100 score in four bands: Sanctuary, Excellent hotel, Expensive, Stage set." }
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "A free tool created by Mattia Ferro, founder of Luxury Camp at Union Lido: 23 questions about facts observed during a stay, weighted across 7 pillars (attention 40, comfort 12, privacy 12, food 12, cleanliness 11, design 8, art 5), with detractors for false notes and thresholds that cannot be compensated. The result is a 0-100 score in four bands: Sanctuary, Excellent hotel, Expensive, Stage set."
+          }
         },
         {
           "@type": "Question",
           "name": "Can I share my Ferro Index result?",
-          "acceptedAnswer": { "@type": "Answer", "text": "Yes: the score travels inside the link. Whoever receives it sees the same verdict, the 7-pillar radar and the detail, without retaking the test. Nothing is stored anywhere: the answers live only in the address you choose to send." }
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes: the score travels inside the link. Whoever receives it sees the same verdict, the 7-pillar radar and the detail, without retaking the test. Nothing is stored anywhere: the answers live only in the address you choose to send."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Who awards hotel stars in Italy?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "The regions and autonomous provinces do. The decree issued by the Presidency of the Council of Ministers on 21 October 2008, published on 11 February 2009, only sets national minimum standards for services and fittings. Article 5 hands the regions the rulebooks, the checks, the certificate and the ongoing supervision."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is the difference between a 4-star and a 5-star hotel?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "In the Italian national schedule attached to the 2008 decree: one more square metre in the double room, from 15 to 16, one more in the bathroom, from 4 to 5, one more foreign language, eight more hours of reception, parking for 80 per cent of rooms instead of 50, and a service lift. These are floors, and regions can raise them."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Do hotel stars mean the same thing in every country?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No. Over twenty European countries belong to the Hotelstars Union and classify their hotels on the basis of the same criteria. Outside it, each country sets its own. The Union itself notes that France and Portugal run national systems, Spain has seventeen on a regional basis, and Italy reaches twenty-one, one per region or autonomous province."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What are the Michelin Keys?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "The MICHELIN Guide's distinction for hotels, announced on 5 October 2023 and awarded for the first time in April 2024. Five stated criteria: architecture and interior design, quality and consistency of service, personality and character, coherence between experience and price, and contribution to the destination. The first worldwide selection, on 8 October 2025, awarded 2,457 hotels."
+          }
         }
       ]
     }
@@ -133,6 +246,7 @@ try { if ('scrollRestoration' in history) history.scrollRestoration = 'manual'; 
     <div class="menu-voci">
       <a href="#metodo">The method</a>
       <a href="#prova">The proof</a>
+      <a href="#classificazioni">Stars and Keys</a>
       <a href="#fonti">The sources</a>
       <a href="#domande">The questions</a>
       <a href="#autore">Who I am</a>
@@ -152,7 +266,7 @@ try { if ('scrollRestoration' in history) history.scrollRestoration = 'manual'; 
     <div class="inbreve">
       <p class="occhiello"><svg class="sez-segno" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.4"/><path d="M12 8.2v.2M12 11.2v4.6"/></svg>In short</p>
       <p>The Ferro Index measures whether a hotel is truly luxury without using reviews: 23 questions about facts you can observe during a stay, weighted the way professional inspectors weight them, a 0-100 score in four bands.</p>
-      <p>Attention to guests is worth 40 percent on its own. That is not a preference: Forbes Travel Guide gives service 75 percent of a five-star rating.</p>
+      <p>Attention to guests is worth 40 percent on its own. That is not a preference: Forbes Travel Guide states that service carries 70 points out of 100 of the rating.</p>
       <p>It was built by Mattia Ferro, founder of Luxury Camp at Union Lido, called an innovator of Italian high-end tourism by Forbes Life.</p>
     </div>
   </section>
@@ -202,12 +316,104 @@ try { if ('scrollRestoration' in history) history.scrollRestoration = 'manual'; 
     <p>The Ferro Index asks one thing only: what happened to you. If the facts are there, the luxury is there. If they're not, no average of strangers can put them there.</p>
   </section>
 
-  <section class="blocco chiara" id="fonti">
+  <section class="blocco chiara" id="classificazioni">
+    <p class="occhiello"><svg class="sez-segno" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4.4 14.12 9.49 19.61 9.93 15.42 13.51 16.7 18.87 12 16 7.3 18.87 8.58 13.51 4.39 9.93 9.88 9.49Z"/></svg>The ratings</p>
+    <hr class="filetto">
+    <h2>Stars, Diamonds, Keys: what they actually certify</h2>
+    <p>A star is not a verdict on your stay. It is an inventory of what a hotel owns.</p>
+    <p>Italian law uses that exact word. The decree of 21 October 2008 sets national minimum standards for «the services and the <strong>fittings</strong>» behind the star rating. Square metres, opening hours, languages, lifts: things you count once, and they stay counted.</p>
+    <p>Below, the systems are lined up along one axis only: how much they look at the inventory, and how much they look at the stay. Move through the list and the judgement stops counting what is there and starts watching what happens.</p>
+
+    <figure class="scala" aria-label="Rating systems, from those measuring fittings to those measuring the stay">
+      <p class="polo polo-a">What it owns</p>
+      <ol class="scala-lista">
+        <li class="scala-voce" style="--r:0">
+          <p class="scala-nome">Stars</p>
+          <p class="scala-cosa">Square metres, reception hours, languages spoken, lifts.</p>
+          <p class="scala-chi">Regional authorities, on declared requirements</p>
+        </li>
+        <li class="scala-voce" style="--r:1">
+          <p class="scala-nome">AAA Five Diamond</p>
+          <p class="scala-cosa">Property and service together, with requirements that rule you out before scoring starts.</p>
+          <p class="scala-chi">Annual inspection, unannounced</p>
+        </li>
+        <li class="scala-voce" style="--r:2">
+          <p class="scala-nome">Michelin Keys</p>
+          <p class="scala-cosa">Five criteria: design, consistency of service, character, price, destination.</p>
+          <p class="scala-chi">Anonymous inspectors, since 2024</p>
+        </li>
+        <li class="scala-voce" style="--r:3">
+          <p class="scala-nome">Forbes Travel Guide</p>
+          <p class="scala-cosa">Up to 900 standards. Service carries 70 points out of 100.</p>
+          <p class="scala-chi">Incognito stay, two nights minimum</p>
+        </li>
+        <li class="scala-voce" style="--r:4">
+          <p class="scala-nome">LQA</p>
+          <p class="scala-cosa">Over 1,000 standards, plus a reading of how the service felt.</p>
+          <p class="scala-chi">Anonymous assessor. The report goes to the hotel</p>
+        </li>
+        <li class="scala-voce qui" style="--r:5">
+          <p class="scala-nome">Ferro Index</p>
+          <p class="scala-cosa">Twenty-three things you watched happen during the stay.</p>
+          <p class="scala-chi">The guest, in three minutes</p>
+        </li>
+      </ol>
+      <p class="polo polo-b">What it does</p>
+      <figcaption>The order is a reading, not a ranking: every system does well the job it was built for, and stars remain the only one that guarantees safety and comparability for everyone. Worth noticing: the system that looks hardest at service, LQA, is also the only one whose result never reaches the guest.</figcaption>
+    </figure>
+
+    <h3>Who awards hotel stars, and who checks them</h3>
+    <p>In Italy, the regions do. Not the state. The decree issued by the Presidency of the Council of Ministers on 21 October 2008, published in the Gazzetta Ufficiale on 11 February 2009, only sets national minimum standards. Article 2 lets regions and autonomous provinces raise them. Article 5 hands those same regions the rulebooks, the checks, the certificate and the ongoing supervision.</p>
+    <p>There is a second clause almost nobody reads. Article 3 ties those standards to «the opening of new hotels or the renovation of existing ones», and for hotels already trading it adds that «any obligation to bring structural requirements up to standard is excluded». A historic hotel's star can rest on a building permit from thirty years ago.</p>
+
+    <h3>What is the difference between a four-star and a five-star hotel</h3>
+    <p>In the Italian national schedule, less than you would guess. The minimum goes from fifteen to sixteen square metres in a double room, from four to five in the bathroom, from two to three foreign languages, from sixteen to twenty-four hours of reception. Add parking for eighty per cent of the rooms instead of fifty, and a service lift.</p>
+    <p>These are floors, and they apply to new builds and renovations. Regions can ask for more. Between one star and five, the double room grows by two square metres, from fourteen to sixteen.</p>
+
+    <h3>Do hotel stars mean the same thing in every country</h3>
+    <p>They do not, and this is the part that surprises people outside Europe. Over twenty European countries belong to the Hotelstars Union and, in the Union's own words, «classify their hotels on the basis of the same criteria», with procedures aligned to HOTREC principles to guarantee «transparency and comparability of the stars awarded».</p>
+    <p>Outside that agreement, everyone sets their own. It is the Hotelstars Union itself that explains France and Portugal run national systems of their own, that Spain has seventeen on a regional basis, and that Italy reaches twenty-one, one per region or autonomous province, each carrying the force of law. Italy and France appear on the Union's list as observers. So a four-star in Trentino and a four-star in Sicily answer to two different rulebooks, and neither answers to the one in Vienna.</p>
+
+    <h3>What are the Michelin Keys</h3>
+    <p>The MICHELIN Guide's distinction for hotels, announced on 5 October 2023 and awarded for the first time in France in April 2024. Five stated criteria: architecture and interior design, quality and consistency of service, personality and character, coherence between the experience and the price, and what the hotel adds to its destination.</p>
+    <p>On 8 October 2025, in Paris, the first worldwide selection arrived: 2,457 hotels, of which 1,742 with one Key, 572 with two and 143 with three. Two of those five criteria watch consistency of service and character rather than inventory. That is why, among public systems, the Keys come closest to describing a stay.</p>
+
+    <h3>Is a five-star hotel automatically a luxury hotel</h3>
+    <p>No, and the word «luxury» never appears in the 2008 decree. Five stars certify fittings, checked when you apply and supervised afterwards. What happens between you and the people working there sits outside that list.</p>
+    <p>Whoever drafted that decree had seen it too. Article 6 set up «a rating system, linkable to the stars, allowing the measurement and evaluation of the quality of service provided to customers», voluntary for hotels. Article 8 left its parameters to a later implementing act, which does not appear to have been adopted.</p>
+
+    <h3>Who checks, how often, and for whom</h3>
+    <p>Stars are the one rating a guest can verify without help before booking. The others answer different questions.</p>
+    <div class="tabella-scorre">
+      <table class="pesi sistemi">
+        <caption class="sr-only">Comparison of hotel rating systems: who awards them, how they verify, whether the result is public, and where they apply.</caption>
+        <thead><tr><th scope="col">System</th><th scope="col">Who awards it</th><th scope="col">How it verifies</th><th scope="col">The result</th><th scope="col">Where it applies</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">Stars</th><td>Regions and autonomous provinces</td><td>Declared requirements, then periodic checks</td><td>Public</td><td>Italy, under regional rules</td></tr>
+          <tr><th scope="row">Hotelstars Union</th><td>The hotel associations of member countries</td><td>Shared criteria catalogue, 2025 to 2030</td><td>Public</td><td>Twenty-two European countries. Italy and France are listed as observers</td></tr>
+          <tr><th scope="row">AAA Five Diamond</th><td>AAA</td><td>Annual inspection, unannounced</td><td>Public</td><td>United States, Canada, Mexico, Costa Rica, Caribbean</td></tr>
+          <tr><th scope="row">Forbes Travel Guide</th><td>Forbes Travel Guide</td><td>Incognito stay, two nights minimum</td><td>Public</td><td>Worldwide selection</td></tr>
+          <tr><th scope="row">LQA</th><td>The hotel commissions it on itself</td><td>Usually one to three nights, incognito</td><td>The report goes to the hotel</td><td>Over 130 countries</td></tr>
+          <tr><th scope="row">Michelin Keys</th><td>The MICHELIN Guide</td><td>Anonymous inspectors</td><td>Public</td><td>Worldwide selection, since 2024</td></tr>
+          <tr class="qui"><th scope="row">Ferro Index</th><td>The guest who was there</td><td>Twenty-three questions about observed facts</td><td>Public and repeatable</td><td>Anywhere</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>Virtuoso is not in the table, because it is not a rating. It is a commercial network of travel agencies, and a hotel in its portfolio has signed a distribution agreement, not earned a score. I will say that from the inside: I am an independent travel advisor of Fora Travel, and the Virtuoso membership belongs to Fora.</p>
+
+    <h3>What I do, and what I do not</h3>
+    <p>The Ferro Index does not inspect anonymously. I have no inspectors, I buy no stays, I do not walk into other people's hotels with a notebook. I ask the person who was already there about twenty-three things they saw with their own eyes.</p>
+    <p>That is a limit, and I will name it before you do: a guest sees one stay, an inspector sees a hundred. In exchange, the guest was standing there at two in the morning, when the reception has twenty-four hours of cover on paper and one person awake.</p>
+    <p>You read the star before you book. You read the twenty-three facts while you are inside. This section grew out of a letter from July: <a href="https://www.mattiaferro.com/p/stelle-chiavi-michelin-lusso">why five stars should not be enough for you</a>, written in Italian.</p>
+    <p class="didascalia">Verified in August 2026 against primary sources: the <a href="https://www.gazzettaufficiale.it/eli/id/2009/02/11/09A01326/sg">Gazzetta Ufficiale</a>, the MICHELIN Guide, <a href="https://www.forbestravelguide.com/about">Forbes Travel Guide</a>, <a href="https://lqagroup.com/hotel-assessments/">LQA</a> and the <a href="https://www.hotelstars.eu/about-us/faq">Hotelstars Union</a>. Regional rules change, and these systems update their own numbers.</p>
+  </section>
+
+  <section class="blocco" id="fonti">
     <p class="occhiello"><svg class="sez-segno" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round"><path d="M4.4 5.6h6a2.4 2.4 0 0 1 2.4 2.4v11a2 2 0 0 0-2-2H4.4Z"/><path d="M19.6 5.6h-6a2.4 2.4 0 0 0-2.4 2.4v11a2 2 0 0 1 2-2h6.4Z"/></svg>The foundations</p>
     <hr class="filetto">
     <h2>What the method stands on</h2>
     <ul class="fonti">
-      <li><strong>Forbes Travel Guide</strong>: up to 900 standards verified incognito, one by one, yes or no. At four and five-star level, service is worth 75 percent, the property 25.</li>
+      <li><strong>Forbes Travel Guide</strong>: up to 900 standards verified incognito, one by one, yes or no. Forbes states that service carries 70 points out of 100 of the rating, the property 30.</li>
       <li><strong>LQA, Leading Quality Assurance</strong>: over 1,000 standards per stay, with a five-level emotional scale, from neglected to pampered.</li>
       <li><strong>Michelin Keys</strong>: five criteria, none negotiable. The Key only comes if even the weakest criterion stays excellent.</li>
       <li><strong>AAA Five Diamond</strong>: pass-or-fail requirements before any scoring begins. The top rating goes to just 0.4 percent of properties.</li>
@@ -525,6 +731,6 @@ window.FERRO = {
   }
 };
 </script>
-<script src="/assets/ferro.js?v=54"></script>
+<script src="/assets/ferro.js?v=56"></script>
 </body>
 </html>

@@ -816,6 +816,172 @@ ul.fonti { margin-top: 16px; list-style: none; }
 ul.fonti li { border-top: 1px solid var(--line); padding: 14px 0; font-size: 17.5px; }
 ul.fonti li:first-child { border-top: 0; }
 
+
+/* ---------- il binario delle classificazioni ----------
+   La forma è la tesi: si legge da sinistra a destra, e spostandosi il giudizio
+   smette di guardare l'inventario e comincia a guardare il soggiorno.
+   In colonna su schermo stretto, in riga sopra i 720px: nessuna delle due
+   disposizioni esce dalla colonna, quindi la pagina non scorre mai di lato. */
+
+.scala { margin-top: 30px; max-width: var(--larga); }
+
+/* I due poli sono elementi separati, non due pezzi della stessa riga: su
+   telefono l'elenco scende, quindi uno sta sopra e l'altro sotto; su schermo
+   largo l'elenco corre in riga e i poli tornano ai due capi. L'asse si legge
+   nella direzione giusta in entrambi i casi. */
+section.blocco .scala .polo {
+  margin-top: 0;
+  font-family: var(--sans);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--muted);
+  max-width: none;
+}
+section.blocco .scala .polo-b { margin-top: 18px; color: var(--brass); }
+
+/* la misura larga vince sul tetto che section.blocco impone a liste e paragrafi */
+section.blocco .scala ol { max-width: none; }
+section.blocco .scala p { margin-top: 3px; max-width: none; }
+
+.scala-lista {
+  list-style: none;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 26px 0;
+  margin-top: 16px;
+}
+.scala-voce { position: relative; padding-left: 24px; }
+
+/* il binario è fatto di segmenti, uno per voce: regge sia in colonna sia in riga */
+.scala-voce::after {
+  content: '';
+  position: absolute;
+  left: 0; top: 4px; bottom: -26px;
+  width: 1px;
+  background: var(--line);
+  transform-origin: top;
+}
+.scala-voce:last-child::after { bottom: auto; height: 22px; }
+.scala-voce::before {
+  content: '';
+  position: absolute;
+  left: -3.5px; top: 5px;
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--paper);
+  border: 1px solid var(--brass);
+  z-index: 1;
+}
+section.chiara .scala-voce::before { background: var(--card); }
+.scala-voce.qui::before { background: var(--brass); }
+
+section.blocco .scala .scala-nome {
+  margin-top: 0;
+  font-size: 19px;
+  font-weight: 700;
+  line-height: 1.24;
+}
+.scala-cosa { font-size: 16px; line-height: 1.4; }
+section.blocco .scala .scala-chi {
+  margin-top: 7px;
+  font-family: var(--sans);
+  font-size: 11.5px;
+  line-height: 1.4;
+  letter-spacing: 0.05em;
+  color: var(--muted);
+}
+.scala-voce.qui .scala-chi { color: var(--brass); font-weight: 600; }
+
+.scala figcaption {
+  margin-top: 24px;
+  font-family: var(--sans);
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: var(--muted);
+  max-width: var(--stretta);
+}
+
+@media (min-width: 720px) {
+  .scala {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    align-items: baseline;
+  }
+  section.blocco .scala .polo-a { grid-column: 1; grid-row: 1; }
+  section.blocco .scala .polo-b { grid-column: 2; grid-row: 1; margin-top: 0; text-align: right; }
+  .scala-lista { grid-column: 1 / -1; grid-row: 2; }
+  .scala figcaption { grid-column: 1 / -1; grid-row: 3; }
+
+  .scala-lista { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 34px 0; }
+  .scala-voce { padding: 20px 24px 0 0; }
+  .scala-voce::after, .scala-voce:last-child::after {
+    top: 0; left: 0; right: 0; bottom: auto;
+    width: auto; height: 1px;
+    transform-origin: left;
+  }
+  .scala-voce::before { left: -3.5px; top: -3.5px; }
+}
+@media (min-width: 1000px) {
+  .scala-lista { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+  .scala-voce { padding-right: 16px; }
+  .scala-cosa { font-size: 15px; }
+}
+
+/* L'entrata: il contenitore non sfuma, si muovono le voci una dopo l'altra.
+   Ogni stato nascosto vive solo dentro "armato", che il codice aggiunge solo
+   quando è certo di poterlo togliere: senza codice si vede tutto.
+   La cascata chiude a 5x80 + 120 + 450 = 970ms, dentro i 1400 dopo i quali
+   ferro.js toglie "armato" e gli stati nascosti smettono di valere. */
+.scala.reveal.armato { opacity: 1; transform: none; }
+.scala.armato .scala-voce { opacity: 0; transform: translateY(10px); }
+.scala.armato .scala-voce::after { transform: scaleY(0); }
+.scala.armato .scala-voce::before { opacity: 0; transform: scale(0.2); }
+
+.scala.armato.visto .scala-voce {
+  opacity: 1; transform: none;
+  transition: opacity 0.5s cubic-bezier(0.22, 0.61, 0.36, 1),
+              transform 0.5s cubic-bezier(0.22, 0.61, 0.36, 1);
+  transition-delay: calc(var(--r) * 80ms);
+}
+.scala.armato.visto .scala-voce::after {
+  transform: none;
+  transition: transform 0.6s cubic-bezier(0.22, 0.61, 0.36, 1);
+  transition-delay: calc(var(--r) * 80ms);
+}
+.scala.armato.visto .scala-voce::before {
+  opacity: 1; transform: none;
+  transition: opacity 0.4s ease, transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transition-delay: calc(var(--r) * 80ms + 120ms);
+}
+@media (min-width: 720px) {
+  .scala.armato .scala-voce::after { transform: scaleX(0); }
+}
+
+/* la tabella gemella: le intestazioni di riga in serif, come i nomi del binario */
+table.pesi.sistemi { min-width: 640px; }
+table.pesi.sistemi tbody th {
+  font-family: var(--serif);
+  font-size: 17.5px;
+  font-weight: 700;
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--ink);
+  border-top: 1px solid var(--line);
+  padding: 10px 12px 10px 0;
+  vertical-align: top;
+  white-space: normal;
+}
+table.pesi.sistemi tbody tr.qui th,
+table.pesi.sistemi tbody tr.qui td { background: var(--brass-soft); }
+
+.sr-only {
+  position: absolute; width: 1px; height: 1px;
+  padding: 0; margin: -1px; overflow: hidden;
+  clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+
 /* ---------- footer ---------- */
 
 footer {

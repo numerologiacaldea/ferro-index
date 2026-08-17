@@ -30,7 +30,7 @@ try { if ('scrollRestoration' in history) history.scrollRestoration = 'manual'; 
 <link rel="icon" href="/assets/favicon-32.png" sizes="32x32" type="image/png">
 <link rel="icon" href="/assets/favicon-16.png" sizes="16x16" type="image/png">
 <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
-<link rel="stylesheet" href="/assets/ferro.css?v=54">
+<link rel="stylesheet" href="/assets/ferro.css?v=56">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -43,10 +43,76 @@ try { if ('scrollRestoration' in history) history.scrollRestoration = 'manual'; 
       "description": "Strumento gratuito che misura se un hotel è davvero di lusso: 23 domande su fatti osservabili dall'ospite, pesati secondo gli standard dell'ospitalità di lusso, un punteggio da 0 a 100 senza usare le recensioni.",
       "applicationCategory": "TravelApplication",
       "operatingSystem": "Web",
-      "inLanguage": ["it", "en"],
+      "inLanguage": [
+        "it",
+        "en"
+      ],
       "isAccessibleForFree": true,
-      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "EUR" },
-      "author": { "@id": "https://index.mattiaferro.com/#mattiaferro" }
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "EUR"
+      },
+      "author": {
+        "@id": "https://index.mattiaferro.com/#mattiaferro"
+      },
+      "mentions": [
+        {
+          "@type": "Organization",
+          "name": "MICHELIN Guide",
+          "sameAs": "https://guide.michelin.com/"
+        },
+        {
+          "@type": "Organization",
+          "name": "Forbes Travel Guide",
+          "sameAs": "https://www.forbestravelguide.com/"
+        },
+        {
+          "@type": "Organization",
+          "name": "AAA",
+          "sameAs": "https://www.aaa.com/diamonds"
+        },
+        {
+          "@type": "Organization",
+          "name": "Hotelstars Union",
+          "sameAs": "https://www.hotelstars.eu/"
+        },
+        {
+          "@type": "Organization",
+          "name": "Leading Quality Assurance",
+          "sameAs": "https://lqagroup.com/"
+        }
+      ],
+      "citation": [
+        {
+          "@type": "Legislation",
+          "name": "Decreto 21 ottobre 2008, standard minimi nazionali per la classificazione alberghiera",
+          "url": "https://www.gazzettaufficiale.it/eli/id/2009/02/11/09A01326/sg"
+        },
+        {
+          "@type": "WebPage",
+          "name": "Forbes Travel Guide, About",
+          "url": "https://www.forbestravelguide.com/about"
+        },
+        {
+          "@type": "WebPage",
+          "name": "Hotelstars Union, FAQ",
+          "url": "https://www.hotelstars.eu/about-us/faq"
+        },
+        {
+          "@type": "WebPage",
+          "name": "LQA, Hotel Assessments",
+          "url": "https://lqagroup.com/hotel-assessments/"
+        }
+      ],
+      "isBasedOn": {
+        "@type": "Article",
+        "name": "Stelle e Chiavi Michelin: cosa certificano davvero",
+        "url": "https://www.mattiaferro.com/p/stelle-chiavi-michelin-lusso",
+        "author": {
+          "@id": "https://index.mattiaferro.com/#mattiaferro"
+        }
+      }
     },
     {
       "@type": "Person",
@@ -69,27 +135,74 @@ try { if ('scrollRestoration' in history) history.scrollRestoration = 'manual'; 
         {
           "@type": "Question",
           "name": "Come capisco se un hotel è davvero di lusso?",
-          "acceptedAnswer": { "@type": "Answer", "text": "Guarda i fatti, non le stelle dichiarate: ti chiamano per nome senza che sia tu a ricordarlo, qualcosa arriva prima che tu lo chieda, il numero della camera viene scritto e mai detto ad alta voce, la spremuta è fatta al momento. Il Ferro Index fa 23 domande su questi fatti e le trasforma in un punteggio da 0 a 100." }
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Guarda i fatti, non le stelle dichiarate: ti chiamano per nome senza che sia tu a ricordarlo, qualcosa arriva prima che tu lo chieda, il numero della camera viene scritto e mai detto ad alta voce, la spremuta è fatta al momento. Il Ferro Index fa 23 domande su questi fatti e le trasforma in un punteggio da 0 a 100."
+          }
         },
         {
           "@type": "Question",
           "name": "Perché le recensioni non bastano per giudicare un hotel di lusso?",
-          "acceptedAnswer": { "@type": "Answer", "text": "Le recensioni sono una media di aspettative diverse: chi viaggia poco premia lo stupore, chi viaggia molto riconosce il lusso falso in venti minuti, non si lamenta e non torna. Il punteggio online mescola i due. Un metodo serio chiede solo cosa è successo a te, su fatti osservabili." }
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Le recensioni sono una media di aspettative diverse: chi viaggia poco premia lo stupore, chi viaggia molto riconosce il lusso falso in venti minuti, non si lamenta e non torna. Il punteggio online mescola i due. Un metodo serio chiede solo cosa è successo a te, su fatti osservabili."
+          }
         },
         {
           "@type": "Question",
           "name": "Cosa conta di più in un hotel di lusso?",
-          "acceptedAnswer": { "@type": "Answer", "text": "Le attenzioni sugli ospiti: anticipazione dei bisogni, riconoscimento, memoria delle preferenze tra i reparti. Nel Ferro Index valgono da sole il 40 per cento del punteggio, la stessa proporzione dei sistemi professionali: Forbes Travel Guide assegna al servizio il 75 per cento del rating di un cinque stelle." }
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Le attenzioni sugli ospiti: anticipazione dei bisogni, riconoscimento, memoria delle preferenze tra i reparti. Nel Ferro Index valgono da sole il 40 per cento del punteggio, la stessa proporzione dei sistemi professionali: Forbes Travel Guide dichiara che il servizio pesa 70 punti su 100 del rating."
+          }
         },
         {
           "@type": "Question",
           "name": "Cos'è il Ferro Index?",
-          "acceptedAnswer": { "@type": "Answer", "text": "Uno strumento gratuito creato da Mattia Ferro, fondatore del Luxury Camp at Union Lido: 23 domande su fatti osservati durante un soggiorno, pesate su 7 pilastri (attenzioni 40, comfort 12, privacy 12, cibo 12, pulizia 11, design 8, arte 5), con detrattori per le stonature e soglie non compensabili. Il risultato è un punteggio 0-100 in quattro fasce: Santuario, Ottimo hotel, Costoso, Scenografia." }
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Uno strumento gratuito creato da Mattia Ferro, fondatore del Luxury Camp at Union Lido: 23 domande su fatti osservati durante un soggiorno, pesate su 7 pilastri (attenzioni 40, comfort 12, privacy 12, cibo 12, pulizia 11, design 8, arte 5), con detrattori per le stonature e soglie non compensabili. Il risultato è un punteggio 0-100 in quattro fasce: Santuario, Ottimo hotel, Costoso, Scenografia."
+          }
         },
         {
           "@type": "Question",
           "name": "Il risultato del Ferro Index si può condividere?",
-          "acceptedAnswer": { "@type": "Answer", "text": "Sì: il punteggio viaggia dentro il link. Chi lo riceve vede lo stesso verdetto, il radar dei 7 pilastri e il dettaglio, senza rifare il test e senza che nessun dato venga salvato da qualche parte: le risposte vivono solo nell'indirizzo." }
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Sì: il punteggio viaggia dentro il link. Chi lo riceve vede lo stesso verdetto, il radar dei 7 pilastri e il dettaglio, senza rifare il test e senza che nessun dato venga salvato da qualche parte: le risposte vivono solo nell'indirizzo."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Chi assegna le stelle a un hotel in Italia?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Le Regioni e le Province autonome. Il decreto della Presidenza del Consiglio del 21 ottobre 2008, in Gazzetta Ufficiale l'11 febbraio 2009, fissa solo gli standard minimi nazionali dei servizi e delle dotazioni. L'articolo 5 affida a Regioni e Province autonome i regolamenti, le verifiche, il rilascio dell'attestato e la sorveglianza periodica."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Che differenza c'è fra un hotel a 4 stelle e uno a 5 stelle?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Nel prospetto nazionale allegato al decreto del 2008: un metro quadro in più nella camera doppia, da 15 a 16, uno nel bagno, da 4 a 5, una lingua straniera in più, otto ore in più di reception, il parcheggio dal 50 all'80 per cento delle camere e un ascensore di servizio. Sono minimi, e le Regioni possono alzarli."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Cosa sono le Chiavi Michelin?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Una distinzione della Guida Michelin dedicata agli hotel, annunciata il 5 ottobre 2023 e assegnata per la prima volta nell'aprile 2024. I criteri dichiarati sono cinque: architettura e interior design, qualità e costanza del servizio, personalità e carattere, coerenza fra esperienza e prezzo, contributo all'esperienza nella destinazione. La prima selezione mondiale, l'8 ottobre 2025, ha premiato 2.457 hotel."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Un hotel a 5 stelle è automaticamente un hotel di lusso?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No. Le cinque stelle certificano dotazioni: metri quadri, ore di apertura della reception, lingue parlate, ascensori. Sono cose che un albergo possiede e che si verificano alla domanda. Come il personale si comporta con te durante il soggiorno resta fuori da quell'elenco, ed è quello che il Ferro Index misura con ventitré domande."
+          }
         }
       ]
     }
@@ -133,6 +246,7 @@ try { if ('scrollRestoration' in history) history.scrollRestoration = 'manual'; 
     <div class="menu-voci">
       <a href="#metodo">Il metodo</a>
       <a href="#prova">La prova</a>
+      <a href="#classificazioni">Stelle e Chiavi</a>
       <a href="#fonti">Le fonti</a>
       <a href="#domande">Le domande</a>
       <a href="#autore">Chi sono</a>
@@ -152,7 +266,7 @@ try { if ('scrollRestoration' in history) history.scrollRestoration = 'manual'; 
     <div class="inbreve">
       <p class="occhiello"><svg class="sez-segno" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.4"/><path d="M12 8.2v.2M12 11.2v4.6"/></svg>In breve</p>
       <p>Il Ferro Index misura se un hotel è davvero di lusso senza usare le recensioni: 23 domande su fatti osservabili durante il soggiorno, pesati come li pesano gli ispettori professionali, un punteggio da 0 a 100 in quattro fasce.</p>
-      <p>Le attenzioni sugli ospiti valgono da sole il 40 per cento. Non è una preferenza: Forbes Travel Guide assegna al servizio il 75 per cento del rating di un cinque stelle.</p>
+      <p>Le attenzioni sugli ospiti valgono da sole il 40 per cento. Non è una preferenza: Forbes Travel Guide dichiara che il servizio pesa 70 punti su 100 del rating.</p>
       <p>Lo ha costruito Mattia Ferro, fondatore del Luxury Camp at Union Lido, definito da Forbes Life «innovatore del turismo italiano di alta gamma».</p>
     </div>
   </section>
@@ -180,7 +294,7 @@ try { if ('scrollRestoration' in history) history.scrollRestoration = 'manual'; 
 
     <p class="didascalia">Ferro Index versione 1.0, agosto 2026. Ogni revisione cambia numero e resta scritta qui sotto.</p>
 
-    <p>I sette pilastri si sommano come li somma Forbes Travel Guide. Quello che dipende dalle persone, cioè attenzioni, privacy, cibo e pulizia, vale <strong>75 punti su 100</strong>. Quello che dipende dall'edificio, cioè comfort, design e arte, vale <strong>25</strong>. È la stessa proporzione con cui gli ispettori valutano un cinque stelle, portata su domande che un ospite può compilare da solo.</p>
+    <p>I sette pilastri si sommano come li sommano gli ispettori professionisti. Quello che dipende dalle persone, cioè attenzioni, privacy, cibo e pulizia, vale <strong>75 punti su 100</strong>. Quello che dipende dall'edificio, cioè comfort, design e arte, vale <strong>25</strong>. Forbes Travel Guide dichiara 70 punti su 100 al servizio: la proporzione qui è mia, l'ordine di grandezza è il loro.</p>
     <p>Dentro quel 75, le attenzioni si prendono 40 per una ragione sola: sono l'unica voce che nessun budget compra in un pomeriggio. Il marmo si ordina. Un servizio che anticipa si costruisce in anni. Il conto lo puoi rifare: 40 più 12 più 12 più 11 fa 75, e 12 più 8 più 5 fa 25.</p>
 
     <h3>Tre regole tengono onesto il punteggio</h3>
@@ -207,12 +321,100 @@ try { if ('scrollRestoration' in history) history.scrollRestoration = 'manual'; 
     <p>Il Ferro Index chiede una cosa sola: cosa è successo a te. Se i fatti ci sono, il lusso c'è. Se non ci sono, nessuna media di sconosciuti può metterceli.</p>
   </section>
 
-  <section class="blocco chiara" id="fonti">
+  <section class="blocco chiara" id="classificazioni">
+    <p class="occhiello"><svg class="sez-segno" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4.4 14.12 9.49 19.61 9.93 15.42 13.51 16.7 18.87 12 16 7.3 18.87 8.58 13.51 4.39 9.93 9.88 9.49Z"/></svg>Le classificazioni</p>
+    <hr class="filetto">
+    <h2>Stelle, Diamanti, Chiavi: cosa certificano davvero</h2>
+    <p>Una stella non è un giudizio sul soggiorno. È l'inventario di quello che un albergo possiede.</p>
+    <p>La legge italiana usa proprio quella parola. Il decreto del 21 ottobre 2008 fissa gli standard minimi nazionali «dei servizi e delle <strong>dotazioni</strong> per la classificazione degli alberghi». Metri quadri, ore di apertura, lingue, ascensori: cose che si contano una volta e restano lì.</p>
+    <p>Qui sotto i sistemi sono in fila per una cosa sola: quanto guardano l'inventario e quanto guardano il soggiorno. Scorrendo l'elenco, il giudizio smette di contare quello che c'è e comincia a guardare quello che succede.</p>
+
+    <figure class="scala" aria-label="I sistemi di classificazione, da quelli che misurano le dotazioni a quelli che misurano il soggiorno">
+      <p class="polo polo-a">Quello che possiede</p>
+      <ol class="scala-lista">
+        <li class="scala-voce" style="--r:0">
+          <p class="scala-nome">Stelle</p>
+          <p class="scala-cosa">Metri quadri, ore di apertura della reception, lingue parlate, ascensori.</p>
+          <p class="scala-chi">Le Regioni, sui requisiti dichiarati</p>
+        </li>
+        <li class="scala-voce" style="--r:1">
+          <p class="scala-nome">AAA Five Diamond</p>
+          <p class="scala-cosa">Struttura e servizio insieme, con requisiti che escludono prima ancora del punteggio.</p>
+          <p class="scala-chi">Ispezione annuale, non annunciata</p>
+        </li>
+        <li class="scala-voce" style="--r:2">
+          <p class="scala-nome">Chiavi Michelin</p>
+          <p class="scala-cosa">Cinque criteri: design, costanza del servizio, carattere, prezzo, destinazione.</p>
+          <p class="scala-chi">Ispettori in incognito, dal 2024</p>
+        </li>
+        <li class="scala-voce" style="--r:3">
+          <p class="scala-nome">Forbes Travel Guide</p>
+          <p class="scala-cosa">Fino a 900 standard. Il servizio pesa 70 punti su 100 del rating.</p>
+          <p class="scala-chi">Soggiorno in incognito, minimo due notti</p>
+        </li>
+        <li class="scala-voce" style="--r:4">
+          <p class="scala-nome">LQA</p>
+          <p class="scala-cosa">Oltre 1.000 standard, più un giudizio sull'impatto emotivo del servizio.</p>
+          <p class="scala-chi">Assessor in incognito. Il report lo riceve l'albergo</p>
+        </li>
+        <li class="scala-voce qui" style="--r:5">
+          <p class="scala-nome">Ferro Index</p>
+          <p class="scala-cosa">Ventitré fatti visti accadere durante il soggiorno.</p>
+          <p class="scala-chi">L'ospite, in tre minuti</p>
+        </li>
+      </ol>
+      <p class="polo polo-b">Quello che fa</p>
+      <figcaption>L'ordine è una lettura, non una classifica: ogni sistema fa bene il mestiere per cui è nato, e le stelle restano l'unico che garantisce sicurezza e comparabilità a tutti. Nota che il sistema che guarda più da vicino il servizio, LQA, è anche l'unico il cui risultato non arriva mai all'ospite.</figcaption>
+    </figure>
+
+    <h3>Chi assegna le stelle a un hotel in Italia</h3>
+    <p>Le Regioni, non lo Stato. Il decreto della Presidenza del Consiglio del 21 ottobre 2008, pubblicato in Gazzetta Ufficiale l'11 febbraio 2009, fissa soltanto gli standard minimi nazionali. L'articolo 2 lascia alle Regioni e alle Province autonome la facoltà di alzarli, e l'articolo 5 affida a loro i regolamenti, le verifiche, il rilascio dell'attestato e la sorveglianza periodica.</p>
+    <p>C'è un secondo passaggio che si legge di rado. L'articolo 3 riferisce quegli standard «all'apertura di nuovi alberghi o alla ristrutturazione di quelli esistenti», e per gli alberghi già in attività precisa che «è comunque escluso l'obbligo di adeguamento ai requisiti strutturali». La stella di un albergo storico può poggiare su un permesso edilizio di trent'anni fa.</p>
+
+    <h3>Che differenza c'è fra un quattro stelle e un cinque stelle</h3>
+    <p>Nel prospetto nazionale, meno di quanto immagini. Il minimo passa da quindici a sedici metri quadri nella camera doppia, da quattro a cinque nel bagno, da due a tre lingue straniere, da sedici a ventiquattro ore di reception. Si aggiungono il parcheggio per l'ottanta per cento delle camere invece che per il cinquanta, e un ascensore di servizio.</p>
+    <p>Sono minimi, e valgono per chi apre o ristruttura: le Regioni possono chiedere di più. Fra una stella e cinque stelle, la camera doppia cresce di due metri quadri, da quattordici a sedici.</p>
+
+    <h3>Cosa sono le Chiavi Michelin</h3>
+    <p>La distinzione che la Guida Michelin dedica agli hotel, annunciata il 5 ottobre 2023 e assegnata per la prima volta in Francia nell'aprile 2024. I criteri dichiarati sono cinque: architettura e interior design, qualità e costanza del servizio, personalità e carattere, coerenza fra esperienza e prezzo, contributo all'esperienza nella destinazione.</p>
+    <p>L'8 ottobre 2025, a Parigi, è arrivata la prima selezione mondiale: 2.457 hotel premiati, di cui 1.742 con una Chiave, 572 con due e 143 con tre. Di quei cinque criteri, due guardano la costanza del servizio e il carattere invece dell'inventario. È la ragione per cui, fra i sistemi pubblici, le Chiavi sono quelle che si avvicinano di più a un soggiorno.</p>
+
+    <h3>Un cinque stelle è automaticamente un hotel di lusso</h3>
+    <p>No, e la parola «lusso» nel decreto del 2008 non compare mai. Le cinque stelle certificano dotazioni, verificate alla domanda e poi sorvegliate. Quello che accade fra te e le persone che lavorano lì resta fuori da quell'elenco.</p>
+    <p>Lo aveva visto anche chi scrisse quel decreto. L'articolo 6 istituiva «un sistema di rating, associabile alle stelle, che consenta la misurazione e la valutazione della qualità del servizio reso ai clienti», ad adesione volontaria. L'articolo 8 ne rinviava i parametri a un atto successivo, che non risulta adottato.</p>
+
+    <h3>Chi controlla, ogni quanto, e per chi</h3>
+    <p>Le stelle sono la sola classificazione che un ospite può verificare da sé prima di prenotare. Le altre rispondono a domande diverse.</p>
+    <div class="tabella-scorre">
+      <table class="pesi sistemi">
+        <caption class="sr-only">Confronto fra i sistemi di classificazione alberghiera: chi li assegna, come verificano, se il risultato è pubblico e dove valgono.</caption>
+        <thead><tr><th scope="col">Sistema</th><th scope="col">Chi lo assegna</th><th scope="col">Come verifica</th><th scope="col">Il risultato</th><th scope="col">Dove vale</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">Stelle</th><td>Le Regioni e le Province autonome</td><td>Requisiti dichiarati, poi sorveglianza periodica</td><td>Pubblico</td><td>Italia, con regole regionali</td></tr>
+          <tr><th scope="row">Hotelstars Union</th><td>Le associazioni dei paesi aderenti</td><td>Catalogo di criteri comune 2025-2030</td><td>Pubblico</td><td>Ventidue paesi europei. Italia e Francia figurano fra gli osservatori</td></tr>
+          <tr><th scope="row">AAA Five Diamond</th><td>AAA</td><td>Ispezione annuale, non annunciata</td><td>Pubblico</td><td>Stati Uniti, Canada, Messico, Costa Rica, Caraibi</td></tr>
+          <tr><th scope="row">Forbes Travel Guide</th><td>Forbes Travel Guide</td><td>Soggiorno in incognito, minimo due notti</td><td>Pubblico</td><td>Selezione mondiale</td></tr>
+          <tr><th scope="row">LQA</th><td>Lo commissiona l'albergo su se stesso</td><td>Di norma una o tre notti in incognito</td><td>Il report lo riceve l'albergo</td><td>Oltre 130 paesi</td></tr>
+          <tr><th scope="row">Chiavi Michelin</th><td>Guida Michelin</td><td>Ispettori in incognito</td><td>Pubblico</td><td>Selezione mondiale, dal 2024</td></tr>
+          <tr class="qui"><th scope="row">Ferro Index</th><td>L'ospite che c'è stato</td><td>Ventitré domande su fatti osservati</td><td>Pubblico e ripetibile</td><td>Ovunque</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>Virtuoso non compare in tabella perché non è una classificazione: è una rete commerciale di agenzie di viaggio, e un hotel nel suo portafoglio ha stretto un accordo di distribuzione, non ricevuto un voto. Lo dico da dentro: sono independent travel advisor di Fora Travel, e la membership Virtuoso è di Fora.</p>
+
+    <h3>Quello che faccio io, e quello che non faccio</h3>
+    <p>Il Ferro Index non ispeziona in incognito. Non ho ispettori, non compro soggiorni, non entro negli alberghi degli altri con un taccuino. Chiedo a chi c'è già stato ventitré fatti che ha visto con i suoi occhi.</p>
+    <p>È un limite, e lo metto per primo: un ospite vede un soggiorno, un ispettore ne vede cento. In cambio l'ospite era lì alle due di notte, quando la reception ha ventiquattro ore di apertura sulla carta e una persona sola in piedi.</p>
+    <p>La stella la leggi prima di prenotare. I ventitré fatti li leggi mentre sei dentro. Questa sezione nasce da una lettera di luglio: <a href="https://www.mattiaferro.com/p/stelle-chiavi-michelin-lusso">perché cinque stelle non dovrebbero bastarti</a>.</p>
+    <p class="didascalia">Dati verificati ad agosto 2026 sulle fonti primarie: <a href="https://www.gazzettaufficiale.it/eli/id/2009/02/11/09A01326/sg">Gazzetta Ufficiale</a>, Guida Michelin, <a href="https://www.forbestravelguide.com/about">Forbes Travel Guide</a>, <a href="https://lqagroup.com/hotel-assessments/">LQA</a>, <a href="https://www.hotelstars.eu/about-us/faq">Hotelstars Union</a>. Le norme regionali cambiano e i sistemi aggiornano i propri numeri.</p>
+  </section>
+
+  <section class="blocco" id="fonti">
     <p class="occhiello"><svg class="sez-segno" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round"><path d="M4.4 5.6h6a2.4 2.4 0 0 1 2.4 2.4v11a2 2 0 0 0-2-2H4.4Z"/><path d="M19.6 5.6h-6a2.4 2.4 0 0 0-2.4 2.4v11a2 2 0 0 1 2-2h6.4Z"/></svg>Le fondamenta</p>
     <hr class="filetto">
     <h2>Su cosa poggia il metodo</h2>
     <ul class="fonti">
-      <li><strong>Forbes Travel Guide</strong>: fino a 900 standard verificati in incognito, uno per uno, sì o no. Ai livelli quattro e cinque stelle il servizio pesa il 75 per cento, la struttura il 25.</li>
+      <li><strong>Forbes Travel Guide</strong>: fino a 900 standard verificati in incognito, uno per uno, sì o no. Forbes dichiara che il servizio pesa 70 punti su 100 del rating, la struttura 30.</li>
       <li><strong>LQA, Leading Quality Assurance</strong>: oltre 1.000 standard per soggiorno, con una scala emozionale a cinque livelli, da trascurato a coccolato.</li>
       <li><strong>Michelin Keys</strong>: cinque criteri, nessuno negoziabile. La Chiave arriva solo se anche il criterio più debole resta eccellente.</li>
       <li><strong>AAA Five Diamond</strong>: requisiti eliminatori prima del punteggio. La fascia più alta tocca lo 0,4 per cento delle strutture.</li>
@@ -531,6 +733,6 @@ window.FERRO = {
   }
 };
 </script>
-<script src="/assets/ferro.js?v=54"></script>
+<script src="/assets/ferro.js?v=56"></script>
 </body>
 </html>

@@ -54,10 +54,21 @@
         /* la terza via vale meta': il fatto di mezzo esiste (il led solo, il
            ronzio di fondo) e il binario secco lo buttava nello stesso No
            dell'insegna del bar in faccia. Il peso resta nel pilastro.
-           REGOLA IRREVERSIBILE: nel link la cifra 2 significa meta' in ynp ed
-           esclusione in yn3. Una domanda pubblicata con terza opzione non deve
-           mai piu' cambiare tipo, o i link gia' condivisi cambierebbero
-           punteggio in silenzio. */
+           REGOLA IRREVERSIBILE: nel link la cifra 2 significa meta' in ynp
+           (e in ynpx) ed esclusione in yn3. Una domanda pubblicata con terza
+           opzione non deve mai piu' cambiare tipo, o i link gia' condivisi
+           cambierebbero punteggio in silenzio. */
+        per[q.pillar].max += q.w;
+        if (a === 1) per[q.pillar].earned += q.w;
+        else if (a === 2) per[q.pillar].earned += q.w / 2;
+      } else if (q.type === 'ynpx') {
+        /* come ynp, con una quarta via (cifra 3) che ESCLUDE la domanda dal
+           conto, come il 2 delle yn3: serve alle risposte che parlano
+           dell'ospite e non dell'hotel ("io dormo ovunque"). Le cifre 0, 1 e
+           2 mantengono esattamente il significato di ynp, quindi promuovere
+           una ynp a ynpx non cambia il punteggio di nessun link esistente.
+           Vale la stessa regola irreversibile: mai tornare indietro. */
+        if (a === 3) return;
         per[q.pillar].max += q.w;
         if (a === 1) per[q.pillar].earned += q.w;
         else if (a === 2) per[q.pillar].earned += q.w / 2;
@@ -137,6 +148,7 @@
         if (q.type === 'yn' && v > 1) return null;
         if (q.type === 'yn3' && v > 2) return null;
         if (q.type === 'ynp' && v > 2) return null;
+        if (q.type === 'ynpx' && v > 3) return null;
         if (q.type === 'scale' && v > 5) return null;
         answers[q.id] = v;
       }

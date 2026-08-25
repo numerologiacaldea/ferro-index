@@ -987,6 +987,23 @@ table.pesi.sistemi tbody tr.qui td { background: var(--brass-soft); }
   clip: rect(0 0 0 0); white-space: nowrap; border: 0;
 }
 
+/* La firma dell'opera e la licenza: due righe che devono leggersi come
+   dichiarazioni, non come note a piè di pagina. Restano piccole ma non
+   sbiadite, perché sono l'unico punto in cui il sito dice chi è l'autore. */
+.firma {
+  font-family: var(--sans);
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--muted);
+  max-width: var(--stretta);
+}
+section.blocco p.licenza {
+  margin-top: 18px;
+  padding-top: 16px;
+  border-top: 1px solid var(--line);
+  max-width: var(--stretta);
+}
+
 /* ---------- footer ---------- */
 
 footer {

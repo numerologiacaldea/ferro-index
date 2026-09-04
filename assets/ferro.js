@@ -156,10 +156,26 @@
     return answers;
   }
 
+  /* Il nome della struttura e la motivazione viaggiano nel link, e si mostrano,
+     soltanto dalla fascia Santuario in su. È la regola del Registro, «i punteggi
+     sotto quota 85 non compaiono mai con il nome», applicata anche al
+     collegamento condiviso: prima valeva solo per la candidatura, e un 31 su
+     100 con il nome dell'albergo poteva girare con il marchio in testa. Sotto
+     la soglia il link porta le sole risposte, e la pagina non offre il campo
+     del nome. La cifra è una sola, qui, e vale per tutti e tre i punti. */
+  var SOGLIA_NOME = 85;
+
+  function nomeAmmesso() {
+    if (!state.answers || !Object.keys(state.answers).length) return false;
+    return computeResult(state.answers).score >= SOGLIA_NOME;
+  }
+
   function shareQuery(rcode) {
     var q = '?r=' + rcode;
-    if (state.meta.h) q += '&h=' + encodeURIComponent(state.meta.h);
-    if (state.meta.n) q += '&n=' + encodeURIComponent(state.meta.n);
+    if (nomeAmmesso()) {
+      if (state.meta.h) q += '&h=' + encodeURIComponent(state.meta.h);
+      if (state.meta.n) q += '&n=' + encodeURIComponent(state.meta.n);
+    }
     return q;
   }
 
@@ -434,7 +450,9 @@
       quick.type = 'button';
       quick.style.marginTop = '24px';
       quick.addEventListener('click', function () {
-        if (pub) { pub.scrollIntoView({ block: 'center' }); }
+        /* sotto quota 85 il blocco del nome non c'è: si va ai pulsanti di condivisione */
+        var meta = pub || act;
+        if (meta) { meta.scrollIntoView({ block: 'center' }); }
       });
       head.appendChild(quick);
     }
@@ -480,8 +498,10 @@
     function currentURL() { return F.baseURL + '/' + shareQuery(rcode); }
     function currentText() { return F.ui.shareText(res.score, res.band.label, state.meta.h); }
 
-    if (!isShared) {
-      /* nome e motivazione: entrano nel link, li pubblica chi condivide */
+    if (!isShared && res.score >= SOGLIA_NOME) {
+      /* nome e motivazione: entrano nel link, li pubblica chi condivide.
+         Solo da Santuario in su: sotto, il campo non compare e il link
+         viaggia senza nome (vedi SOGLIA_NOME) */
       pub = el('div', 'pub-block');
       pub.appendChild(el('p', 'occhiello', F.ui.pubOcchiello));
       pub.appendChild(el('h3', 'pub-title', F.ui.pubTitolo));
@@ -520,67 +540,66 @@
       pub.appendChild(inNote);
       azioni.appendChild(pub);
 
-      /* Registro dei Santuari: si candida solo la fascia più alta */
-      if (res.score >= 85) {
-        var reg = el('div', 'reg-block');
-        reg.appendChild(el('p', 'occhiello', F.ui.reg.occhiello));
-        reg.appendChild(el('h3', 'pub-title', F.ui.reg.titolo));
-        reg.appendChild(el('p', 'pub-testo', F.ui.reg.testo));
+      /* Registro dei Santuari: si candida solo la fascia più alta, che è la
+         stessa soglia del nome: qui dentro il punteggio è già da Santuario */
+      var reg = el('div', 'reg-block');
+      reg.appendChild(el('p', 'occhiello', F.ui.reg.occhiello));
+      reg.appendChild(el('h3', 'pub-title', F.ui.reg.titolo));
+      reg.appendChild(el('p', 'pub-testo', F.ui.reg.testo));
 
-        var form = document.createElement('form');
-        form.action = 'https://formsubmit.co/vimanaholidays@gmail.com';
-        form.method = 'POST';
+      var form = document.createElement('form');
+      form.action = 'https://formsubmit.co/vimanaholidays@gmail.com';
+      form.method = 'POST';
 
-        function hiddenField(name, value) {
-          var h = document.createElement('input');
-          h.type = 'hidden'; h.name = name; h.value = value;
-          form.appendChild(h);
-          return h;
-        }
-        hiddenField('_subject', 'Candidatura Registro dei Santuari - Ferro Index');
-        hiddenField('_captcha', 'false');
-        hiddenField('_next', F.registroURL + '?grazie=1');
-        var hLink = hiddenField('link', '');
-        hiddenField('lingua', document.documentElement.lang);
-
-        var rHotel = document.createElement('input');
-        rHotel.type = 'text'; rHotel.name = 'hotel'; rHotel.required = true;
-        rHotel.className = 'pub-input'; rHotel.maxLength = 60;
-        rHotel.placeholder = F.ui.reg.hotel;
-        rHotel.value = state.meta.h;
-
-        var rMail = document.createElement('input');
-        rMail.type = 'email'; rMail.name = 'email'; rMail.required = true;
-        rMail.className = 'pub-input';
-        rMail.placeholder = F.ui.reg.email || '';
-
-        var rWhy = document.createElement('textarea');
-        rWhy.name = 'motivazione'; rWhy.required = true;
-        rWhy.className = 'pub-input'; rWhy.maxLength = 600; rWhy.rows = 3;
-        rWhy.placeholder = F.ui.reg.motivazione;
-        rWhy.value = state.meta.n;
-
-        var rSend = el('button', 'btn', F.ui.reg.invia);
-        rSend.type = 'submit';
-        rSend.style.marginTop = '14px';
-
-        form.addEventListener('submit', function () {
-          if (!state.meta.h && rHotel.value.trim()) {
-            state.meta.h = rHotel.value.trim();
-          }
-          hLink.value = currentURL();
-        });
-
-        form.appendChild(rHotel);
-        form.appendChild(rMail);
-        form.appendChild(rWhy);
-        form.appendChild(rSend);
-        reg.appendChild(form);
-        reg.appendChild(el('p', 'micro', F.ui.reg.nota));
-        azioni.appendChild(reg);
-      } else {
-        azioni.appendChild(el('p', 'reg-hint micro', F.ui.reg.solo));
+      function hiddenField(name, value) {
+        var h = document.createElement('input');
+        h.type = 'hidden'; h.name = name; h.value = value;
+        form.appendChild(h);
+        return h;
       }
+      hiddenField('_subject', 'Candidatura Registro dei Santuari - Ferro Index');
+      hiddenField('_captcha', 'false');
+      hiddenField('_next', F.registroURL + '?grazie=1');
+      var hLink = hiddenField('link', '');
+      hiddenField('lingua', document.documentElement.lang);
+
+      var rHotel = document.createElement('input');
+      rHotel.type = 'text'; rHotel.name = 'hotel'; rHotel.required = true;
+      rHotel.className = 'pub-input'; rHotel.maxLength = 60;
+      rHotel.placeholder = F.ui.reg.hotel;
+      rHotel.value = state.meta.h;
+
+      var rMail = document.createElement('input');
+      rMail.type = 'email'; rMail.name = 'email'; rMail.required = true;
+      rMail.className = 'pub-input';
+      rMail.placeholder = F.ui.reg.email || '';
+
+      var rWhy = document.createElement('textarea');
+      rWhy.name = 'motivazione'; rWhy.required = true;
+      rWhy.className = 'pub-input'; rWhy.maxLength = 600; rWhy.rows = 3;
+      rWhy.placeholder = F.ui.reg.motivazione;
+      rWhy.value = state.meta.n;
+
+      var rSend = el('button', 'btn', F.ui.reg.invia);
+      rSend.type = 'submit';
+      rSend.style.marginTop = '14px';
+
+      form.addEventListener('submit', function () {
+        if (!state.meta.h && rHotel.value.trim()) {
+          state.meta.h = rHotel.value.trim();
+        }
+        hLink.value = currentURL();
+      });
+
+      form.appendChild(rHotel);
+      form.appendChild(rMail);
+      form.appendChild(rWhy);
+      form.appendChild(rSend);
+      reg.appendChild(form);
+      reg.appendChild(el('p', 'micro', F.ui.reg.nota));
+      azioni.appendChild(reg);
+    } else if (!isShared) {
+      azioni.appendChild(el('p', 'reg-hint micro', F.ui.reg.solo));
     }
 
     var act = el('div', 'res-actions');
@@ -1266,10 +1285,18 @@
 
   if (shared) {
     state.answers = shared;
+    var esito = computeResult(shared);
+    /* sotto quota 85 nome e motivazione non si mostrano anche se il link li
+       porta: vale per i link emessi prima di questa regola e per quelli
+       scritti a mano. L'indirizzo viene ripulito, così non li rilancia. */
+    var conNome = esito.score >= SOGLIA_NOME;
     state.meta = {
-      h: (params.get('h') || '').slice(0, 60),
-      n: (params.get('n') || '').slice(0, 280)
+      h: conNome ? (params.get('h') || '').slice(0, 60) : '',
+      n: conNome ? (params.get('n') || '').slice(0, 280) : ''
     };
-    renderResult(computeResult(shared), params.get('r'), true);
+    if (!conNome && (params.has('h') || params.has('n'))) {
+      setURL(location.pathname + shareQuery(params.get('r')));
+    }
+    renderResult(esito, params.get('r'), true);
   }
 })();

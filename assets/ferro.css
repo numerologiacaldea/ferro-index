@@ -1010,6 +1010,12 @@ table.pesi.sistemi tbody tr.qui td { background: var(--brass-soft); }
   vertical-align: super;
   margin-left: 0.06em;
 }
+/* Negli occhielli (11 px) e nel menu (12,5 px) il glifo, che e' gia' in apice nel font,
+   a 0.6em diventava un puntino: qui resta sulla linea di base e piu' grande.
+   L'occhiello e' un contenitore flex: il testo va tenuto dentro un unico span,
+   altrimenti il ™ diventa un elemento flex a se', con il gap prima e dopo. */
+.occhiello .tm, .menu-marchio .tm { font-size: 0.82em; vertical-align: baseline; }
+.scala-voce.qui .scala-nome { white-space: nowrap; }
 .marchio-nota { margin-top: 8px; }
 
 section.blocco p.licenza {

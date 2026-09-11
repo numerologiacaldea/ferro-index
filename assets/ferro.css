@@ -1000,6 +1000,18 @@ table.pesi.sistemi tbody tr.qui td { background: var(--brass-soft); }
   color: var(--muted);
   max-width: var(--stretta);
 }
+/* Segno di marchio. Domanda di marchio dell'Unione europea n. 019420443, depositata il
+   10 settembre 2026 da Vimana Holidays GmbH: fino alla registrazione si scrive ™, mai ®. */
+.tm {
+  font-size: 0.6em;
+  font-weight: 500;
+  line-height: 0;
+  letter-spacing: 0;
+  vertical-align: super;
+  margin-left: 0.06em;
+}
+.marchio-nota { margin-top: 8px; }
+
 section.blocco p.licenza {
   margin-top: 18px;
   padding-top: 16px;

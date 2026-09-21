@@ -72,6 +72,18 @@
         per[q.pillar].max += q.w;
         if (a === 1) per[q.pillar].earned += q.w;
         else if (a === 2) per[q.pillar].earned += q.w / 2;
+      } else if (q.type === 'yn0') {
+        /* come yn, con una terza via (cifra 2) che vale ZERO e resta nel conto:
+           «non ci ho fatto caso». Si esclude una domanda solo quando l'hotel
+           non ha avuto l'occasione, come nelle yn3 (nessuna preferenza
+           espressa, nessun problema avuto); qui l'occasione c'era sempre, e un
+           riconoscimento che l'ospite non ha sentito, per la definizione stessa
+           dell'indice, non e' avvenuto. Le cifre 0 e 1 hanno esattamente il
+           significato di yn, quindi promuovere una yn a yn0 non cambia il
+           punteggio di nessun link esistente. Vale la regola irreversibile:
+           una domanda pubblicata come yn0 non torna mai indietro. Versione 1.1. */
+        per[q.pillar].max += q.w;
+        if (a === 1) per[q.pillar].earned += q.w;
       } else if (q.type === 'scale') {
         per[q.pillar].max += q.w;
         if (a >= 1) per[q.pillar].earned += q.w * (Math.min(a, 5) - 1) / 4;
@@ -149,6 +161,7 @@
         if (q.type === 'yn3' && v > 2) return null;
         if (q.type === 'ynp' && v > 2) return null;
         if (q.type === 'ynpx' && v > 3) return null;
+        if (q.type === 'yn0' && v > 2) return null;
         if (q.type === 'scale' && v > 5) return null;
         answers[q.id] = v;
       }

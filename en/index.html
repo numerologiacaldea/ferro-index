@@ -30,7 +30,7 @@ try { if ('scrollRestoration' in history) history.scrollRestoration = 'manual'; 
 <link rel="icon" href="/assets/favicon-32.png" sizes="32x32" type="image/png">
 <link rel="icon" href="/assets/favicon-16.png" sizes="16x16" type="image/png">
 <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
-<link rel="stylesheet" href="/assets/ferro.css?v=70">
+<link rel="stylesheet" href="/assets/ferro.css?v=71">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -114,7 +114,7 @@ try { if ('scrollRestoration' in history) history.scrollRestoration = 'manual'; 
         }
       },
       "license": "https://creativecommons.org/licenses/by/4.0/",
-      "softwareVersion": "1.0",
+      "softwareVersion": "1.1",
       "creator": {
         "@id": "https://index.mattiaferro.com/#mattiaferro"
       }
@@ -303,7 +303,9 @@ try { if ('scrollRestoration' in history) history.scrollRestoration = 'manual'; 
         <tr><td>Art</td><td class="num">5</td><td>Works chosen with care, not fillers</td></tr>
       </tbody>
     </table>
-    <p class="didascalia">Ferro Index version 1.0, August 2026. Every revision changes the number and is recorded below.</p>
+    <p class="didascalia">Ferro Index version 1.1, September 2026. Every revision changes the number and is recorded below.</p>
+    <p class="didascalia">1.1, 21 September 2026. Name question: "elsewhere on the property" instead of "in every area", matching what its note already said; new answer "I didn't notice", worth zero like No. Weights, thresholds and bands unchanged: results already shared don't change.</p>
+    <p class="didascalia">1.0, 16 August 2026. First public version. Until 3 September the questions' wording and answers were refined without changing the number; pillars, weights, thresholds and bands never changed. From now on, every revision gets its own.</p>
 
     <p>The seven pillars are added up the way professional inspectors add them up:</p>
     <ul class="elenco-metodo">
@@ -473,12 +475,12 @@ try { if ('scrollRestoration' in history) history.scrollRestoration = 'manual'; 
     <h2>The twenty-three questions</h2>
     <p>The tool works out the final score, but the questions are there for anyone who wants to use them: whether you're a manager who wants to measure their own hotel before a guest does, a journalist who wants to understand the tool before writing about it, or a curious reader who simply wants to know more.</p>
     <p>Copy them, discuss them, quote them, always citing the source, and if one doesn't convince you, write to me and we'll talk it through.</p>
-    <p class="licenza micro">The twenty-three questions and the description of the method are released under a <a href="https://creativecommons.org/licenses/by/4.0/" rel="license">Creative Commons Attribution 4.0 International</a> licence. You can copy, adapt and reuse them, including commercially, by crediting "Ferro Index, a method by Mattia Ferro, version 1.0" and including the link index.mattiaferro.com.<br>Please note: the name "Ferro Index" stays outside the licence.</p>
+    <p class="licenza micro">The twenty-three questions and the description of the method are released under a <a href="https://creativecommons.org/licenses/by/4.0/" rel="license">Creative Commons Attribution 4.0 International</a> licence. You can copy, adapt and reuse them, including commercially, by crediting "Ferro Index, a method by Mattia Ferro, version 1.1" and including the link index.mattiaferro.com.<br>Please note: the name "Ferro Index" stays outside the licence.</p>
     <div class="tabella-scorre"><table class="pesi domande">
       <thead><tr><th>Question</th><th>Pillar</th><th>Weight</th></tr></thead>
       <tbody>
       <tr><td>The first greeting.</td><td>Attention</td><td class="num">8 points</td></tr>
-      <tr><td>After check-in, did they remember your name and use it in every area of the property?</td><td>Attention</td><td class="num">8 points</td></tr>
+      <tr><td>After check-in, did they remember your name and use it elsewhere on the property?</td><td>Attention</td><td class="num">8 points</td></tr>
       <tr><td>At check-in, was your room number said out loud, or was it given to you in writing?</td><td>Privacy</td><td class="num">4 points</td></tr>
       <tr><td>At night, was the room totally dark?</td><td>Comfort</td><td class="num">4 points</td></tr>
       <tr><td>Was silence the main feature of the room?</td><td>Comfort</td><td class="num">4 points</td></tr>
@@ -531,7 +533,7 @@ try { if ('scrollRestoration' in history) history.scrollRestoration = 'manual'; 
   <div class="wrap">
     <p>The Ferro Index is a method by Mattia Ferro. No property pays to be assessed and no review enters into a score. This site uses no cookies and tracks nothing: your answers stay in your browser.</p>
     <p>Mattia Ferro is an independent travel advisor of Fora Travel, New York. Bookings never touch the score.</p>
-    <p class="firma">The Ferro Index is a work by Mattia Ferro. Method, seven pillars, weights and twenty-three questions: Mattia Ferro, version 1.0, August 2026. Every revision gets a new number.</p>
+    <p class="firma">The Ferro Index is a work by Mattia Ferro. Method, seven pillars, weights and twenty-three questions: Mattia Ferro, version 1.1, September 2026. Every revision gets a new number.</p>
     <p class="firma marchio-nota">Ferro Index™ is a trade mark of Vimana Holidays GmbH. European Union trade mark application No 019420443, filed 10 September 2026.</p>
     <p>© 2026 Vimana Holidays GmbH · <a href="/en/sanctuaries/">Sanctuary Register</a> · <a href="https://mattiaferro.com">mattiaferro.com</a> · <a href="https://travel.mattiaferro.com">travel.mattiaferro.com</a> · <a href="https://luxurycamp.it">luxurycamp.it</a></p>
   </div>
@@ -581,10 +583,10 @@ window.FERRO = {
       text: 'The first greeting.',
       note: 'The first person from the property who welcomed you, whoever it was: how did they do it?',
       options: ['Coldly: I was processed as if I were paperwork', 'Correctly, but nothing more', 'Politely', 'Warmly: a sincere smile, not a routine one', 'They were genuinely glad to see me: they stopped what they were doing to talk to me'] },
-    { id: 'a1', pillar: 'attenzioni', w: 8, type: 'yn', section: 'The arrival',
-      text: 'After check-in, did they remember your name and use it in every area of the property?',
+    { id: 'a1', pillar: 'attenzioni', w: 8, type: 'yn0', section: 'The arrival',
+      text: 'After check-in, did they remember your name and use it elsewhere on the property?',
       note: 'At the bar, at the restaurant, at the spa, did the property\'s staff know your name even though you had never introduced yourself to them directly? Check-in itself doesn\'t count, since your name is written right in front of them. Once is enough. If there was no contact at all beyond check-in, the answer is no: recognition is exactly what was missing.',
-      options: [{ t: 'Yes, they used my name', v: 1 }, { t: 'No, I had to remind them', v: 0 }] },
+      options: [{ t: 'Yes, they used my name', v: 1 }, { t: 'No, they didn\'t use my name', v: 0 }, { t: 'I didn\'t notice', v: 2 }] },
     { id: 'p1', pillar: 'privacy', w: 4, type: 'yn', section: 'The arrival',
       text: 'At check-in, was your room number said out loud, or was it given to you in writing?',
       note: 'In the best hotels it\'s a privacy rule: the number is never spoken if others can hear it.',
@@ -760,6 +762,6 @@ window.FERRO = {
   }
 };
 </script>
-<script src="/assets/ferro.js?v=70"></script>
+<script src="/assets/ferro.js?v=71"></script>
 </body>
 </html>

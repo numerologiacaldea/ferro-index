@@ -13,12 +13,17 @@
   var progress = document.getElementById('progress');
   var announcer = document.getElementById('announce');
   var startBtns = document.querySelectorAll('[data-start]');
+  var lingua = document.querySelector('a.lang');
+  var aggiornaStriscia = function () {};
+  var linguaHref = lingua ? lingua.getAttribute('href') : '';
 
   var state = { i: -1, answers: {}, meta: { h: '', n: '' } };
   var renderedAt = 0;
 
   function setURL(u) {
-    try { if (history.replaceState) history.replaceState(null, '', u); } catch (e) {}
+    /* si conserva lo stato della voce: il verdetto resta la voce del test, e
+       «Rifai il test» può tornare indietro invece di impilarne una morta */
+    try { if (history.replaceState) history.replaceState(history.state, '', u); } catch (e) {}
   }
   function pushURL(st) {
     try { if (history.pushState) history.pushState(st, ''); } catch (e) {}
@@ -218,11 +223,14 @@
     var s = el('div', 'screen');
     s.appendChild(el('p', 'occhiello', q.section));
     s.appendChild(el('p', 'q-count', (i + 1) + ' / ' + F.questions.length));
-    s.appendChild(el('h2', 'q-text', q.text));
+    var titolo = el('h2', 'q-text', q.text);
+    titolo.id = 'q-titolo';
+    s.appendChild(titolo);
     if (q.note) s.appendChild(el('p', 'q-note', q.note));
 
     var box = el('div', 'answers');
     box.setAttribute('role', 'group');
+    box.setAttribute('aria-labelledby', 'q-titolo');
 
     if (q.type === 'flags') {
       var chosen = (state.answers.flags || []).slice();
@@ -231,7 +239,7 @@
         state.answers.flags = chosen.slice().sort();
       }
       q.options.forEach(function (opt, idx) {
-        var b = el('button', 'answer', opt + '<span class="k">' + (idx + 1) + '</span>');
+        var b = el('button', 'answer', opt + '<span class="k" aria-hidden="true">' + (idx + 1) + '</span>');
         b.type = 'button';
         var on = chosen.indexOf(idx) > -1;
         if (on) b.classList.add('selected');
@@ -246,7 +254,7 @@
         flagBtns.push(b);
         box.appendChild(b);
       });
-      var none = el('button', 'answer', q.none);
+      var none = el('button', 'answer', q.none + '<span class="k" aria-hidden="true">' + (q.options.length + 1) + '</span>');
       none.type = 'button';
       none.addEventListener('click', function () {
         if (Date.now() - renderedAt < 300) return;
@@ -281,9 +289,9 @@
       q.options.forEach(function (opt, idx) {
         var val = q.type === 'scale' ? idx + 1 : opt.v;
         var label = q.type === 'scale' ? opt : opt.t;
-        var b = el('button', 'answer', label + '<span class="k">' + (idx + 1) + '</span>');
+        var b = el('button', 'answer', label + '<span class="k" aria-hidden="true">' + (idx + 1) + '</span>');
         b.type = 'button';
-        if (state.answers[q.id] === val) b.classList.add('selected');
+        if (state.answers[q.id] === val) { b.classList.add('selected'); b.setAttribute('aria-current', 'true'); }
         b.addEventListener('click', function () {
           if (Date.now() - renderedAt < 300) return;
           if (screenDone) return;
@@ -301,7 +309,7 @@
     var back = el('button', 'q-back', i === 0 ? F.ui.annulla : F.ui.indietro);
     back.type = 'button';
     back.addEventListener('click', function () {
-      if (i === 0) { reset(); } else { showQuestion(i - 1); }
+      if (i === 0) { esciDalTest(); } else { showQuestion(i - 1); }
     });
     nav.appendChild(back);
     s.appendChild(nav);
@@ -321,24 +329,45 @@
   }
 
   function reset() {
+    uscendo = false;
     state = { i: -1, answers: {}, meta: { h: '', n: '' } };
     setProgress(-1);
     app.innerHTML = '';
     document.body.classList.remove('in-quiz');
     hero.classList.remove('hidden');
+    if (lingua) lingua.href = linguaHref;
     setURL(location.pathname);
+    aggiornaStriscia();
+    /* il pulsante premuto è sparito: senza questo il focus tornava al body e
+       il Tab successivo saltava a metà pagina */
+    var partenza = hero.querySelector('[data-start]');
+    if (partenza) { try { partenza.focus({ preventScroll: true }); } catch (e) {} }
     window.scrollTo({ top: 0, behavior: 'instant' });
+  }
+
+  /* Uscire dal test o rifarlo: se la voce di cronologia è quella del test si
+     torna indietro, e il gestore di popstate fa il resto. Altrimenti il primo
+     Indietro del browser restava sulla stessa pagina. */
+  var uscendo = false;
+  function esciDalTest() {
+    if (uscendo) return;
+    if (history.state && history.state.ferro === 'test') {
+      uscendo = true;
+      try { history.back(); return; } catch (e) { uscendo = false; }
+    }
+    reset();
   }
 
   function startOwn() {
     state = { i: -1, answers: {}, meta: { h: '', n: '' } };
     hero.classList.add('hidden');
     setURL(location.pathname);
+    var giaTest = history.state && history.state.ferro === 'test';
     /* Una voce di cronologia sola per tutto il test. Prima ne veniva impilata
        una per domanda: dal verdetto il gesto indietro rimetteva dentro
        l'ultima domanda, e per uscire ne servivano ventitré. Per tornare a una
        domanda c'è il pulsante Indietro, che si vede. */
-    pushURL({ ferro: 'test' });
+    if (!giaTest) pushURL({ ferro: 'test' });
     if (gateOK()) { showQuestion(0); } else { showGate(); }
   }
 
@@ -388,13 +417,18 @@
     svg += ring(R * 0.33) + ring(R * 0.66) + ring(R);
     for (var k = 0; k < n; k++) {
       var o = pt(k, R);
-      svg += '<line x1="' + cx + '" y1="' + cy + '" x2="' + o[0] + '" y2="' + o[1] + '" stroke="currentColor" stroke-opacity="0.12" stroke-width="1"/>';
+      var naRaggio = per[F.pillars[k].key].max === 0;
+      svg += '<line x1="' + cx + '" y1="' + cy + '" x2="' + o[0] + '" y2="' + o[1] + '" stroke="currentColor" stroke-opacity="' +
+        (naRaggio ? '0.3' : '0.12') + '" stroke-width="1"' + (naRaggio ? ' stroke-dasharray="3 3"' : '') + '/>';
     }
-    var d = '';
+    /* un pilastro non messo alla prova non entra nel conto: il poligono lo
+       salta invece di scendere al centro, che vorrebbe dire zero */
+    var d = '', primo = true;
     F.pillars.forEach(function (p, idx) {
-      var v = per[p.key].pct;
-      var q = pt(idx, Math.max(4, R * v));
-      d += (idx ? 'L' : 'M') + q[0] + ' ' + q[1];
+      if (per[p.key].max === 0) return;
+      var q = pt(idx, Math.max(4, R * per[p.key].pct));
+      d += (primo ? 'M' : 'L') + q[0] + ' ' + q[1];
+      primo = false;
     });
     svg += '<path class="radar-dati" d="' + d + 'Z" fill="var(--brass)" fill-opacity="0.18" ' +
       'stroke="var(--brass)" stroke-width="1.8" stroke-linejoin="round"/>';
@@ -404,7 +438,8 @@
       if (lp[0] - cx > 30) anchor = 'start';
       if (cx - lp[0] > 30) anchor = 'end';
       svg += '<text x="' + lp[0] + '" y="' + lp[1] + '" text-anchor="' + anchor + '" font-family="' +
-        '-apple-system, system-ui, sans-serif" font-size="13" letter-spacing="0.5" fill="currentColor" fill-opacity="0.68">' +
+        '-apple-system, system-ui, sans-serif" font-size="13" letter-spacing="0.5" fill="currentColor" fill-opacity="' +
+        (per[p.key].max === 0 ? '0.62' : '0.68') + '">' +
         p.short.toUpperCase() + '</text>';
     });
     svg += '</svg>';
@@ -429,7 +464,8 @@
     if (!state.meta.h) hotelP.classList.add('hidden');
     head.appendChild(hotelP);
 
-    var numero = el('div', 'res-num', '<span class="cifra">0</span><span class="su">/100</span>');
+    var numero = el('h1', 'res-num', '<span class="cifra" aria-hidden="true">0</span><span class="su" aria-hidden="true">/100</span>' +
+      '<span class="sr-only">' + F.ui.esito + ': ' + res.score + '/100, ' + res.band.label + '</span>');
     head.appendChild(numero);
     head.appendChild(el('p', 'res-band', res.band.label));
     head.appendChild(el('p', 'res-verdict', res.band.verdict));
@@ -451,6 +487,8 @@
     }
 
     /* l'azione principale a portata di verdetto, senza scrollare */
+    if (lingua) lingua.href = linguaHref + shareQuery(rcode);
+
     var pub;
     if (isShared) {
       var own = el('button', 'btn', F.ui.faiTuo);
@@ -525,6 +563,7 @@
       inName.className = 'pub-input';
       inName.maxLength = 60;
       inName.placeholder = F.ui.pubNome;
+      inName.setAttribute('aria-label', F.ui.pubNome);
       inName.value = state.meta.h;
 
       var inNote = document.createElement('textarea');
@@ -532,6 +571,7 @@
       inNote.maxLength = 280;
       inNote.rows = 3;
       inNote.placeholder = F.ui.pubNota;
+      inNote.setAttribute('aria-label', F.ui.pubNota);
       inNote.value = state.meta.n;
 
       var urlTimer;
@@ -545,6 +585,7 @@
         clearTimeout(urlTimer);
         urlTimer = setTimeout(function () {
           setURL(location.pathname + shareQuery(rcode));
+          if (lingua) lingua.href = linguaHref + shareQuery(rcode);
         }, 400);
       }
       inName.addEventListener('input', syncMeta);
@@ -580,17 +621,22 @@
       rHotel.type = 'text'; rHotel.name = 'hotel'; rHotel.required = true;
       rHotel.className = 'pub-input'; rHotel.maxLength = 60;
       rHotel.placeholder = F.ui.reg.hotel;
+      rHotel.setAttribute('aria-label', F.ui.reg.hotel);
+      rHotel.autocomplete = 'organization';
       rHotel.value = state.meta.h;
 
       var rMail = document.createElement('input');
       rMail.type = 'email'; rMail.name = 'email'; rMail.required = true;
       rMail.className = 'pub-input';
       rMail.placeholder = F.ui.reg.email || '';
+      if (F.ui.reg.email) rMail.setAttribute('aria-label', F.ui.reg.email);
+      rMail.autocomplete = 'email';
 
       var rWhy = document.createElement('textarea');
       rWhy.name = 'motivazione'; rWhy.required = true;
       rWhy.className = 'pub-input'; rWhy.maxLength = 600; rWhy.rows = 3;
       rWhy.placeholder = F.ui.reg.motivazione;
+      rWhy.setAttribute('aria-label', F.ui.reg.motivazione);
       rWhy.value = state.meta.n;
 
       var rSend = el('button', 'btn', F.ui.reg.invia);
@@ -664,7 +710,7 @@
       var redo = el('button', 'btn-quiet', F.ui.rifai);
       redo.type = 'button';
       redo.style.justifySelf = 'center';
-      redo.addEventListener('click', reset);
+      redo.addEventListener('click', esciDalTest);
       act.appendChild(redo);
     }
     azioni.appendChild(act);
@@ -682,7 +728,8 @@
     s.appendChild(azioni);
 
     app.appendChild(s);
-    announce(F.ui.esito + ': ' + res.score + '/100, ' + res.band.label);
+    announce('');
+    aggiornaStriscia();
     focusTitle(s);
     /* Qui il menu è visibile, quindi portarsi sull'inizio del riquadro
        lascerebbe l'occhiello "Il verdetto" nascosto dietro la barra: si va
@@ -948,7 +995,9 @@
      È l'unico punto in cui vale la pena spendere movimento, perché è dove
      l'occhio si ferma quando smette di scorrere. */
   function preparaTitoli() {
-    if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    /* anche con «riduci movimento»: le parole restano intere (niente
+       «twenty- / three» sul trattino) e i titoli vanno a capo nello stesso
+       modo per tutti. Senza "armato", che qui non arriva, nulla si muove. */
     document.querySelectorAll('section.blocco h2').forEach(function (h) {
       /* qui le parole si separano soltanto. A nasconderle è "armato", che lo
          mette osserva() e solo ai titoli ancora lontani: un titolo già in
@@ -1016,6 +1065,19 @@
       showQuestion(state.i - 1);
     } else if (inQuiz || state.i >= 0 || document.querySelector('.res-num')) {
       reset();
+    } else {
+      var qs = new URLSearchParams(location.search);
+      var avanti = decode(qs.get('r'));
+      if (avanti) {
+        state.answers = avanti;
+        var esitoAvanti = computeResult(avanti);
+        var nomeOk = esitoAvanti.score >= SOGLIA_NOME;
+        state.meta = {
+          h: nomeOk ? (qs.get('h') || '').slice(0, 60) : '',
+          n: nomeOk ? (qs.get('n') || '').slice(0, 280) : ''
+        };
+        renderResult(esitoAvanti, qs.get('r'), true);
+      }
     }
   });
 
@@ -1055,7 +1117,7 @@
       return '<path d="' + d + 'Z" fill="none" stroke="currentColor" stroke-opacity="0.14" stroke-width="1"/>';
     };
     /* un profilo credibile, non perfetto: un albergo forte sulle persone */
-    var valori = [0.97, 0.80, 0.92, 0.74, 0.88, 0.55, 0.42];
+    var valori = (ESEMPI[0] && ESEMPI[0].valori) || [0.97, 0.80, 0.92, 0.74, 0.88, 0.55, 0.42];
     var d = '';
     valori.forEach(function (v, i) {
       var q = pt(i, R * v);
@@ -1118,6 +1180,9 @@
           casa.classList.add('cambio');
           setTimeout(function () {
             tracc.setAttribute('d', profilo(e.valori));
+            /* il tratteggio misurava il primo profilo: sugli altri, di
+               lunghezza diversa, l'ultimo lato cadeva nel vuoto */
+            tracc.style.strokeDasharray = 'none';
             var punti = casa.querySelectorAll('.v');
             e.valori.forEach(function (v, i) {
               if (!punti[i]) return;
@@ -1169,14 +1234,43 @@
         var meta = mete[i];
         if (!meta) return;
         ev.preventDefault();
-        meta.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        try { history.replaceState(null, '', location.pathname + location.search); } catch (e) {}
+        /* la morbidezza la decide il CSS, che la spegne con «riduci movimento» */
+        meta.scrollIntoView({ block: 'start' });
+        try { history.replaceState(history.state, '', location.pathname + location.search); } catch (e) {}
       });
     });
 
     /* la comparsa la gestisce il CSS: qui resta solo la voce attiva */
     if (!('IntersectionObserver' in window)) return;
-    var dentro = [];
+    var dentro = [], ultima = -2;
+    var striscia = menu.querySelector('.menu-voci');
+    var pigroMenu = function () { return matchMedia('(prefers-reduced-motion: reduce)').matches; };
+    function centra(a) {
+      if (!striscia || striscia.scrollWidth <= striscia.clientWidth) return;
+      var x = a.offsetLeft - striscia.offsetLeft - (striscia.clientWidth - a.offsetWidth) / 2;
+      try { striscia.scrollTo({ left: Math.max(0, x), behavior: pigroMenu() ? 'auto' : 'smooth' }); }
+      catch (e) { striscia.scrollLeft = Math.max(0, x); }
+    }
+    /* la sfumatura sul bordo destro solo se le voci non ci stanno: si misura
+       senza la classe, perché il margine che aggiunge falserebbe il conto */
+    function misuraStriscia() {
+      if (!striscia || !striscia.clientWidth) return;
+      striscia.classList.remove('scorre');
+      /* i 4 px di imbottitura per l'anello di focus non contano come voce */
+      striscia.classList.toggle('scorre', striscia.scrollWidth - 4 > striscia.clientWidth + 1);
+    }
+    aggiornaStriscia = misuraStriscia;
+    misuraStriscia();
+    window.addEventListener('resize', misuraStriscia);
+    window.addEventListener('load', misuraStriscia);
+    if (striscia) {
+      /* da tastiera il browser non fa scorrere una voce già visibile a metà,
+         che con la sfumatura restava sbiadita: la si porta al centro */
+      striscia.addEventListener('focusin', function (e) {
+        var a = e.target.closest ? e.target.closest('a') : null;
+        if (a) centra(a);
+      });
+    }
     var io = new IntersectionObserver(function (v) {
       v.forEach(function (e) {
         var i = mete.indexOf(e.target);
@@ -1186,7 +1280,15 @@
         if (!e.isIntersecting && pos > -1) dentro.splice(pos, 1);
       });
       var attiva = dentro.length ? Math.max.apply(null, dentro) : -1;
-      voci.forEach(function (a, i) { a.classList.toggle('qui', i === attiva); });
+      if (attiva === ultima) return;
+      ultima = attiva;
+      voci.forEach(function (a, i) {
+        a.classList.toggle('qui', i === attiva);
+        if (i === attiva) a.setAttribute('aria-current', 'true'); else a.removeAttribute('aria-current');
+      });
+      /* sul telefono la voce attiva poteva stare fuori dalla striscia: la si
+         porta al centro, muovendo solo la striscia e mai la pagina */
+      if (attiva > -1) centra(voci[attiva]);
     }, { rootMargin: '-18% 0px -68% 0px', threshold: 0 });
     mete.forEach(function (m) { if (m) io.observe(m); });
   }

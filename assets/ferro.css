@@ -49,6 +49,11 @@ body {
   font-size: 19px;
   line-height: 1.62;
   -webkit-font-smoothing: antialiased;
+  /* 100vw comprende la barra di scorrimento verticale: dove la barra si vede
+     (Windows, Mac con mouse) le fasce di colore sforavano di 8 px e la pagina
+     scivolava di lato. clip taglia senza creare un contenitore di scorrimento,
+     quindi il menu sticky continua a funzionare. */
+  overflow-x: clip;
 }
 
 .wrap { max-width: 680px; margin: 0 auto; padding: 0 22px; }
@@ -57,6 +62,13 @@ a { color: inherit; text-decoration-color: var(--brass); text-underline-offset: 
 a:hover { color: var(--brass); }
 
 /* ---------- micro-tipografia ---------- */
+
+/* i titoli vanno a capo in righe di lunghezza simile: niente parola sola
+   sull'ultima riga. Cambia dove va a capo, mai cosa c'è scritto */
+h1, h2, h3, .occhiello, .q-text { text-wrap: balance; }
+.res-verdict, .micro, .didascalia, figcaption, .scala-chi { text-wrap: pretty; }
+/* qui pretty mandava a capo «io?» attaccato al link: resta l'andata a capo normale */
+.res-cta .micro { text-wrap: wrap; }
 
 .occhiello {
   font-family: var(--sans);
@@ -145,6 +157,11 @@ a:hover { color: var(--brass); }
   flex: 1;
   overflow-x: auto;
   scrollbar-width: none;
+  /* quattro pixel di aria dentro la striscia: lo scorrimento laterale taglia
+     anche in verticale, e senza questo l'anello di focus si riduceva a una
+     barretta */
+  padding: 4px;
+  margin: -4px;
 }
 .menu-voci::-webkit-scrollbar { display: none; }
 
@@ -158,7 +175,9 @@ a:hover { color: var(--brass); }
   border-bottom: 2px solid transparent;
   transition: color 0.2s ease, border-color 0.2s ease;
 }
-.menu-voci a:hover { color: var(--ink); }
+@media (hover: hover) {
+  .menu-voci a:hover { color: var(--ink); }
+}
 .menu-voci a.qui { color: var(--brass); border-bottom-color: var(--brass); }
 
 .menu-cta {
@@ -173,14 +192,35 @@ a:hover { color: var(--brass); }
   padding: 10px 18px;
   cursor: pointer;
 }
-.menu-cta:hover { opacity: 0.9; }
+@media (hover: hover) {
+  .menu-cta:hover { opacity: 0.9; }
+}
 
 body.in-quiz .menu { display: none; }
 
 @media (max-width: 720px) {
   .menu-marchio, .menu-cta { display: none; }
-  .menu-wrap { padding: 6px 16px; }
+  .menu-wrap { padding: 6px 22px; }
   .menu-voci { gap: 20px; }
+  /* la sfumatura dice che la striscia continua: la mette il codice solo quando
+     le voci non ci stanno tutte, altrimenti coprirebbe l'ultima per niente */
+  .menu-voci.scorre {
+    padding-right: 40px;
+    -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 40px), transparent);
+    mask-image: linear-gradient(to right, #000 calc(100% - 40px), transparent);
+  }
+}
+/* Tablet: marchio, sei voci e pulsante non ci stanno insieme, e col mouse le
+   voci nascoste non si raggiungevano. Il marchio resta nella prima schermata. */
+@media (min-width: 721px) and (max-width: 919px) {
+  .menu-marchio { display: none; }
+  /* sul verdetto la prima schermata è nascosta: il marchio resta nel menu e
+     lascia il posto il pulsante, che il verdetto ha già nel contenuto */
+  body:has(#hero.hidden) .menu-marchio { display: block; }
+  body:has(#hero.hidden) .menu-cta { display: none; }
+}
+@media (min-width: 721px) and (max-width: 767px) {
+  .menu-voci { gap: 12px; }
 }
 
 /* ---------- header / lingua ---------- */
@@ -331,8 +371,9 @@ body.in-quiz .menu { display: none; }
   font-family: var(--sans);
   font-size: 16px;
   font-weight: 500;
-  height: 53px;
-  line-height: 53px;
+  min-height: 53px;
+  line-height: 1.3;
+  padding: 16px 6px;
   text-align: center;
   cursor: pointer;
   text-decoration: none;
@@ -351,7 +392,10 @@ body.in-quiz .menu { display: none; }
   padding: 12px 18px;
   cursor: pointer;
 }
-.btn-quiet:hover { border-color: var(--brass); color: var(--brass); }
+@media (hover: hover) {
+  .btn-quiet:hover { border-color: var(--brass); color: var(--brass); }
+}
+.btn-quiet { min-height: 44px; }
 
 /* ---------- quiz ---------- */
 
@@ -465,6 +509,8 @@ section.blocco h2.reveal.armato { opacity: 1; transform: none; }
   border: 1px solid var(--line);
   border-radius: 2px;
   padding: 2px 6px;
+  min-width: 22px;
+  text-align: center;
 }
 
 .q-nav { margin-top: 30px; display: flex; justify-content: space-between; align-items: center; }
@@ -477,8 +523,11 @@ section.blocco h2.reveal.armato { opacity: 1; transform: none; }
   padding: 12px 16px;
   margin-left: -16px;
   min-height: 44px;
+  text-align: left;
 }
-.q-back:hover { color: var(--brass); }
+@media (hover: hover) {
+  .q-back:hover { color: var(--brass); }
+}
 
 /* ---------- risultato ---------- */
 
@@ -527,7 +576,7 @@ section.blocco h2.reveal.armato { opacity: 1; transform: none; }
 
 .pillars { margin-top: 40px; display: grid; gap: 18px; }
 .pillar .p-row {
-  display: flex; justify-content: space-between; align-items: baseline;
+  display: flex; justify-content: space-between; align-items: center;
   font-family: var(--sans); font-size: 13px;
 }
 .pillar .p-name {
@@ -581,7 +630,7 @@ section.blocco h2.reveal.armato { opacity: 1; transform: none; }
   background: var(--card);
   padding: 24px;
 }
-.pub-title { font-size: 21px; margin-top: 8px; }
+.pub-title { font-size: 21px; margin-top: 8px; line-height: 1.25; }
 .pub-testo { margin-top: 10px; font-size: 16px; color: var(--muted); }
 
 .pub-input {
@@ -598,7 +647,7 @@ section.blocco h2.reveal.armato { opacity: 1; transform: none; }
   resize: vertical;
 }
 .pub-input:focus { outline: none; border-color: var(--brass); }
-.pub-input::placeholder { color: var(--muted); opacity: 0.8; }
+.pub-input::placeholder { color: var(--muted); opacity: 1; }
 
 /* Il riquadro ufficiale di Substack. Porta il suo fondo scuro, quindi la
    cornice è solo un filo: due neri leggermente diversi sembrano un errore.
@@ -662,6 +711,7 @@ section.blocco h2.reveal.armato { opacity: 1; transform: none; }
   border-top: 1px solid var(--line);
   padding-top: 34px;
 }
+.res-cta .micro { margin-top: 12px; }
 
 /* ---------- sezioni statiche ---------- */
 
@@ -681,10 +731,12 @@ section.blocco > * { position: relative; z-index: 1; }
 section.blocco::before {
   content: '';
   position: absolute;
-  inset: 0;
-  left: 50%;
-  width: 100vw;
-  transform: translateX(-50%);
+  top: 0; bottom: 0;
+  /* larga quanto lo schermo e centrata, come prima, ma senza translate: con
+     una colonna di larghezza dispari il 50% cadeva su mezzo pixel e lasciava
+     un filo color carta sul bordo sinistro delle fasce scura e blu */
+  left: calc(50% - 50vw);
+  right: calc(50% - 50vw);
   background: transparent;
 }
 
@@ -704,6 +756,12 @@ section.blu .filetto { background: #a8c8dc; }
 section.scura .micro, section.scura p.didascalia { color: #a8a49d; }
 section.blu .micro, section.blu p.didascalia { color: #b9cad6; }
 section.scura a, section.blu a { text-decoration-color: currentColor; }
+section.scura a:hover, section.blu a:hover { color: #fff; }
+/* due filetti che si toccano si leggono come uno scalino: sotto il menu c'è
+   già il suo bordo, e sotto le fasce scura e blu il cambio di colore basta */
+.menu + .wrap > section.blocco:first-of-type,
+section.scura + section.blocco,
+section.blu + section.blocco { border-top: 0; }
 section.blu .inbreve { border-color: #a8c8dc; }
 section.scura table.pesi td, section.blu table.pesi td { border-top-color: rgba(235, 231, 224, 0.22); }
 section.scura table.pesi th, section.blu table.pesi th { color: rgba(235, 231, 224, 0.6); }
@@ -722,7 +780,7 @@ section.blocco ul.elenco-metodo { margin-top: 12px; max-width: var(--lettura); p
 section.blocco ul.elenco-metodo li { margin-top: 6px; }
 section.blocco ul.elenco-metodo + p { margin-top: 12px; }
 section.blocco p + h3 { margin-top: 30px; }
-section.blocco h3 { font-size: 21.5px; margin-top: 28px; }
+section.blocco h3 { font-size: 21.5px; margin-top: 28px; line-height: 1.25; }
 section.blocco h3 + p { margin-top: 8px; }
 
 .inbreve {
@@ -787,6 +845,10 @@ figure.ritratto figcaption {
 @media (min-width: 1000px) {
   figure.ritratto { float: right; margin: 6px 0 22px 34px; max-width: 250px; }
 }
+@media (min-width: 720px) and (max-width: 999px) {
+  figure.ritratto { float: right; margin: 6px 0 18px 28px; max-width: 270px; }
+  figure.ritratto figcaption { text-wrap: balance; }
+}
 
 .didascalia {
   font-family: var(--sans);
@@ -814,6 +876,7 @@ blockquote.citazione cite {
   color: var(--muted);
 }
 
+table.pesi.domande td { vertical-align: baseline; }
 table.pesi.domande td:first-child { font-size: 15.5px; line-height: 1.35; }
 table.pesi.domande td:nth-child(2) {
   font-family: var(--sans);
@@ -905,6 +968,15 @@ section.blocco .scala .scala-chi {
   color: var(--muted);
 }
 .scala-voce.qui .scala-chi { color: var(--brass); font-weight: 600; }
+/* le regole di sezione erano più specifiche e spegnevano l'evidenza della
+   voce "qui": il punto d'arrivo del binario sembrava uguale agli altri */
+section.blocco .scala-voce.qui::before { background: var(--brass); }
+section.blocco .scala .scala-voce.qui .scala-chi { color: var(--brass); }
+@media (max-width: 719px) {
+  /* in colonna il segmento dell'ultima voce proseguiva sotto il suo pallino */
+  .scala-voce:last-child::after { display: none; }
+  section.blocco .scala .scala-chi { font-size: 12.5px; }
+}
 
 .scala figcaption {
   margin-top: 24px;
@@ -973,6 +1045,10 @@ section.blocco .scala .scala-chi {
 
 /* la tabella gemella: le intestazioni di riga in serif, come i nomi del binario */
 table.pesi.sistemi { min-width: 640px; }
+@media (max-width: 999px) {
+  table.pesi.sistemi { min-width: 636px; }
+  table.pesi.sistemi thead th { padding-right: 12px; white-space: nowrap; }
+}
 table.pesi.sistemi tbody th {
   font-family: var(--serif);
   font-size: 17.5px;
@@ -1035,7 +1111,10 @@ footer {
   border-top: 1px solid var(--line);
   padding: 40px 0 60px;
 }
-footer p { font-family: var(--sans); font-size: 12.5px; color: var(--muted); margin-top: 8px; max-width: 40em; }
+footer p { font-family: var(--sans); font-size: 12.5px; color: var(--muted); margin-top: 8px; max-width: var(--stretta); }
+footer a[href="/santuari/"], footer a[href="/en/sanctuaries/"] { white-space: nowrap; }
+footer p:last-child { line-height: 2.1; }
+footer p { text-wrap: pretty; }
 
 /* il titolo riceve il focus a ogni schermata per gli screen reader: non deve
    disegnare il contorno di sistema, che non è un controllo da attivare */
@@ -1047,7 +1126,10 @@ footer p { font-family: var(--sans); font-size: 12.5px; color: var(--muted); mar
 .btn-quiet:focus-visible,
 .q-back:focus-visible,
 .pub-input:focus-visible,
-.lang:focus-visible {
+.lang:focus-visible,
+.menu-voci a:focus-visible,
+.menu-marchio:focus-visible,
+.menu-cta:focus-visible {
   outline: 2px solid var(--brass);
   outline-offset: 2px;
 }
@@ -1092,7 +1174,7 @@ body.in-quiz .lang { display: none; }
      una riga in più di quelli italiani. Così si adatta da sola invece di
      stare giusta su un telefono solo. */
   .anteprima { padding: min(14px, 1.6svh) 18px min(12px, 1.3svh); }
-  .anteprima-eti { font-size: 10px; }
+  .anteprima-eti { font-size: 11px; }
   .anteprima-num { font-size: clamp(28px, 5.4svh, 42px); margin-top: 3px; }
   .anteprima-nota { font-size: 13px; margin-top: 5px; min-height: 0; }
   .radar-vivo { max-width: clamp(88px, 15svh, 124px); margin-top: 4px; }
@@ -1108,14 +1190,23 @@ body.in-quiz .lang { display: none; }
 @media (max-height: 520px) and (min-width: 700px) {
   .hero {
     min-height: 0;
-    padding: min(20px, 5svh) 0 min(16px, 4svh);
+    padding: min(14px, 3svh) 0 min(16px, 4svh);
+  }
+  /* la griglia vale solo per la prima schermata delle due home: la testata del
+     Registro usa la stessa classe e finiva spezzata su due colonne */
+  #hero {
     display: grid;
     grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
-    column-gap: 40px;
+    column-gap: 32px;
     align-items: center;
   }
   .hero h1 { font-size: clamp(24px, 3.6vw, 34px); }
   .hero-figura { margin-top: 0; }
+}
+/* sul telefono coricato la testata usa tutta la larghezza, così il pulsante
+   principale resta dentro la prima schermata */
+@media (max-height: 520px) and (min-width: 700px) and (max-width: 999px) {
+  #top { max-width: 960px; }
 }
 
 /* Sotto una certa altezza la scheda non ci sta comunque: invece di mostrarne
@@ -1156,7 +1247,7 @@ body.schermo-corto .radar-vivo { display: none; }
   .res-screen {
     display: grid;
     grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-    grid-template-rows: auto auto;
+    grid-template-rows: auto 1fr;
     column-gap: 72px;
     align-items: start;
   }
@@ -1178,6 +1269,9 @@ body.schermo-corto .radar-vivo { display: none; }
   .res-screen > .res-head .btn-quiet { max-width: 340px; }
   .res-actions { max-width: 340px; }
   .res-actions .btn-quiet { justify-self: start !important; }
+  .res-screen .res-cta .btn { max-width: 340px; }
+  .res-head .res-cap { max-width: none; }
+  .res-band { margin-top: 16px; }
 
   /* Tutto il contenuto si allinea a una delle tre misure. Il bordo sinistro
      è già comune: quello che mancava era il destro. */
@@ -1227,4 +1321,100 @@ body.schermo-corto .radar-vivo { display: none; }
   #app .screen:not(.res-screen) .q-note { font-size: 16px; line-height: 1.45; margin-top: 11px; }
   #app .screen:not(.res-screen) .answers { margin-top: 22px; gap: 8px; }
   #app .screen:not(.res-screen) .answer { font-size: 17.5px; line-height: 1.34; padding: 13px 44px 13px 16px; }
+}
+
+/* ---------- revisione di grafica e usabilità, 21 settembre 2026 ----------
+   Correzioni trovate dal controllo su telefono, tablet e computer. Nessuna
+   cambia le parole: cambiano misure, allineamenti e comportamenti. */
+
+/* Telefoni sotto i 360 px: le tabelle tagliavano l'ultima colonna («−4 l'u»)
+   o allargavano la pagina. Corpo un poco più piccolo e meno aria fra colonne. */
+@media (max-width: 359px) {
+  table.pesi { font-size: 16px; }
+  table.pesi td, table.pesi:not(.sistemi) th { padding-right: 8px; }
+  table.pesi td:last-child, table.pesi:not(.sistemi) th:last-child { padding-right: 0; }
+  table.pesi.domande td:nth-child(2) { letter-spacing: 0.04em; }
+  /* il riquadro di Substack ingrandisce il contenuto con l'altezza: sotto i
+     360 px servono 490 px perché logo e riga legale stiano interi */
+  .gate-box iframe { height: 490px; }
+  .reg-block, .pub-block { padding: 20px 16px; }
+  .pub-input { font-size: 16px; }
+}
+
+/* La tabella dei sistemi sul telefono: se ne vedeva metà senza nessun segno
+   che scorresse. Il nome del sistema resta fermo a sinistra e un'ombra sul
+   bordo destro dice che c'è altro; l'ombra sparisce arrivati in fondo. */
+@media (max-width: 719px) {
+  table.pesi.sistemi thead th:first-child,
+  table.pesi.sistemi tbody th { position: sticky; left: 0; z-index: 1; background: var(--card); }
+  table.pesi.sistemi tbody tr.qui th { background: linear-gradient(var(--brass-soft), var(--brass-soft)), var(--card); }
+}
+section.chiara .tabella-scorre:has(> table.sistemi) {
+  background:
+    linear-gradient(to left, var(--card) 30%, rgba(253, 252, 249, 0)) right / 28px calc(100% + 2px) no-repeat local,
+    linear-gradient(to left, rgba(26, 26, 24, 0.14), rgba(26, 26, 24, 0)) right / 10px 100% no-repeat scroll;
+}
+
+/* Schermi stretti e bassi: «English» saliva sull'occhiello della prima schermata */
+@media (max-width: 480px) and (max-height: 600px) {
+  .hero .occhiello { margin-top: 30px; }
+  .hero .sotto { margin-top: 8px; }
+  .hero .btn { margin-top: 10px; }
+  .hero-figura { margin-top: 6px; }
+}
+/* P8: sul telefono la scheda d'esempio è larga quanto la colonna, allineata
+   al pulsante; dai 390 px in su resta la scheda stretta centrata */
+@media (max-width: 380px) {
+  .anteprima { max-width: none; }
+}
+
+/* Radar del verdetto sul telefono: le etichette scendevano sotto i 12 px */
+@media (max-width: 999px) {
+  .radar-box svg { overflow: visible; }
+  .radar-box svg text { font-size: 15.5px; }
+  .radar-box { padding: 0 8px; }
+  /* l'occhiello «Il verdetto» si allinea al resto della testata, che è centrata */
+  .res-head .occhiello { justify-content: center; }
+}
+
+/* Il test con il telefono coricato: domanda e nota riempivano lo schermo e la
+   prima risposta restava sotto la piega */
+@media (max-height: 520px) {
+  #app { padding-top: 14px; }
+  #app .screen:not(.res-screen) .q-count { margin-bottom: 12px; }
+  #app .screen:not(.res-screen) .q-text { font-size: 24px; line-height: 1.2; max-width: none; }
+  #app .screen:not(.res-screen) .q-note { font-size: 16px; line-height: 1.45; margin-top: 8px; max-width: 36em; }
+  #app .screen:not(.res-screen) .answers { margin-top: 16px; gap: 8px; }
+  #app .screen:not(.res-screen) .answer { font-size: 17px; padding: 11px 44px 11px 16px; }
+}
+
+/* Il cancello della newsletter su tablet: titolo, testo, riquadro e pulsanti
+   avevano tre larghezze diverse. Una misura sola, come già sopra i 1000 px. */
+@media (min-width: 561px) {
+  #app .screen:has(.gate-box) { max-width: 460px; }
+  #app .screen:has(.gate-box) .q-text,
+  #app .screen:has(.gate-box) .q-note { max-width: none; }
+}
+/* e l'occhiello non tocca più il titolo */
+#app .screen > .occhiello + .q-text { margin-top: 8px; }
+
+/* Sul verdetto la prima schermata è nascosta e il menu sta in cima: il cambio
+   lingua finiva sotto il menu e non si poteva toccare */
+body:has(#hero.hidden) .lang { top: 66px; }
+
+/* Sul touch i numeri dei tasti non servono e rubavano larghezza alle risposte */
+@media (hover: none) and (pointer: coarse) {
+  #app .answer .k { display: none; }
+  #app .screen:not(.res-screen) .answer { padding-right: 16px; }
+}
+
+/* La conferma dopo la candidatura al Registro: era grigia e piccola come una
+   didascalia, ed è l'unico riscontro che la candidatura è arrivata.
+   Niente "display" qui: annullerebbe l'attributo hidden. */
+#grazie {
+  margin-top: 22px;
+  padding: 4px 0 4px 16px;
+  border-left: 2px solid var(--brass);
+  color: var(--ink);
+  font-size: 15px;
 }

@@ -30,7 +30,7 @@ try { if ('scrollRestoration' in history) history.scrollRestoration = 'manual'; 
 <link rel="icon" href="/assets/favicon-32.png" sizes="32x32" type="image/png">
 <link rel="icon" href="/assets/favicon-16.png" sizes="16x16" type="image/png">
 <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
-<link rel="stylesheet" href="/assets/ferro.css?v=74">
+<link rel="stylesheet" href="/assets/ferro.css?v=75">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -226,7 +226,7 @@ try { if ('scrollRestoration' in history) history.scrollRestoration = 'manual'; 
 
 <div class="progress" id="progress"></div>
 
-<a class="lang" href="/en/">English</a>
+<a class="lang" href="/en/" hreflang="en" lang="en">English</a>
 
 <div class="wrap" id="top">
 
@@ -260,16 +260,16 @@ try { if ('scrollRestoration' in history) history.scrollRestoration = 'manual'; 
       <a href="#prova">La prova</a>
       <a href="#classificazioni">Stelle e Chiavi</a>
       <a href="#fonti">Le fonti</a>
-      <a href="#domande">Le domande</a>
       <a href="#autore">Chi sono</a>
+      <a href="#domande">Le domande</a>
     </div>
     <button class="menu-cta" data-start type="button">Misura il tuo hotel</button>
   </div>
 </nav>
 
-  <div class="wrap">
+  <main class="wrap" id="contenuto">
 
-  <main id="app"></main>
+  <div id="app"></div>
   <div id="announce" class="sr-only" aria-live="polite"></div>
 
   <noscript><p class="micro">Il test ha bisogno di JavaScript. Il metodo, però, lo leggi comunque qui sotto.</p></noscript>
@@ -418,7 +418,7 @@ try { if ('scrollRestoration' in history) history.scrollRestoration = 'manual'; 
     </div>
     <p>NB: Virtuoso non compare in tabella perché non è una classificazione: è una rete commerciale di agenzie di viaggio e un hotel nel suo portafoglio ha stretto un accordo di distribuzione, non ha ricevuto una valutazione. Lo dico da dentro: sono independent travel advisor di Fora Travel e la membership Virtuoso è di Fora.</p>
 
-    <h3>Ferro Index: quello che fa e quello che non fa</h3>
+    <h3>Ferro&nbsp;Index: quello&nbsp;che&nbsp;fa&nbsp;e quello che non fa</h3>
     <p>Il Ferro Index non fa ispezioni in incognito, non ha ispettori, non compra soggiorni, non entra negli alberghi degli altri con un taccuino, ma chiede agli ospiti degli hotel di riportare ventitré fatti che hanno vissuto sulla loro pelle.</p>
     
     <p class="didascalia">Dati verificati ad agosto 2026 sulle fonti primarie: <a href="https://www.gazzettaufficiale.it/eli/id/2009/02/11/09A01326/sg">Gazzetta Ufficiale</a>, Guida Michelin, <a href="https://www.forbestravelguide.com/about">Forbes Travel Guide</a>, <a href="https://lqagroup.com/hotel-assessments/">LQA</a>, <a href="https://www.hotelstars.eu/about-us/faq">Hotelstars Union</a>. Le norme regionali cambiano e i sistemi aggiornano i propri numeri.</p>
@@ -507,7 +507,7 @@ try { if ('scrollRestoration' in history) history.scrollRestoration = 'manual'; 
     <hr class="filetto">
     <h2>FAQ: quello che spesso ci viene chiesto</h2>
 
-    <h3>Come capisco se un hotel è davvero di lusso?</h3>
+    <h3>Come capisco se un&nbsp;hotel è davvero di lusso?</h3>
     <p>Guarda i fatti, non le stelle dichiarate: ti chiamano per nome senza che sia tu a ricordarlo, qualcosa arriva prima che tu lo chieda, il numero della camera viene scritto e mai detto ad alta voce, la spremuta è fatta al momento? Il Ferro Index è composto da ventitré domande su fatti come questi e trasforma le risposte in un punteggio.</p>
 
     <h3>Perché le recensioni non bastano?</h3>
@@ -516,14 +516,14 @@ try { if ('scrollRestoration' in history) history.scrollRestoration = 'manual'; 
     <h3>Cosa conta di più?</h3>
     <p>Le attenzioni valgono il 40% del punteggio e il motivo è molto semplice: i materiali pregiati si possono comprare in un pomeriggio, un servizio che anticipa i bisogni degli ospiti si costruisce in anni.</p>
 
-    <h3>Cos'è il Ferro Index in una frase?</h3>
+    <h3>Cos'è il Ferro&nbsp;Index in una frase?</h3>
     <p>Il metodo usato dagli ispettori del lusso, adattato all'esperienza degli ospiti.</p>
 
     <h3>Il risultato si può condividere?</h3>
     <p>Sì. Il risultato è condivisibile attraverso un link che contiene il verdetto, il radar e altri dettagli utili.</p>
   </section>
 
-</div>
+</main>
 
 <footer>
   <div class="wrap">
@@ -679,10 +679,10 @@ window.FERRO = {
       verdict: 'Il lusso vero: quello che non si fa vedere. Si sente.',
       sub: 'Fascia rara per costruzione, come nei sistemi professionali, dove la soglia più alta si raggiunge solo tenendo insieme tutto. Se i fatti che hai segnato sono veri, questo posto merita la sola misura che conta: il ritorno.' },
     { min: 65, label: 'Ottimo hotel',
-      verdict: 'Ottimo. Non ancora lusso.',
+      verdict: 'Ottimo. Non\u00a0ancora\u00a0lusso.',
       sub: 'La tecnica c\'è, l\'anticipazione va a tratti. La differenza tra ottimo e lusso sta tutta in quello che accade prima che tu chieda.' },
     { min: 40, label: 'Costoso',
-      verdict: 'Non è lusso. È soltanto costoso.',
+      verdict: 'Non è lusso. È\u00a0soltanto costoso.',
       sub: 'Il prezzo alto senza le attenzioni è solo un prezzo alto. Il marmo resta pietra, se nessuno ti vede davvero.' },
     { min: 0, label: 'Scenografia',
       verdict: 'Non è ospitalità. È una scena. E il pubblico eri tu.',
@@ -758,6 +758,6 @@ window.FERRO = {
   }
 };
 </script>
-<script src="/assets/ferro.js?v=74"></script>
+<script src="/assets/ferro.js?v=75"></script>
 </body>
 </html>

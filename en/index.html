@@ -30,7 +30,7 @@ try { if ('scrollRestoration' in history) history.scrollRestoration = 'manual'; 
 <link rel="icon" href="/assets/favicon-32.png" sizes="32x32" type="image/png">
 <link rel="icon" href="/assets/favicon-16.png" sizes="16x16" type="image/png">
 <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
-<link rel="stylesheet" href="/assets/ferro.css?v=74">
+<link rel="stylesheet" href="/assets/ferro.css?v=75">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -226,13 +226,13 @@ try { if ('scrollRestoration' in history) history.scrollRestoration = 'manual'; 
 
 <div class="progress" id="progress"></div>
 
-<a class="lang" href="/">Italiano</a>
+<a class="lang" href="/" hreflang="it" lang="it">Italiano</a>
 
 <div class="wrap" id="top">
 
   <header class="hero" id="hero">
     <div class="hero-testo">
-    <p class="occhiello"><span>Ferro Index<span class="tm">™</span> · The Mattia Ferro method</span></p>
+    <p class="occhiello"><span>Ferro Index<span class="tm">™</span> · The&nbsp;Mattia Ferro method</span></p>
     <hr class="filetto">
     <h1>Many luxury hotels are not luxury. They're just expensive.</h1>
     <p class="sotto">And yours? Find out with the Ferro Index: twenty-three questions about details you saw with your own eyes. No reviews, no declared stars, just a score from 0 to 100.</p>
@@ -260,16 +260,16 @@ try { if ('scrollRestoration' in history) history.scrollRestoration = 'manual'; 
       <a href="#prova">The proof</a>
       <a href="#classificazioni">Stars and Keys</a>
       <a href="#fonti">The sources</a>
-      <a href="#domande">The questions</a>
       <a href="#autore">Who I am</a>
+      <a href="#domande">The questions</a>
     </div>
     <button class="menu-cta" data-start type="button">Score your hotel</button>
   </div>
 </nav>
 
-  <div class="wrap">
+  <main class="wrap" id="contenuto">
 
-  <main id="app"></main>
+  <div id="app"></div>
   <div id="announce" class="sr-only" aria-live="polite"></div>
 
   <noscript><p class="micro">The test needs JavaScript. The method, though, you can read below.</p></noscript>
@@ -421,7 +421,7 @@ try { if ('scrollRestoration' in history) history.scrollRestoration = 'manual'; 
     </div>
     <p>Note: Virtuoso is not in the table because it is not a rating: it is a commercial network of travel agencies, and a hotel in its portfolio has signed a distribution agreement, not received an assessment. I say that from the inside: I am an independent travel advisor of Fora Travel, and the Virtuoso membership belongs to Fora.</p>
 
-    <h3>Ferro Index: what it does and what it doesn't</h3>
+    <h3>Ferro&nbsp;Index: what it&nbsp;does and what it doesn't</h3>
     <p>The Ferro Index does not inspect anonymously, has no inspectors, buys no stays and does not walk into other people's hotels with a notebook. It asks hotel guests to report twenty-three things they experienced first-hand.</p>
     
     <p class="didascalia">Verified in August 2026 against primary sources: the <a href="https://www.gazzettaufficiale.it/eli/id/2009/02/11/09A01326/sg">Gazzetta Ufficiale</a>, the MICHELIN Guide, <a href="https://www.forbestravelguide.com/about">Forbes Travel Guide</a>, <a href="https://lqagroup.com/hotel-assessments/">LQA</a> and the <a href="https://www.hotelstars.eu/about-us/faq">Hotelstars Union</a>. Regional rules change, and these systems update their own numbers.</p>
@@ -509,7 +509,7 @@ try { if ('scrollRestoration' in history) history.scrollRestoration = 'manual'; 
     <hr class="filetto">
     <h2>FAQ: what we often get asked</h2>
 
-    <h3>How can I tell if a hotel is truly luxury?</h3>
+    <h3>How can I tell if a&nbsp;hotel is truly luxury?</h3>
     <p>Look at facts, not declared stars: do they call you by name unprompted? Does something arrive before you ask? Is your room number written down and never said out loud? Is the juice squeezed to order? The Ferro Index is made up of twenty-three questions about facts like these and turns the answers into a score.</p>
 
     <h3>Why aren't reviews enough?</h3>
@@ -518,14 +518,14 @@ try { if ('scrollRestoration' in history) history.scrollRestoration = 'manual'; 
     <h3>What matters most?</h3>
     <p>Attention is worth 40% of the score, and the reason is very simple: fine materials can be bought in an afternoon, a service that anticipates guests' needs takes years to build.</p>
 
-    <h3>What is the Ferro Index, in one sentence?</h3>
+    <h3>What is the Ferro&nbsp;Index, in one sentence?</h3>
     <p>The method luxury inspectors use, adapted to the guest's experience.</p>
 
     <h3>Can I share the result?</h3>
     <p>Yes. The result can be shared through a link that carries the verdict, the radar and other useful details.</p>
   </section>
 
-</div>
+</main>
 
 <footer>
   <div class="wrap">
@@ -681,10 +681,10 @@ window.FERRO = {
       verdict: 'True luxury: the kind that doesn\'t show off. You feel it.',
       sub: 'This band is rare by design, as in the professional systems, where the top threshold is reached only by holding everything together at once. If the facts you marked are true, this place deserves the only measure that counts: going back.' },
     { min: 65, label: 'Excellent hotel',
-      verdict: 'An excellent hotel. Not luxury yet.',
+      verdict: 'An excellent hotel. Not\u00a0luxury yet.',
       sub: 'The technique is there, the anticipation comes and goes. The difference between excellent and luxury lives entirely in what happens before you ask.' },
     { min: 40, label: 'Expensive',
-      verdict: 'It\'s not luxury. It\'s just expensive.',
+      verdict: 'It\'s not luxury. It\'s\u00a0just\u00a0expensive.',
       sub: 'A high price without the attention is just a high price. Marble stays stone if nobody truly sees you.' },
     { min: 0, label: 'Stage set',
       verdict: 'It\'s not hospitality. It\'s a stage. And you were the audience.',
@@ -760,6 +760,6 @@ window.FERRO = {
   }
 };
 </script>
-<script src="/assets/ferro.js?v=74"></script>
+<script src="/assets/ferro.js?v=75"></script>
 </body>
 </html>

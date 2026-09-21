@@ -751,6 +751,10 @@ table.pesi th {
   padding: 0 0 10px;
 }
 table.pesi td { border-top: 1px solid var(--line); padding: 10px 12px 10px 0; vertical-align: top; }
+/* stesso respiro delle celle anche nelle intestazioni: da telefono «Peso» e
+   «Cosa guarda» si toccavano. Non nella tabella dei sistemi, dove le
+   intestazioni andrebbero a capo */
+table.pesi:not(.sistemi) th { padding-right: 12px; }
 table.pesi td.num { font-weight: 700; color: var(--brass); white-space: nowrap; }
 
 /* Rete per le tabelle su schermo stretto: scorrono dentro il proprio riquadro

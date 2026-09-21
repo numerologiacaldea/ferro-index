@@ -30,7 +30,7 @@ try { if ('scrollRestoration' in history) history.scrollRestoration = 'manual'; 
 <link rel="icon" href="/assets/favicon-32.png" sizes="32x32" type="image/png">
 <link rel="icon" href="/assets/favicon-16.png" sizes="16x16" type="image/png">
 <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
-<link rel="stylesheet" href="/assets/ferro.css?v=71">
+<link rel="stylesheet" href="/assets/ferro.css?v=72">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -304,8 +304,6 @@ try { if ('scrollRestoration' in history) history.scrollRestoration = 'manual'; 
       </tbody>
     </table>
     <p class="didascalia">Ferro Index version 1.1, September 2026. Every revision changes the number and is recorded below.</p>
-    <p class="didascalia">1.1, 21 September 2026. Name question: "elsewhere on the property" instead of "in every area", matching what its note already said; new answer "I didn't notice", worth zero like No. Weights, thresholds and bands unchanged: results already shared don't change.</p>
-    <p class="didascalia">1.0, 16 August 2026. First public version. Until 3 September the questions' wording and answers were refined without changing the number; pillars, weights, thresholds and bands never changed. From now on, every revision gets its own.</p>
 
     <p>The seven pillars are added up the way professional inspectors add them up:</p>
     <ul class="elenco-metodo">
@@ -586,7 +584,7 @@ window.FERRO = {
     { id: 'a1', pillar: 'attenzioni', w: 8, type: 'yn0', section: 'The arrival',
       text: 'After check-in, did they remember your name and use it elsewhere on the property?',
       note: 'At the bar, at the restaurant, at the spa, did the property\'s staff know your name even though you had never introduced yourself to them directly? Check-in itself doesn\'t count, since your name is written right in front of them. Once is enough. If there was no contact at all beyond check-in, the answer is no: recognition is exactly what was missing.',
-      options: [{ t: 'Yes, they used my name', v: 1 }, { t: 'No, they didn\'t use my name', v: 0 }, { t: 'I didn\'t notice', v: 2 }] },
+      options: [{ t: 'Yes, they used my name', v: 1 }, { t: 'No, I had to remind them', v: 0 }, { t: 'I didn\'t notice', v: 2 }] },
     { id: 'p1', pillar: 'privacy', w: 4, type: 'yn', section: 'The arrival',
       text: 'At check-in, was your room number said out loud, or was it given to you in writing?',
       note: 'In the best hotels it\'s a privacy rule: the number is never spoken if others can hear it.',
@@ -762,6 +760,6 @@ window.FERRO = {
   }
 };
 </script>
-<script src="/assets/ferro.js?v=71"></script>
+<script src="/assets/ferro.js?v=72"></script>
 </body>
 </html>

@@ -30,7 +30,7 @@ try { if ('scrollRestoration' in history) history.scrollRestoration = 'manual'; 
 <link rel="icon" href="/assets/favicon-32.png" sizes="32x32" type="image/png">
 <link rel="icon" href="/assets/favicon-16.png" sizes="16x16" type="image/png">
 <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
-<link rel="stylesheet" href="/assets/ferro.css?v=75">
+<link rel="stylesheet" href="/assets/ferro.css?v=76">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -710,6 +710,9 @@ window.FERRO = {
     naNote: 'Not put to the test on this stay: it stays out of the count.',
     domandaDi: function (n, tot) { return 'Question ' + n + ' of ' + tot; },
     flagsTitle: 'The false notes you marked',
+    flagsTitleCondiviso: 'The false notes marked',
+    capStonature: 'Score held at 84: once a false note is marked, no hotel can be a Sanctuary. It\'s a rule of the method: flaws weigh more than merits.',
+    condivisoRiga: 'The verdict of the guest who took the test.',
     capNote: function (reasons) {
       var what = reasons.length === 2 ? 'attention and cleanliness fell' :
         (reasons[0] === 'attenzioni' ? 'attention fell' : 'cleanliness fell');
@@ -760,6 +763,6 @@ window.FERRO = {
   }
 };
 </script>
-<script src="/assets/ferro.js?v=75"></script>
+<script src="/assets/ferro.js?v=76"></script>
 </body>
 </html>

@@ -458,6 +458,13 @@
 
     var head = el('div', 'res-head');
     head.appendChild(el('p', 'occhiello', F.ui.esito));
+    /* chi apre il link di un altro deve capire subito che il verdetto non è suo */
+    var rigaCondivisa = null;
+    if (isShared && F.ui.condivisoRiga) {
+      rigaCondivisa = el('p', 'res-condiviso micro', F.ui.condivisoRiga);
+      rigaCondivisa.id = 'res-condiviso';
+      head.appendChild(rigaCondivisa);
+    }
 
     var hotelP = el('p', 'res-hotel');
     hotelP.textContent = state.meta.h;
@@ -466,6 +473,8 @@
 
     var numero = el('h1', 'res-num', '<span class="cifra" aria-hidden="true">0</span><span class="su" aria-hidden="true">/100</span>' +
       '<span class="sr-only">' + F.ui.esito + ': ' + res.score + '/100, ' + res.band.label + '</span>');
+    /* il fuoco arriva sul numero: il lettore di schermo legge anche di chi è il verdetto */
+    if (rigaCondivisa) numero.setAttribute('aria-describedby', 'res-condiviso');
     head.appendChild(numero);
     head.appendChild(el('p', 'res-band', res.band.label));
     head.appendChild(el('p', 'res-verdict', res.band.verdict));
@@ -486,7 +495,31 @@
       head.appendChild(el('p', 'res-cap', F.ui.capNote(res.capReasons)));
     }
 
-    /* l'azione principale a portata di verdetto, senza scrollare */
+    /* Le stonature stanno accanto al numero: con tutti i pilastri al massimo un
+       84 senza spiegazione sembrava un errore. Il riquadro compare solo quando è
+       davvero il tetto delle stonature ad aver fermato il punteggio. Il conto si
+       rifà qui, con le stesse regole, per non toccare il motore del punteggio. */
+    if (res.flags.length) {
+      var fl = el('div', 'res-flags');
+      fl.appendChild(el('p', 'occhiello', isShared && F.ui.flagsTitleCondiviso ? F.ui.flagsTitleCondiviso : F.ui.flagsTitle));
+      var ul = el('ul');
+      res.flags.forEach(function (fi) { ul.appendChild(el('li', null, F.flagEcho[fi])); });
+      fl.appendChild(ul);
+      head.appendChild(fl);
+
+      var grezzo = 0, provati = 0;
+      F.pillars.forEach(function (p) {
+        var t = res.per[p.key];
+        if (t.max > 0) { grezzo += t.scaled; provati += p.w; }
+      });
+      var senzaTetto = Math.max(0, Math.round(provati > 0 ? (grezzo / provati) * 100 : 0) - res.flags.length * 4);
+      if (!res.capReasons.length && senzaTetto > 84 && F.ui.capStonature) {
+        head.appendChild(el('p', 'res-cap', F.ui.capStonature));
+      }
+    }
+
+    /* l'azione principale subito dopo il verdetto e la sua spiegazione: con le
+       stonature scende un poco, perché prima viene il perché del punteggio */
     if (lingua) lingua.href = linguaHref + shareQuery(rcode);
 
     var pub;
@@ -536,15 +569,6 @@
     /* tutto ciò che segue è azione, non lettura: sta in un blocco solo, così la
        griglia ha esattamente tre figli e non può generare righe vuote */
     var azioni = el('div', 'res-azioni');
-
-    if (res.flags.length) {
-      var fl = el('div', 'res-flags');
-      fl.appendChild(el('p', 'occhiello', F.ui.flagsTitle));
-      var ul = el('ul');
-      res.flags.forEach(function (fi) { ul.appendChild(el('li', null, F.flagEcho[fi])); });
-      fl.appendChild(ul);
-      azioni.appendChild(fl);
-    }
 
     function currentURL() { return F.baseURL + '/' + shareQuery(rcode); }
     function currentText() { return F.ui.shareText(res.score, res.band.label, state.meta.h); }
@@ -1171,10 +1195,13 @@
            risale e il poligono cambia forma, così si capisce che misura davvero */
         if (!ESEMPI.length || !schedaNum || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
+        /* un giro solo: alto, medio, basso e di nuovo alto, poi si ferma. Un
+           contenuto che si muove da solo senza fine distrae e non si può fermare */
         var idx = 0;
-        setInterval(function () {
+        var giro = setInterval(function () {
           if (document.visibilityState !== 'visible') return;
           idx = (idx + 1) % ESEMPI.length;
+          if (idx === 0) clearInterval(giro);
           var e = ESEMPI[idx];
 
           casa.classList.add('cambio');

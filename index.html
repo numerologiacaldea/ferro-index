@@ -30,7 +30,7 @@ try { if ('scrollRestoration' in history) history.scrollRestoration = 'manual'; 
 <link rel="icon" href="/assets/favicon-32.png" sizes="32x32" type="image/png">
 <link rel="icon" href="/assets/favicon-16.png" sizes="16x16" type="image/png">
 <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
-<link rel="stylesheet" href="/assets/ferro.css?v=75">
+<link rel="stylesheet" href="/assets/ferro.css?v=76">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -708,6 +708,9 @@ window.FERRO = {
     naNote: 'Non messo alla prova in questo soggiorno: non entra nel conto.',
     domandaDi: function (n, tot) { return 'Domanda ' + n + ' di ' + tot; },
     flagsTitle: 'Le stonature che hai segnato',
+    flagsTitleCondiviso: 'Le stonature segnate',
+    capStonature: 'Punteggio fermato a 84: con una stonatura segnalata nessun hotel può essere Santuario. È una regola del metodo: i difetti pesano più dei pregi.',
+    condivisoRiga: 'Il verdetto di chi ha fatto il test.',
     capNote: function (reasons) {
       var che = reasons.length === 2 ? 'le attenzioni e la pulizia sono scese' :
         (reasons[0] === 'attenzioni' ? 'le attenzioni sono scese' : 'la pulizia è scesa');
@@ -758,6 +761,6 @@ window.FERRO = {
   }
 };
 </script>
-<script src="/assets/ferro.js?v=75"></script>
+<script src="/assets/ferro.js?v=76"></script>
 </body>
 </html>

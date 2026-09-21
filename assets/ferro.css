@@ -25,7 +25,7 @@
      722px a un paragrafo, 726 a un titolo, 805 a una tabella e 532 a una
      didascalia: undici larghezze diverse che si leggono come disordine.
      Qui sono tre, scelte, e ogni blocco ne usa una. */
-  --lettura: 720px;   /* il testo e i titoli che lo introducono */
+  --lettura: 660px;   /* il testo e i titoli che lo introducono: circa 80 caratteri per riga */
   --stretta: 560px;   /* testi piccoli: didascalie, note, occhielli */
   --larga: 860px;     /* tabelle e figure, che hanno bisogno di respiro */
 }
@@ -1417,4 +1417,39 @@ body:has(#hero.hidden) .lang { top: 66px; }
   border-left: 2px solid var(--brass);
   color: var(--ink);
   font-size: 15px;
+}
+
+/* ---------- ultime modifiche approvate, 21 settembre 2026 ---------- */
+
+/* Le stonature sotto il numero del verdetto: elenco a sinistra dentro un blocco
+   centrato, come la motivazione; il riquadro del tetto segue sotto. */
+.res-head .res-flags { margin: 26px auto 0; max-width: 480px; text-align: left; }
+/* il riquadro del tetto che segue l'elenco ha la sua stessa misura e lo stesso allineamento */
+.res-head .res-flags + .res-cap { text-align: left; }
+.res-head .res-flags .occhiello { justify-content: flex-start; }
+.res-condiviso { margin-top: 6px; }
+@media (min-width: 1000px) {
+  .res-head .res-flags { margin-left: 0; margin-right: 0; max-width: 24em; }
+}
+
+/* La tabella delle ventitré domande sul telefono: ogni riga diventa una scheda,
+   la domanda a tutta larghezza e sotto pilastro e punti. Le intestazioni
+   restano per i lettori di schermo. Sopra i 560 px resta la tabella. */
+@media (max-width: 560px) {
+  table.pesi.domande, table.pesi.domande tbody { display: block; }
+  table.pesi.domande thead {
+    position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0);
+  }
+  table.pesi.domande tbody tr {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    column-gap: 12px;
+    border-top: 1px solid var(--line);
+    padding: 11px 0 12px;
+  }
+  table.pesi.domande td { border-top: 0; padding: 0; }
+  table.pesi.domande td:first-child { grid-column: 1 / -1; font-size: 16.5px; line-height: 1.4; }
+  table.pesi.domande td:nth-child(2),
+  table.pesi.domande td.num { margin-top: 5px; align-self: baseline; }
+  table.pesi.domande td.num { font-size: 15px; white-space: nowrap; }
 }

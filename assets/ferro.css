@@ -1453,3 +1453,58 @@ body:has(#hero.hidden) .lang { top: 66px; }
   table.pesi.domande td.num { margin-top: 5px; align-self: baseline; }
   table.pesi.domande td.num { font-size: 15px; white-space: nowrap; }
 }
+
+/* ---------- le schede del Registro dei Santuari ----------
+   Una scheda per hotel: il punteggio in cifre come nel verdetto, il nome, la città,
+   le parole dell'ospite e il link al verdetto completo. Scritte in HTML statico dal
+   sistema delle candidature, così si leggono anche senza eseguire codice. */
+.santuari { list-style: none; margin-top: 26px; max-width: var(--lettura); }
+.santuario { border-top: 1px solid var(--line); padding: 26px 0 30px; }
+.santuario:last-child { padding-bottom: 6px; }
+section.blocco .santuario-voto {
+  margin-top: 0;
+  font-family: var(--sans);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--brass);
+}
+.santuario-num {
+  font-family: var(--serif);
+  font-size: 40px;
+  line-height: 1;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  margin-right: 1px;
+}
+section.blocco h3.santuario-nome { font-size: 25px; line-height: 1.2; margin-top: 12px; text-wrap: wrap; }
+section.blocco .santuario-luogo {
+  margin-top: 6px;
+  font-family: var(--sans);
+  font-size: 12.5px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+blockquote.santuario-motivo {
+  margin-top: 18px;
+  border-left: 2px solid var(--brass);
+  padding: 2px 0 2px 18px;
+}
+section.blocco blockquote.santuario-motivo p { margin-top: 0; font-size: 19px; line-height: 1.5; font-style: italic; }
+section.blocco .santuario-nota,
+section.blocco .santuario-piede {
+  font-family: var(--sans);
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--muted);
+}
+section.blocco .santuario-nota { margin-top: 8px; padding-left: 20px; }
+section.blocco .santuario-piede { margin-top: 16px; }
+@media (max-width: 420px) {
+  .santuario-num { font-size: 36px; }
+  section.blocco h3.santuario-nome { font-size: 23px; }
+  section.blocco blockquote.santuario-motivo p { font-size: 18px; }
+}

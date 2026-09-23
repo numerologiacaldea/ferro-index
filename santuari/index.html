@@ -30,7 +30,8 @@ try { if ('scrollRestoration' in history) history.scrollRestoration = 'manual'; 
 <link rel="icon" href="/assets/favicon-32.png" sizes="32x32" type="image/png">
 <link rel="icon" href="/assets/favicon-16.png" sizes="16x16" type="image/png">
 <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
-<link rel="stylesheet" href="/assets/ferro.css?v=76">
+<link rel="stylesheet" href="/assets/ferro.css?v=77">
+<!-- REGISTRO-DATI:INIZIO -->
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -38,10 +39,46 @@ try { if ('scrollRestoration' in history) history.scrollRestoration = 'manual'; 
   "@id": "https://index.mattiaferro.com/santuari/",
   "name": "Il Registro dei Santuari",
   "description": "L'elenco degli hotel che superano quota 85 al Ferro Index: verdetti con nome e motivazione, letti e scelti prima della pubblicazione. I punteggi inferiori restano anonimi.",
-  "isPartOf": { "@id": "https://index.mattiaferro.com/#app" },
-  "inLanguage": "it"
+  "isPartOf": {
+    "@id": "https://index.mattiaferro.com/#app"
+  },
+  "inLanguage": "it",
+  "mainEntity": {
+    "@type": "ItemList",
+    "name": "Il Registro dei Santuari",
+    "numberOfItems": 2,
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "url": "https://index.mattiaferro.com/santuari/#santuario-a9bbbdf9",
+        "item": {
+          "@type": "Hotel",
+          "name": "Il San Pietro di Positano",
+          "address": {
+            "@type": "PostalAddress",
+            "addressLocality": "Positano"
+          }
+        }
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "url": "https://index.mattiaferro.com/santuari/#santuario-84a30e59",
+        "item": {
+          "@type": "Hotel",
+          "name": "Mandarin Oriental, Bangkok",
+          "address": {
+            "@type": "PostalAddress",
+            "addressLocality": "Bangkok"
+          }
+        }
+      }
+    ]
+  }
 }
 </script>
+<!-- REGISTRO-DATI:FINE -->
 </head>
 <body>
 
@@ -69,8 +106,27 @@ try { if ('scrollRestoration' in history) history.scrollRestoration = 'manual'; 
   <section class="blocco">
     <p class="occhiello">I santuari</p>
     <hr class="filetto">
-    <h2>I primi verdetti sono in lettura</h2>
-    <p>Il Registro apre con le prime candidature accolte. Se hai vissuto un hotel che merita di stare qui, <a href="/">misuralo</a>: se supera quota 85, potrai candidarlo dalla pagina del verdetto.</p>
+    <!-- REGISTRO:INIZIO -->
+    <h2>Gli hotel nel Registro</h2>
+    <ul class="santuari">
+    <li class="santuario" id="santuario-a9bbbdf9">
+      <p class="santuario-voto"><span class="santuario-num">99</span>/100 · Santuario</p>
+      <h3 class="santuario-nome">Il San Pietro di Positano</h3>
+      <p class="santuario-luogo">Positano</p>
+      <blockquote class="santuario-motivo"><p>«Un hotel bellissimo, con un servizio PERFETTO. È l&#39;unico hotel in cui abbiamo soggiornato che ti fa sentire di famiglia.»</p></blockquote>
+      <p class="santuario-nota">Tradotto dall&#39;inglese</p>
+      <p class="santuario-piede">Candidato a settembre 2026 · <a href="/?r=151111411111111111111205&amp;h=Il%20San%20Pietro%20di%20Positano">Leggi il verdetto</a></p>
+    </li>
+    <li class="santuario" id="santuario-84a30e59">
+      <p class="santuario-voto"><span class="santuario-num">97</span>/100 · Santuario</p>
+      <h3 class="santuario-nome">Mandarin Oriental, Bangkok</h3>
+      <p class="santuario-luogo">Bangkok</p>
+      <blockquote class="santuario-motivo"><p>«Le attenzioni prima di tutto.»</p></blockquote>
+      <p class="santuario-piede">Candidato a settembre 2026 · <a href="/?r=141111411111111111111204&amp;h=Mandarin%20Oriental%2C%20Bangkok">Leggi il verdetto</a></p>
+    </li>
+    </ul>
+    <p>Se hai vissuto un hotel che merita di stare qui, <a href="/">misuralo</a>: se supera quota 85, potrai candidarlo dalla pagina del verdetto.</p>
+    <!-- REGISTRO:FINE -->
   </section>
 
 </main>

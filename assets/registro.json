@@ -1,0 +1,32 @@
+{
+  "schede": [
+    {
+      "id": "a9bbbdf9",
+      "hotel": "Il San Pietro di Positano",
+      "citta": "Positano",
+      "punteggio": 99,
+      "r": "151111411111111111111205",
+      "originale": "en",
+      "mese": "2026-09",
+      "pubblicato": "2026-09-23T08:29:59Z",
+      "motivazione": {
+        "en": "Beautiful hotel with PERFECT customer service. This is the only hotel we have traveled to that makes you feel like family.",
+        "it": "Un hotel bellissimo, con un servizio PERFETTO. È l'unico hotel in cui abbiamo soggiornato che ti fa sentire di famiglia."
+      }
+    },
+    {
+      "id": "84a30e59",
+      "hotel": "Mandarin Oriental, Bangkok",
+      "citta": "Bangkok",
+      "punteggio": 97,
+      "r": "141111411111111111111204",
+      "originale": "it",
+      "mese": "2026-09",
+      "pubblicato": "2026-09-23T08:29:59Z",
+      "motivazione": {
+        "it": "Le attenzioni prima di tutto.",
+        "en": "Attention comes first."
+      }
+    }
+  ]
+}

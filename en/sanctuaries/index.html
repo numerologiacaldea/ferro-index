@@ -30,7 +30,8 @@ try { if ('scrollRestoration' in history) history.scrollRestoration = 'manual'; 
 <link rel="icon" href="/assets/favicon-32.png" sizes="32x32" type="image/png">
 <link rel="icon" href="/assets/favicon-16.png" sizes="16x16" type="image/png">
 <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
-<link rel="stylesheet" href="/assets/ferro.css?v=76">
+<link rel="stylesheet" href="/assets/ferro.css?v=77">
+<!-- REGISTRO-DATI:INIZIO -->
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -38,10 +39,46 @@ try { if ('scrollRestoration' in history) history.scrollRestoration = 'manual'; 
   "@id": "https://index.mattiaferro.com/en/sanctuaries/",
   "name": "The Sanctuary Register",
   "description": "The list of hotels that clear 85 on the Ferro Index: verdicts with name and reasoning, read and chosen before publication. Lower scores stay anonymous.",
-  "isPartOf": { "@id": "https://index.mattiaferro.com/en/#app" },
-  "inLanguage": "en"
+  "isPartOf": {
+    "@id": "https://index.mattiaferro.com/en/#app"
+  },
+  "inLanguage": "en",
+  "mainEntity": {
+    "@type": "ItemList",
+    "name": "The Sanctuary Register",
+    "numberOfItems": 2,
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "url": "https://index.mattiaferro.com/en/sanctuaries/#santuario-a9bbbdf9",
+        "item": {
+          "@type": "Hotel",
+          "name": "Il San Pietro di Positano",
+          "address": {
+            "@type": "PostalAddress",
+            "addressLocality": "Positano"
+          }
+        }
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "url": "https://index.mattiaferro.com/en/sanctuaries/#santuario-84a30e59",
+        "item": {
+          "@type": "Hotel",
+          "name": "Mandarin Oriental, Bangkok",
+          "address": {
+            "@type": "PostalAddress",
+            "addressLocality": "Bangkok"
+          }
+        }
+      }
+    ]
+  }
 }
 </script>
+<!-- REGISTRO-DATI:FINE -->
 </head>
 <body>
 
@@ -69,8 +106,27 @@ try { if ('scrollRestoration' in history) history.scrollRestoration = 'manual'; 
   <section class="blocco">
     <p class="occhiello">The sanctuaries</p>
     <hr class="filetto">
-    <h2>The first verdicts are being read</h2>
-    <p>The Register opens with the first accepted nominations. If you've stayed at a hotel that deserves a place here, <a href="/en/">measure it</a>: if it clears 85, you can submit it from the verdict page.</p>
+    <!-- REGISTRO:INIZIO -->
+    <h2>The hotels in the Register</h2>
+    <ul class="santuari">
+    <li class="santuario" id="santuario-a9bbbdf9">
+      <p class="santuario-voto"><span class="santuario-num">99</span>/100 · Sanctuary</p>
+      <h3 class="santuario-nome">Il San Pietro di Positano</h3>
+      <p class="santuario-luogo">Positano</p>
+      <blockquote class="santuario-motivo"><p>“Beautiful hotel with PERFECT customer service. This is the only hotel we have traveled to that makes you feel like family.”</p></blockquote>
+      <p class="santuario-piede">Nominated in September 2026 · <a href="/en/?r=151111411111111111111205&amp;h=Il%20San%20Pietro%20di%20Positano">Read the verdict</a></p>
+    </li>
+    <li class="santuario" id="santuario-84a30e59">
+      <p class="santuario-voto"><span class="santuario-num">97</span>/100 · Sanctuary</p>
+      <h3 class="santuario-nome">Mandarin Oriental, Bangkok</h3>
+      <p class="santuario-luogo">Bangkok</p>
+      <blockquote class="santuario-motivo"><p>“Attention comes first.”</p></blockquote>
+      <p class="santuario-nota">Translated from Italian</p>
+      <p class="santuario-piede">Nominated in September 2026 · <a href="/en/?r=141111411111111111111204&amp;h=Mandarin%20Oriental%2C%20Bangkok">Read the verdict</a></p>
+    </li>
+    </ul>
+    <p>If you've stayed at a hotel that deserves a place here, <a href="/en/">measure it</a>: if it clears 85, you can submit it from the verdict page.</p>
+    <!-- REGISTRO:FINE -->
   </section>
 
 </main>

@@ -1546,3 +1546,28 @@ section.blocco .santuario-piede { margin-top: 16px; }
 }
 .reg-avviso[hidden] { display: none; }
 .btn[aria-busy="true"] { opacity: 0.6; cursor: progress; }
+
+/* ---------- la spunta di verifica e il Registro nel menu ---------- */
+.spunta { width: 16px; height: 16px; flex: none; fill: var(--brass); vertical-align: -3px; }
+.menu-voci a.menu-registro { color: var(--brass); font-weight: 600; display: inline-flex; align-items: center; gap: 6px; }
+section.blocco .santuario-verifica { margin: 6px 0 0; font-family: var(--sans); font-size: 13px; letter-spacing: 0.02em; }
+section.blocco .santuario-verifica a { display: inline-flex; align-items: center; gap: 6px; color: var(--brass); text-decoration: none; font-weight: 600; }
+section.blocco .verifica-nota { display: flex; gap: 10px; align-items: flex-start; padding: 14px 16px; background: var(--brass-soft); border-left: 2px solid var(--brass); }
+section.blocco .verifica-nota .spunta { margin-top: 4px; }
+/* con la voce del Registro le voci sono sette: si fa posto togliendo dal menu quello
+   che la pagina ha già (il pulsante sta nella prima schermata e in fondo, il marchio
+   nella prima schermata), e le voci tengono la loro misura */
+@media (min-width: 1024px) { .menu-voci { gap: 14px; } }
+@media (min-width: 721px) and (max-width: 1023px) {
+  .menu-voci { gap: 12px; }
+  .menu-voci a.menu-registro { gap: 5px; }
+}
+@media (min-width: 721px) and (max-width: 919px) { .menu-cta { display: none; } }
+@media (min-width: 920px) and (max-width: 1023px) {
+  .menu-marchio { display: none; }
+  body:has(#hero.hidden) .menu-marchio { display: block; }
+  body:has(#hero.hidden) .menu-cta { display: none; }
+}
+/* sul verdetto il marchio tornava nel menu, e con sette voci non ci sta più: sui
+   tablet il menu del verdetto resta come sul telefono, solo le voci */
+@media (min-width: 721px) and (max-width: 919px) { body:has(#hero.hidden) .menu-marchio { display: none; } }

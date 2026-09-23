@@ -1343,7 +1343,9 @@
   function menuVivo() {
     var menu = document.getElementById('menu');
     if (!menu) return;
-    var voci = [].slice.call(menu.querySelectorAll('.menu-voci a'));
+    /* solo le voci che portano a una sezione di questa pagina: il Registro è
+       un'altra pagina e il browser lo apre da solo */
+    var voci = [].slice.call(menu.querySelectorAll('.menu-voci a[href^="#"]'));
     var mete = voci.map(function (a) {
       return document.querySelector(a.getAttribute('href'));
     });

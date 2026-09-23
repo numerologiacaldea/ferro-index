@@ -182,6 +182,23 @@
      la soglia il link porta le sole risposte, e la pagina non offre il campo
      del nome. La cifra è una sola, qui, e vale per tutti e tre i punti. */
   var SOGLIA_NOME = 85;
+  /* il server delle candidature al Registro (Apps Script di mailperagente): ricalcola il
+     punteggio, manda a Mattia la mail con la prova allegata e il pulsante per pubblicare */
+  var REGISTRO_ENDPOINT = 'https://script.google.com/macros/s/AKfycbyxZksLgOrGZOfpzwompQuTZ-82lS9D-npHVQerLf57mRD5V_jDJbgnrzSDBiBDcn5D/exec';
+  var MAX_PROVA = 10 * 1024 * 1024;
+  /* solo un primo filtro, prima di spedire: il file passa se il tipo oppure l'estensione
+     è nella lista dei formati del server (PDF, JPEG, PNG, WebP, HEIC e HEIF). Chi decide è
+     il server, dai primi byte del file e senza guardare né nome né tipo (tipoDaiByte_ in
+     Codice.gs): un file vero senza estensione e senza tipo si ferma qui anche se là
+     passerebbe. Se cambiano i formati, si cambiano qui, in rFile.accept più sotto e sul
+     server (tipoDaiByte_ ed EST_PER_TIPO_) */
+  var TIPI_PROVA = ['application/pdf', 'image/jpeg', 'image/png', 'image/heic', 'image/heif', 'image/webp'];
+  var EST_PROVA = ['pdf', 'jpg', 'jpeg', 'png', 'heic', 'heif', 'webp'];
+
+  function formatoAmmesso(file) {
+    var est = (String(file.name || '').split('.').pop() || '').toLowerCase();
+    return TIPI_PROVA.indexOf(String(file.type || '').toLowerCase()) >= 0 || EST_PROVA.indexOf(est) >= 0;
+  }
 
   function nomeAmmesso() {
     if (!state.answers || !Object.keys(state.answers).length) return false;
@@ -626,20 +643,13 @@
       reg.appendChild(el('p', 'pub-testo', F.ui.reg.testo));
 
       var form = document.createElement('form');
-      form.action = 'https://formsubmit.co/vimanaholidays@gmail.com';
-      form.method = 'POST';
 
-      function hiddenField(name, value) {
-        var h = document.createElement('input');
-        h.type = 'hidden'; h.name = name; h.value = value;
-        form.appendChild(h);
-        return h;
-      }
-      hiddenField('_subject', 'Candidatura Registro dei Santuari - Ferro Index');
-      hiddenField('_captcha', 'false');
-      hiddenField('_next', F.registroURL + '?grazie=1');
-      var hLink = hiddenField('link', '');
-      hiddenField('lingua', document.documentElement.lang);
+      /* campo trappola: fuori dallo schermo e fuori dal Tab, lo compilano solo i
+         programmi automatici. Il server finge di accettare e non manda niente. */
+      var trappola = document.createElement('input');
+      trappola.type = 'text'; trappola.name = 'sito'; trappola.tabIndex = -1;
+      trappola.autocomplete = 'off'; trappola.className = 'reg-trappola';
+      trappola.setAttribute('aria-hidden', 'true');
 
       var rHotel = document.createElement('input');
       rHotel.type = 'text'; rHotel.name = 'hotel'; rHotel.required = true;
@@ -649,12 +659,22 @@
       rHotel.autocomplete = 'organization';
       rHotel.value = state.meta.h;
 
+      var rCitta = document.createElement('input');
+      rCitta.type = 'text'; rCitta.name = 'citta'; rCitta.required = true;
+      rCitta.className = 'pub-input'; rCitta.maxLength = 60;
+      rCitta.placeholder = F.ui.reg.citta;
+      rCitta.setAttribute('aria-label', F.ui.reg.citta);
+      rCitta.autocomplete = 'off';
+
       var rMail = document.createElement('input');
       rMail.type = 'email'; rMail.name = 'email'; rMail.required = true;
       rMail.className = 'pub-input';
       rMail.placeholder = F.ui.reg.email || '';
       if (F.ui.reg.email) rMail.setAttribute('aria-label', F.ui.reg.email);
       rMail.autocomplete = 'email';
+      /* lo stesso controllo del server: niente indirizzi che il server rifiuterebbe.
+         L'apostrofo prima della @ è ammesso (sean.o'brien@...), come sul server */
+      rMail.pattern = '[A-Za-z0-9._%+\'\\-]+@[A-Za-z0-9\\-]+(\\.[A-Za-z0-9\\-]+)*\\.[A-Za-z]{2,}';
 
       var rWhy = document.createElement('textarea');
       rWhy.name = 'motivazione'; rWhy.required = true;
@@ -663,21 +683,96 @@
       rWhy.setAttribute('aria-label', F.ui.reg.motivazione);
       rWhy.value = state.meta.n;
 
+      /* la prova del soggiorno: arriva solo nella mail di Mattia, non si salva altrove */
+      var provaBox = el('label', 'reg-prova');
+      provaBox.appendChild(el('span', 'reg-prova-eti', F.ui.reg.prova));
+      var rFile = document.createElement('input');
+      rFile.type = 'file'; rFile.name = 'prova'; rFile.required = true;
+      /* solo i formati che il server accetta */
+      rFile.accept = '.pdf,.jpg,.jpeg,.png,.heic,.heif,.webp,application/pdf,image/jpeg,image/png,image/heic,image/heif,image/webp';
+      rFile.setAttribute('aria-describedby', 'reg-prova-nota');
+      provaBox.appendChild(rFile);
+      var provaNota = el('p', 'micro reg-prova-nota', F.ui.reg.provaNota);
+      provaNota.id = 'reg-prova-nota';
+
+      var avviso = el('p', 'reg-avviso');
+      avviso.setAttribute('role', 'alert');
+      avviso.hidden = true;
+      /* l'avviso sta sotto il pulsante: se il pulsante è sul bordo basso dello schermo,
+         si fa scorrere quanto basta perché si veda */
+      function avvisa(testo) {
+        avviso.textContent = testo; avviso.hidden = false;
+        try { avviso.scrollIntoView({ block: 'nearest' }); } catch (e) {}
+      }
+
       var rSend = el('button', 'btn', F.ui.reg.invia);
       rSend.type = 'submit';
       rSend.style.marginTop = '14px';
+      /* durante l'invio il pulsante resta dov'è e tiene il fuoco: niente «disabled»,
+         che lo toglierebbe alla tastiera; un secondo clic semplicemente non fa niente */
+      var inviando = false;
+      function sblocca() { inviando = false; rSend.removeAttribute('aria-busy'); rSend.removeAttribute('aria-disabled'); }
+      /* file che il server non accetta: si svuota il campo e compare l'avviso del browser
+         sul campo stesso. «Riprova tra qualche minuto» farebbe riprovare per niente */
+      function rifiutaFile() { rFile.value = ''; rFile.reportValidity(); }
 
-      form.addEventListener('submit', function () {
-        if (!state.meta.h && rHotel.value.trim()) {
-          state.meta.h = rHotel.value.trim();
+      form.addEventListener('submit', function (ev) {
+        ev.preventDefault();
+        if (inviando) return;
+        avviso.hidden = true;
+        [rHotel, rCitta, rWhy].forEach(function (c) { c.value = c.value.trim(); });
+        if (!form.reportValidity()) return;
+        var file = rFile.files && rFile.files[0];
+        if (!file || !file.size) { rFile.value = ''; form.reportValidity(); return; }
+        /* accept filtra solo la finestra di scelta: un file trascinato sul campo, o scelto
+           con «Tutti i file», passa lo stesso. Si controlla prima di leggerlo */
+        if (!formatoAmmesso(file)) { rifiutaFile(); return; }
+        if (file.size > MAX_PROVA) { avvisa(F.ui.reg.troppoGrande); return; }
+        if (!state.meta.h && rHotel.value) {
+          state.meta.h = rHotel.value;
         }
-        hLink.value = currentURL();
+        inviando = true;
+        rSend.setAttribute('aria-busy', 'true');
+        rSend.setAttribute('aria-disabled', 'true');
+        var lettore = new FileReader();
+        lettore.onerror = function () { sblocca(); avvisa(F.ui.reg.errore); };
+        lettore.onload = function () {
+          var corpo = {
+            r: rcode, hotel: rHotel.value, citta: rCitta.value, email: rMail.value,
+            motivazione: rWhy.value, lingua: document.documentElement.lang,
+            link: currentURL(), sito: trappola.value,
+            file: { nome: file.name, tipo: file.type, dati: String(lettore.result).split(',')[1] || '' }
+          };
+          /* testo semplice, senza intestazioni speciali: il browser non deve chiedere
+             permessi preliminari a un altro dominio */
+          /* dopo sei minuti senza risposta si smette di aspettare e compare l'avviso. Il
+             tempo comprende anche il caricamento della prova, che su una linea lenta da
+             solo può superare i due minuti; Apps Script si ferma comunque a sei */
+          var fermo = typeof AbortController === 'function' ? new AbortController() : null;
+          if (fermo) setTimeout(function () { fermo.abort(); }, 360000);
+          fetch(REGISTRO_ENDPOINT, { method: 'POST', body: JSON.stringify(corpo), signal: fermo ? fermo.signal : undefined })
+            .then(function (r) { return r.json(); })
+            .then(function (esito) {
+              /* replace e non href: con «Indietro» non si torna al modulo già inviato,
+                 con il pulsante ancora bloccato */
+              if (esito && esito.ok) { location.replace(F.registroURL + '?grazie=1'); return; }
+              if (esito && esito.errore === 'file') { sblocca(); rifiutaFile(); return; }
+              throw new Error((esito && esito.errore) || 'errore');
+            })
+            .catch(function () { sblocca(); avvisa(F.ui.reg.errore); });
+        };
+        lettore.readAsDataURL(file);
       });
 
+      form.appendChild(trappola);
       form.appendChild(rHotel);
+      form.appendChild(rCitta);
       form.appendChild(rMail);
       form.appendChild(rWhy);
+      form.appendChild(provaBox);
+      form.appendChild(provaNota);
       form.appendChild(rSend);
+      form.appendChild(avviso);
       reg.appendChild(form);
       reg.appendChild(el('p', 'micro', F.ui.reg.nota));
       azioni.appendChild(reg);

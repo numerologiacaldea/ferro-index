@@ -1508,3 +1508,41 @@ section.blocco .santuario-piede { margin-top: 16px; }
   section.blocco h3.santuario-nome { font-size: 23px; }
   section.blocco blockquote.santuario-motivo p { font-size: 18px; }
 }
+
+/* Il modulo di candidatura al Registro: la prova del soggiorno allegata, il campo
+   trappola per i programmi automatici e l'avviso se l'invio non riesce. */
+.reg-trappola { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+.reg-prova { display: block; margin-top: 16px; }
+.reg-prova-eti { display: block; font-family: var(--sans); font-size: 14px; line-height: 1.45; color: var(--ink); }
+.reg-prova input[type="file"] {
+  display: block;
+  width: 100%;
+  margin-top: 8px;
+  font-family: var(--sans);
+  font-size: 14px;
+  color: var(--muted);
+}
+.reg-prova input[type="file"]::file-selector-button {
+  margin-right: 12px;
+  padding: 10px 16px;
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 14px;
+  cursor: pointer;
+}
+.reg-prova input[type="file"]:focus-visible { outline: 2px solid var(--brass); outline-offset: 2px; }
+.reg-block .reg-prova-nota { margin-top: 8px; }
+.reg-avviso {
+  margin-top: 12px;
+  padding: 10px 14px;
+  border-left: 2px solid #8a2a1e;
+  background: var(--paper);
+  font-family: var(--sans);
+  font-size: 14px;
+  color: var(--ink);
+}
+.reg-avviso[hidden] { display: none; }
+.btn[aria-busy="true"] { opacity: 0.6; cursor: progress; }

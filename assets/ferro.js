@@ -712,9 +712,11 @@
          che lo toglierebbe alla tastiera; un secondo clic semplicemente non fa niente */
       var inviando = false;
       function sblocca() { inviando = false; rSend.removeAttribute('aria-busy'); rSend.removeAttribute('aria-disabled'); }
-      /* file che il server non accetta: si svuota il campo e compare l'avviso del browser
-         sul campo stesso. «Riprova tra qualche minuto» farebbe riprovare per niente */
-      function rifiutaFile() { rFile.value = ''; rFile.reportValidity(); }
+      /* file che il server non accetta: si svuota il campo e compare l'avviso dedicato,
+         che resta sotto il pulsante (il fumetto del browser spariva da solo, e diceva
+         soltanto di scegliere un file). «Riprova tra qualche minuto» farebbe riprovare
+         per niente */
+      function rifiutaFile() { rFile.value = ''; avvisa(F.ui.reg.formato || F.ui.reg.errore); }
 
       form.addEventListener('submit', function (ev) {
         ev.preventDefault();

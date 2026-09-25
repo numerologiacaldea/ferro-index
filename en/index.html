@@ -30,7 +30,7 @@ try { if ('scrollRestoration' in history) history.scrollRestoration = 'manual'; 
 <link rel="icon" href="/assets/favicon-32.png" sizes="32x32" type="image/png">
 <link rel="icon" href="/assets/favicon-16.png" sizes="16x16" type="image/png">
 <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
-<link rel="stylesheet" href="/assets/ferro.css?v=80">
+<link rel="stylesheet" href="/assets/ferro.css?v=81">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -126,13 +126,23 @@ try { if ('scrollRestoration' in history) history.scrollRestoration = 'manual'; 
       "jobTitle": "Founder of Luxury Camp at Union Lido, travel advisor",
       "description": "Founder and operator of Luxury Camp at Union Lido (Cavallino-Treporti, Venice), called an innovator of Italian high-end tourism by Forbes Life. Independent travel advisor of Fora Travel.",
       "url": "https://mattiaferro.com",
-      "subjectOf": {
-        "@type": "NewsArticle",
-        "headline": "Il vero lusso nel 2026 non è lo sfarzo: il metodo dell'imprenditore italiano che ha trasformato il glamping in alta hôtellerie",
-        "url": "https://forbes.it/2026/09/08/mattia-ferro-nuovo-lusso-luxury-camp",
-        "datePublished": "2026-09-08",
-        "publisher": { "@type": "Organization", "name": "Forbes Italia" }
-      },
+      "subjectOf": [
+        {
+          "@type": "NewsArticle",
+          "headline": "Il vero lusso nel 2026 non è lo sfarzo: il metodo dell'imprenditore italiano che ha trasformato il glamping in alta hôtellerie",
+          "url": "https://forbes.it/2026/09/08/mattia-ferro-nuovo-lusso-luxury-camp",
+          "datePublished": "2026-09-08",
+          "publisher": { "@type": "Organization", "name": "Forbes Italia" }
+        },
+        {
+          "@type": "NewsArticle",
+          "headline": "Mattia Ferro: il lusso non è più un prodotto, è una competenza",
+          "url": "https://www.panorama.it/attualita/mattia-ferro-il-lusso-non-e-piu-un-prodotto-e-una-competenza",
+          "datePublished": "2026-09-24",
+          "inLanguage": "it",
+          "publisher": { "@type": "Organization", "name": "Panorama", "url": "https://www.panorama.it/" }
+        }
+      ],
       "sameAs": [
         "https://mattiaferro.com",
         "https://travel.mattiaferro.com",
@@ -465,6 +475,7 @@ try { if ('scrollRestoration' in history) history.scrollRestoration = 'manual'; 
     <figure class="ritratto"><img src="/assets/mattia.jpg" alt="Mattia Ferro, founder of Luxury Camp at Union Lido" width="720" height="960" loading="lazy"><figcaption>Mattia Ferro, founder of Luxury Camp at Union Lido.</figcaption></figure>
     <p>Mattia Ferro spent years studying the best hotels in the world, from Dubai to Las Vegas to Shanghai. Then he built one: Luxury Camp at Union Lido, twenty open air suites on the Venice coastline, which he has run since 2018.</p>
     <p>Forbes Life, in its May 2026 print edition, calls him an innovator of Italian high-end tourism. Since 8 September 2026 that interview has been <a href="https://forbes.it/2026/09/08/mattia-ferro-nuovo-lusso-luxury-camp">available online at Forbes.it</a>, in Italian.</p>
+    <p>On 24 September 2026 Panorama ran a piece on him, <a href="https://www.panorama.it/attualita/mattia-ferro-il-lusso-non-e-piu-un-prodotto-e-una-competenza">"Mattia Ferro: il lusso non è più un prodotto, è una competenza"</a> (luxury is no longer a product, it's a skill), in Italian.</p>
     <p>The Ferro Index is the measurable part of his craft: reading hotels from the inside. The rest he writes, one letter at a time, at <a href="https://mattiaferro.com">mattiaferro.com</a>, and if you'd rather have him pick your next hotel: <a href="https://travel.mattiaferro.com">travel.mattiaferro.com</a>.</p>
   </section>
 
@@ -770,6 +781,6 @@ window.FERRO = {
   }
 };
 </script>
-<script src="/assets/ferro.js?v=80"></script>
+<script src="/assets/ferro.js?v=81"></script>
 </body>
 </html>

@@ -1,8 +1,9 @@
 /* Ferro Index — motore del quiz. Legge la configurazione di lingua da window.FERRO
    (domande, stringhe, verdetti). Punteggio, nome dell'hotel e motivazione viaggiano
-   solo nel link: le risposte non lasciano il browser. Le richieste di rete sono due,
-   e partono solo quando la persona preme il pulsante: l'iscrizione alla newsletter
-   al cancello del test e la candidatura al Registro dei Santuari. */
+   solo nel link: le risposte non lasciano il browser. La sola richiesta di rete è la
+   candidatura al Registro dei Santuari, e parte quando la persona preme il pulsante.
+   Al cancello del test l'email non passa da qui: il modulo la consegna alla pagina di
+   iscrizione di Substack, che si apre in una scheda nuova. */
 
 (function () {
   'use strict';
@@ -965,47 +966,13 @@
     try { localStorage.setItem('ferroGate2', '1'); } catch (e) {}
   }
 
-  /* il modulo di iscrizione che Substack offre ai browser senza JavaScript: lo usa il
-     server (Cancello.gs) e, se il server non risponde, il browser stesso */
-  var NEWSLETTER_MODULO = 'https://www.mattiaferro.com/api/v1/free?nojs=true';
-
-  /* una richiesta che dopo un po' smette di aspettare */
-  function chiama(url, opzioni, ms) {
-    var fermo = typeof AbortController === 'function' ? new AbortController() : null;
-    if (fermo) { opzioni.signal = fermo.signal; setTimeout(function () { fermo.abort(); }, ms); }
-    return fetch(url, opzioni);
-  }
-
-  /* Il ripiego: l'iscrizione parte dal browser, dritta a Substack. Da un altro sito la
-     risposta non si può leggere, quindi qui si sa solo se la richiesta è arrivata: per
-     questo l'esito è 'ripiego' e non 'ok'. */
-  function iscriviDalBrowser(email) {
-    var pagina = location.origin + location.pathname;
-    var campi;
-    try {
-      campi = new URLSearchParams({
-        email: email, source: 'embed',
-        first_url: pagina, first_referrer: '', current_url: pagina, current_referrer: '',
-        referral_code: ''
-      });
-    } catch (e) { return Promise.resolve('rete'); }
-    return chiama(NEWSLETTER_MODULO, { method: 'POST', mode: 'no-cors', credentials: 'omit', body: campi }, 8000)
-      .then(function () { return 'ripiego'; }, function () { return 'rete'; });
-  }
-
-  /* Restituisce 'ok' (Substack ha accettato l'indirizzo), 'email' (indirizzo rifiutato),
-     'ripiego' (l'indirizzo è partito dal browser, senza poter leggere la risposta)
-     oppure 'rete' (non è partito niente). Prima il server, che sa dire se Substack ha
-     accettato l'indirizzo; se il server non risponde o passa la mano, il browser. */
-  function iscrivi(dati) {
-    return chiama(REGISTRO_ENDPOINT, { method: 'POST', body: JSON.stringify(dati) }, 10000)
-      .then(function (r) { return r.json(); })
-      .then(function (esito) {
-        if (esito && esito.ok) return 'ok';
-        if (esito && esito.errore === 'email') return 'email';
-        return iscriviDalBrowser(dati.email);
-      }, function () { return iscriviDalBrowser(dati.email); });
-  }
+  /* L'iscrizione la fa Substack, nella sua pagina e nel browser di chi scrive: è l'unica
+     strada che iscrive davvero. Alle richieste che non partono da una sua pagina aperta
+     in un browser (un server, un modulo spedito da un altro sito) Substack risponde come
+     se le accettasse e non iscrive nessuno. La versione 82 passava da lì: provato il 29
+     settembre 2026, nessuna mail di conferma è mai partita. Con l'indirizzo e autoSubmit
+     la pagina di Substack iscrive da sola e manda la mail «Conferma la tua iscrizione». */
+  var NEWSLETTER_ISCRIZIONE = 'https://www.mattiaferro.com/subscribe';
 
   function showGate() {
     document.body.classList.add('in-quiz');
@@ -1015,11 +982,15 @@
     s.appendChild(el('h2', 'q-text', F.ui.gate.titolo));
     s.appendChild(el('p', 'q-note', F.ui.gate.testo));
 
+    /* un modulo vero, che il browser spedisce da solo: così la scheda di Substack si apre
+       anche dove window.open viene fermato */
     var form = document.createElement('form');
     form.className = 'gate-form';
+    form.action = NEWSLETTER_ISCRIZIONE;
+    form.method = 'get';
+    form.target = '_blank';
+    form.setAttribute('rel', 'noopener');
 
-    /* Qui niente campo trappola, a differenza del modulo del Registro: al cancello «ok»
-       apre il test, e deve voler dire soltanto che l'indirizzo è stato accettato. */
     var campo = document.createElement('input');
     campo.type = 'email'; campo.name = 'email'; campo.required = true;
     campo.className = 'pub-input'; campo.maxLength = 120;
@@ -1029,7 +1000,7 @@
     campo.autocomplete = 'email';
     campo.setAttribute('autocapitalize', 'none');
     campo.spellcheck = false;
-    /* lo stesso controllo del server: niente indirizzi che il server rifiuterebbe */
+    /* lo stesso modello del modulo del Registro */
     campo.pattern = '[A-Za-z0-9._%+\'\\-]+@[A-Za-z0-9\\-]+(\\.[A-Za-z0-9\\-]+)*\\.[A-Za-z]{2,}';
 
     /* «mario@gmail» per il browser è un indirizzo, per il modello no: senza questa riga
@@ -1038,11 +1009,7 @@
       var v = campo.validity;
       if (v.patternMismatch && !v.typeMismatch && !v.valueMissing) campo.setCustomValidity(F.ui.gate.erroreEmail);
     });
-    function ripulisci() {
-      campo.setCustomValidity('');
-      campo.removeAttribute('aria-invalid');
-      campo.setAttribute('aria-describedby', 'gate-esito');
-    }
+    function ripulisci() { campo.setCustomValidity(''); }
     campo.addEventListener('input', ripulisci);
 
     var avanti = el('button', 'btn', F.ui.gate.iscrivi);
@@ -1050,62 +1017,35 @@
     avanti.style.marginTop = '14px';
     avanti.addEventListener('click', function () { campo.setCustomValidity(''); });
 
-    var avviso = el('p', 'reg-avviso');
-    avviso.id = 'gate-avviso';
-    avviso.setAttribute('role', 'alert');
-    avviso.hidden = true;
-    function avvisa(testo) {
-      avviso.textContent = testo; avviso.hidden = false;
-      try { avviso.scrollIntoView({ block: 'nearest' }); } catch (e) {}
-    }
-
-    /* mentre l'iscrizione viaggia il pulsante resta a fuoco ma non rimanda niente */
-    var inviando = false;
-    function sblocca() { inviando = false; avanti.removeAttribute('aria-busy'); avanti.removeAttribute('aria-disabled'); }
-
+    /* Senza indirizzo, o con un indirizzo scritto male, il browser ferma il modulo prima
+       di arrivare qui e lo dice sul campo. Con un indirizzo buono il modulo parte verso
+       Substack in una scheda nuova, e il test si apre in questa. */
+    var partito = false;
     form.addEventListener('submit', function (ev) {
-      ev.preventDefault();
-      if (inviando) return;
-      avviso.hidden = true;
+      if (partito) { ev.preventDefault(); return; }
       ripulisci();
       campo.value = campo.value.trim();
-      /* senza indirizzo, o con un indirizzo scritto male, il test non si apre: lo dice
-         il browser sul campo, con le sue parole */
-      if (!form.reportValidity()) return;
-      inviando = true;
+      if (!form.checkValidity()) { ev.preventDefault(); form.reportValidity(); return; }
+      partito = true;
       avanti.setAttribute('aria-busy', 'true');
       avanti.setAttribute('aria-disabled', 'true');
-      iscrivi({
-        tipo: 'iscrizione', email: campo.value, lingua: document.documentElement.lang,
-        pagina: location.origin + location.pathname
-      }).then(function (esito) {
-        /* 'ok': Substack ha accettato l'indirizzo e il browser se lo ricorda. 'ripiego':
-           l'indirizzo è partito ma la risposta non si può leggere: il test si apre per
-           questa visita e alla prossima il cancello torna, così l'indirizzo ripassa
-           dal server. */
-        var passato = esito === 'ok' || esito === 'ripiego';
-        if (esito === 'ok') gatePass();
-        else if (esito === 'ripiego') gateAperto = true;
-        /* chi nel frattempo ha lasciato il cancello non si ritrova il test aperto sopra
-           la pagina in cui è tornato; se è rientrato al cancello, il test si apre lì */
-        if (!app.contains(form)) {
-          if (passato && app.querySelector('.gate-form')) showQuestion(0);
-          return;
-        }
-        if (passato) { showQuestion(0); return; }
-        sblocca();
-        if (esito === 'email') {
-          campo.setAttribute('aria-invalid', 'true');
-          campo.setAttribute('aria-describedby', 'gate-avviso gate-esito');
-          avvisa(F.ui.gate.erroreEmail); campo.focus(); return;
-        }
-        avvisa(F.ui.reg.errore);
-      });
+      /* il passaggio si ricorda subito: dove la scheda nuova prende il posto di questa
+         pagina, al ritorno il test si apre senza richiedere l'email */
+      gatePass();
+      /* il test si apre un attimo dopo, perché un modulo tolto dalla pagina prima di
+         partire non parte più; chi intanto ha lasciato il cancello non se lo ritrova
+         aperto sopra la pagina in cui è tornato */
+      setTimeout(function () { if (app.contains(form)) showQuestion(0); }, 400);
     });
 
     form.appendChild(campo);
+    /* quello che la pagina di Substack si aspetta per iscrivere senza altre domande */
+    [['autoSubmit', 'true'], ['simple', 'true'], ['utm_source', 'ferro-index']].forEach(function (c) {
+      var n = document.createElement('input');
+      n.type = 'hidden'; n.name = c[0]; n.value = c[1];
+      form.appendChild(n);
+    });
     form.appendChild(avanti);
-    form.appendChild(avviso);
     s.appendChild(form);
 
     var esito = el('p', 'gate-esito micro', F.ui.gate.attesa);

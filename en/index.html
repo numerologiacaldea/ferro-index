@@ -30,7 +30,7 @@ try { if ('scrollRestoration' in history) history.scrollRestoration = 'manual'; 
 <link rel="icon" href="/assets/favicon-32.png" sizes="32x32" type="image/png">
 <link rel="icon" href="/assets/favicon-16.png" sizes="16x16" type="image/png">
 <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
-<link rel="stylesheet" href="/assets/ferro.css?v=83">
+<link rel="stylesheet" href="/assets/ferro.css?v=84">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -236,7 +236,7 @@ try { if ('scrollRestoration' in history) history.scrollRestoration = 'manual'; 
 
 <div class="progress" id="progress"></div>
 
-<a class="lang" href="/" hreflang="it" lang="it">Italiano</a>
+<a class="lang lang-bottone" href="/" hreflang="it" lang="it"><svg class="lang-icona" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><circle cx="8" cy="8" r="6.3"/><path d="M1.7 8h12.6M8 1.7c1.9 1.7 2.9 3.9 2.9 6.3s-1 4.6-2.9 6.3C6.1 12.6 5.1 10.4 5.1 8S6.1 3.4 8 1.7z"/></svg>Italiano</a>
 
 <div class="wrap" id="top">
 
@@ -541,7 +541,7 @@ try { if ('scrollRestoration' in history) history.scrollRestoration = 'manual'; 
 
 <footer>
   <div class="wrap">
-    <p>The Ferro Index is a method by Mattia Ferro. No property pays to be assessed and no review enters into a score. This site uses no cookies and tracks nothing: your answers stay in your browser.</p>
+    <p>The Ferro Index is a method by Mattia Ferro. No property pays to be assessed and no review enters into a score. This site uses no cookies and no analytics. Your test answers are worked out in your browser: they reach us only if you nominate a hotel for the Register. GitHub, which hosts the site, logs IP addresses for security. <a href="/en/privacy/">Privacy and legal notice</a>.</p>
     <p>Mattia Ferro is an independent travel advisor of Fora Travel, New York. Bookings never touch the score.</p>
     <p class="firma">The Ferro Index is a work by Mattia Ferro. Method, seven pillars, weights and twenty-three questions: Mattia Ferro, version 1.1, September 2026. Every revision gets a new number.</p>
     <p class="firma marchio-nota">Ferro Index™ is a trade mark of Vimana Holidays GmbH. European Union trade mark application No 019420443, filed 10 September 2026.</p>
@@ -745,12 +745,12 @@ window.FERRO = {
       titolo: 'The test is a chapter of the newsletter.',
       testo: 'The Ferro Index comes out of the work Mattia does to share what he knows about luxury and hospitality, which is why the test is reserved for newsletter subscribers. The letters are written in Italian.',
       email: 'Your email',
-      attesa: 'Subscribe and get our welcome email right away.',
+      attesa: 'A Substack page opens for the subscription: choose the free plan. You\'ll get an email: if it asks you to confirm, press the link. Then come back here: the test is already open.',
       iscrivi: 'Subscribe and open the test',
       gia: 'Already a subscriber? Enter the email you subscribed with.',
       erroreEmail: 'This address doesn\'t look valid. Please check the spelling.',
       micro: 'Subscribing is free and you can cancel at any time.',
-      legale: 'The newsletter is sent through Substack. By subscribing you accept its <a href="https://substack.com/tos">Terms of Use</a> and <a href="https://substack.com/privacy">Privacy Policy</a>.'
+      legale: 'Vimana Holidays GmbH, Vienna, collects your email to send you Mattia Ferro\'s newsletter. The newsletter is sent through Substack, a United States company. You can ask us to see, correct or delete your data: how to do that, and what Substack does on its own account, is in the <a href="/en/privacy/">privacy notice</a>.'
     },
     reg: {
       email: 'Your email, for verification',
@@ -766,6 +766,8 @@ window.FERRO = {
       formato: 'This file doesn\'t look like a PDF or a photo: please try another copy.',
       motivazione: 'The reasoning: what makes this place a sanctuary',
       invia: 'Submit this verdict to the Register',
+      consenso: 'I agree that Vimana Holidays GmbH may use these data to check the stay and, if the nomination is accepted, publish the hotel, city, reasoning, score and verdict in the Register.',
+      privacy: 'Your nomination is received by Vimana Holidays GmbH, Vienna. Your email and proof of stay are used only for the check, and we delete them within 30 days. Your email is never published. If other people appear on the invoice, please cover their names. To withdraw the nomination, write to us. The rest is in the <a href="/en/privacy/">privacy notice</a>.',
       nota: 'Only reasoned, verifiable verdicts enter the Register. Scores under 85 stay anonymous: the Register names excellence, it exposes no one.',
       solo: 'Only the Sanctuary band (85+) can apply to the <a href="/en/sanctuaries/">Sanctuary Register</a>.'
     },
@@ -782,6 +784,6 @@ window.FERRO = {
   }
 };
 </script>
-<script src="/assets/ferro.js?v=83"></script>
+<script src="/assets/ferro.js?v=84"></script>
 </body>
 </html>

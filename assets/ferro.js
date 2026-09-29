@@ -698,6 +698,16 @@
       var provaNota = el('p', 'micro reg-prova-nota', F.ui.reg.provaNota);
       provaNota.id = 'reg-prova-nota';
 
+      /* il consenso si dà con un gesto suo, distinto dall'invio: una casella non spuntata */
+      var consenso = el('label', 'reg-consenso');
+      var rOk = document.createElement('input');
+      rOk.type = 'checkbox'; rOk.name = 'consenso'; rOk.required = true;
+      /* finché nessuno ha provato a inviare, la casella vuota non è un errore */
+      rOk.setAttribute('aria-invalid', 'false');
+      rOk.addEventListener('invalid', function () { rOk.removeAttribute('aria-invalid'); });
+      consenso.appendChild(rOk);
+      consenso.appendChild(el('span', '', F.ui.reg.consenso));
+
       var avviso = el('p', 'reg-avviso');
       avviso.setAttribute('role', 'alert');
       avviso.hidden = true;
@@ -742,11 +752,13 @@
         var lettore = new FileReader();
         lettore.onerror = function () { sblocca(); avvisa(F.ui.reg.errore); };
         lettore.onload = function () {
+          /* solo quello che il server usa: il link del verdetto lo ricostruisce lui dal
+             codice delle risposte, nome e tipo del file li decide lui dal contenuto */
           var corpo = {
             r: rcode, hotel: rHotel.value, citta: rCitta.value, email: rMail.value,
             motivazione: rWhy.value, lingua: document.documentElement.lang,
-            link: currentURL(), sito: trappola.value,
-            file: { nome: file.name, tipo: file.type, dati: String(lettore.result).split(',')[1] || '' }
+            sito: trappola.value,
+            file: { dati: String(lettore.result).split(',')[1] || '' }
           };
           /* testo semplice, senza intestazioni speciali: il browser non deve chiedere
              permessi preliminari a un altro dominio */
@@ -776,6 +788,8 @@
       form.appendChild(rWhy);
       form.appendChild(provaBox);
       form.appendChild(provaNota);
+      form.appendChild(el('p', 'micro', F.ui.reg.privacy));
+      form.appendChild(consenso);
       form.appendChild(rSend);
       form.appendChild(avviso);
       reg.appendChild(form);
@@ -952,18 +966,30 @@
 
   /* ---------- cancello newsletter ---------- */
 
-  /* Il test si apre solo a chi lascia la propria email. La chiave è nuova apposta: con
-     quella di prima («ferroGate») bastava premere il pulsante senza iscriversi, e chi era
-     passato così ripassa dal cancello una volta. Se il browser non lascia ricordare
-     niente, il cancello si ripresenta a ogni visita: prima in quel caso restava aperto. */
+  /* Il test si apre solo a chi lascia la propria email. La chiave cambia ogni volta che
+     il segno di prima non prova più niente, e chi lo aveva ripassa dal cancello una volta:
+     con «ferroGate» bastava premere il pulsante senza iscriversi; con «ferroGate2» (la
+     versione 82, online il 29 settembre 2026) l'email si scriveva ma nessuno veniva
+     iscritto. Se il browser non lascia ricordare niente, il cancello si ripresenta a ogni
+     visita. */
   var gateAperto = false;
+  /* il passaggio viaggia anche nella voce di cronologia del test: sopravvive al
+     ricaricamento della pagina e non ha bisogno della memoria del browser. Serve nei
+     browser dentro le app, dove la pagina di Substack prende il posto di questa */
+  function passatoDiQui() {
+    try { return !!(history.state && history.state.ferro === 'test' && history.state.cancello === 1); } catch (e) { return false; }
+  }
   function gateOK() {
     if (gateAperto) return true;
-    try { return localStorage.getItem('ferroGate2') === '1'; } catch (e) { return false; }
+    if (passatoDiQui()) return true;
+    try { return localStorage.getItem('ferroGate3') === '1'; } catch (e) { return false; }
   }
   function gatePass() {
     gateAperto = true;
-    try { localStorage.setItem('ferroGate2', '1'); } catch (e) {}
+    try { localStorage.setItem('ferroGate3', '1'); } catch (e) {}
+    try { if (history.state && history.state.ferro === 'test') history.replaceState({ ferro: 'test', cancello: 1 }, ''); } catch (e) {}
+    /* i segni delle versioni di prima non servono più a niente: si tolgono */
+    try { localStorage.removeItem('ferroGate'); localStorage.removeItem('ferroGate2'); } catch (e) {}
   }
 
   /* L'iscrizione la fa Substack, nella sua pagina e nel browser di chi scrive: è l'unica
@@ -1016,6 +1042,7 @@
     avanti.type = 'submit';
     avanti.style.marginTop = '14px';
     avanti.addEventListener('click', function () { campo.setCustomValidity(''); });
+    avanti.setAttribute('aria-describedby', 'gate-esito');
 
     /* Senza indirizzo, o con un indirizzo scritto male, il browser ferma il modulo prima
        di arrivare qui e lo dice sul campo. Con un indirizzo buono il modulo parte verso
@@ -1032,10 +1059,39 @@
       /* il passaggio si ricorda subito: dove la scheda nuova prende il posto di questa
          pagina, al ritorno il test si apre senza richiedere l'email */
       gatePass();
-      /* il test si apre un attimo dopo, perché un modulo tolto dalla pagina prima di
+      /* Il test si apre un attimo dopo, perché un modulo tolto dalla pagina prima di
          partire non parte più; chi intanto ha lasciato il cancello non se lo ritrova
-         aperto sopra la pagina in cui è tornato */
-      setTimeout(function () { if (app.contains(form)) showQuestion(0); }, 400);
+         aperto sopra la pagina in cui è tornato.
+         Se la scheda nuova si apre, questa pagina passa dietro o perde il fuoco. Se dopo
+         un secondo è ancora davanti, la scheda non si è aperta (un'estensione che le
+         blocca, un browser dentro un'app): allora la pagina di Substack si apre in
+         questa, e al ritorno con Indietro si ritrova il test. Senza, quella persona
+         farebbe il test senza essere iscritta. */
+      var indirizzo = NEWSLETTER_ISCRIZIONE + '?' + new URLSearchParams(new FormData(form)).toString();
+      var uscita = false;
+      function segna() { uscita = true; }
+      document.addEventListener('visibilitychange', segna);
+      window.addEventListener('blur', segna);
+      window.addEventListener('pagehide', segna);
+      function lontano() { return uscita || document.visibilityState !== 'visible'; }
+      function smetti() {
+        document.removeEventListener('visibilitychange', segna);
+        window.removeEventListener('blur', segna);
+        window.removeEventListener('pagehide', segna);
+      }
+      setTimeout(function () {
+        if (!app.contains(form)) { smetti(); return; }
+        if (lontano()) { smetti(); showQuestion(0); return; }
+        setTimeout(function () {
+          smetti();
+          if (!app.contains(form)) return;
+          if (lontano()) { showQuestion(0); return; }
+          /* al ritorno dalla memoria del browser nessun timer è più in attesa: senza
+             questo il cancello resterebbe fermo, con il pulsante spento */
+          window.addEventListener('pageshow', function (e) { if (e.persisted && app.contains(form)) showQuestion(0); });
+          location.assign(indirizzo);
+        }, 600);
+      }, 400);
     });
 
     form.appendChild(campo);
@@ -1575,6 +1631,10 @@
   radarVivo();
   menuVivo();
   animaSezioni();
+
+  /* chi torna con Indietro dalla pagina di Substack e trova la pagina ricaricata (succede
+     nei browser dentro le app) ritrova il test, non la prima schermata */
+  if (!shared && arrivo === 'back_forward' && passatoDiQui()) startOwn();
 
   if (shared) {
     state.answers = shared;

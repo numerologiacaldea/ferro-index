@@ -236,6 +236,37 @@ body.in-quiz .menu { display: none; }
   padding: 10px;
   z-index: 5;
 }
+/* Nella home il cambio lingua è un pulsante: chi arriva dall'estero deve vedere subito
+   che la pagina esiste anche nella sua lingua. Stessa posizione, stesso testo. */
+.lang.lang-bottone {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 40px;
+  padding: 8px 14px 8px 12px;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  color: var(--ink);
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  transition: border-color 0.2s ease, color 0.2s ease;
+}
+.lang-icona {
+  flex: none;
+  width: 16px; height: 16px;
+  fill: none;
+  stroke: var(--brass);
+  stroke-width: 1.2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+@media (hover: hover) {
+  .lang.lang-bottone:hover { border-color: var(--brass); color: var(--brass); }
+}
+/* l'area che risponde al tocco è più larga del disegno */
+.lang.lang-bottone::after { content: ''; position: absolute; inset: -7px; }
 
 /* ---------- hero ---------- */
 
@@ -662,6 +693,8 @@ section.blocco h2.reveal.armato { opacity: 1; transform: none; }
    colonna. */
 .gate-esito { max-width: 460px; margin-top: 14px; }
 #app .screen .gate-form ~ .micro { max-width: 460px; }
+/* sotto il pulsante ci sono quattro pensieri diversi: si staccano l'uno dall'altro */
+#app .screen .gate-form ~ .micro + .micro { margin-top: 10px; }
 
 
 .reg-block {
@@ -1140,6 +1173,10 @@ body.in-quiz .lang { display: none; }
   /* il cambio lingua sta in alto a destra e l'occhiello parte da sinistra:
      su schermo stretto si incontrano a metà riga. Gli si dà una riga a testa. */
   .lang { top: 6px; right: 16px; }
+  /* più basso, per non toccare l'occhiello che sugli schermi stretti va su due righe */
+  .lang.lang-bottone { top: 5px; min-height: 32px; padding: 4px 11px 4px 9px; gap: 7px; }
+  /* sul verdetto sta sotto il menu: un po' più su, per lasciare aria sopra l'occhiello */
+  body:has(#hero.hidden) .lang.lang-bottone { top: 57px; }
   .hero { padding: min(22px, 3svh) 0 min(18px, 2.4svh); }
   .hero .occhiello { margin-top: min(26px, 3.4svh); }
   .hero h1 { line-height: 1.06; font-size: clamp(25px, min(7.4vw, 4.2svh), 38px); }
@@ -1490,6 +1527,23 @@ section.blocco .santuario-piede { margin-top: 16px; }
    trappola per i programmi automatici e l'avviso se l'invio non riesce. */
 .reg-trappola { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
 .reg-prova { display: block; margin-top: 16px; }
+/* la casella del consenso: casella a sinistra, testo che va a capo accanto */
+.reg-consenso {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  margin-top: 16px;
+  font-family: var(--sans);
+  font-size: 14px;
+  line-height: 1.45;
+  color: var(--ink);
+  cursor: pointer;
+}
+.reg-consenso input { flex: none; width: 18px; height: 18px; margin: 2px 0 0; accent-color: var(--ink); }
+/* la casella del consenso mostra il fuoco come gli altri campi */
+.reg-consenso input:focus-visible { outline: 2px solid var(--brass); outline-offset: 2px; }
+/* le pagine di solo testo: sul telefono il titolo della pagina resta più grande dei titoli delle sezioni */
+@media (max-width: 720px) { .pagina-testo .hero h1 { font-size: 30px; } }
 .reg-prova-eti { display: block; font-family: var(--sans); font-size: 14px; line-height: 1.45; color: var(--ink); }
 .reg-prova input[type="file"] {
   display: block;

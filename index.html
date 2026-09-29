@@ -30,7 +30,7 @@ try { if ('scrollRestoration' in history) history.scrollRestoration = 'manual'; 
 <link rel="icon" href="/assets/favicon-32.png" sizes="32x32" type="image/png">
 <link rel="icon" href="/assets/favicon-16.png" sizes="16x16" type="image/png">
 <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
-<link rel="stylesheet" href="/assets/ferro.css?v=83">
+<link rel="stylesheet" href="/assets/ferro.css?v=84">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -236,7 +236,7 @@ try { if ('scrollRestoration' in history) history.scrollRestoration = 'manual'; 
 
 <div class="progress" id="progress"></div>
 
-<a class="lang" href="/en/" hreflang="en" lang="en">English</a>
+<a class="lang lang-bottone" href="/en/" hreflang="en" lang="en"><svg class="lang-icona" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><circle cx="8" cy="8" r="6.3"/><path d="M1.7 8h12.6M8 1.7c1.9 1.7 2.9 3.9 2.9 6.3s-1 4.6-2.9 6.3C6.1 12.6 5.1 10.4 5.1 8S6.1 3.4 8 1.7z"/></svg>English</a>
 
 <div class="wrap" id="top">
 
@@ -539,7 +539,7 @@ try { if ('scrollRestoration' in history) history.scrollRestoration = 'manual'; 
 
 <footer>
   <div class="wrap">
-    <p>Ferro Index è un metodo di Mattia Ferro. Nessuna struttura paga per essere valutata e nessuna recensione rientra in un punteggio. Questo sito non usa cookie e non traccia nulla: le risposte restano nel tuo browser.</p>
+    <p>Ferro Index è un metodo di Mattia Ferro. Nessuna struttura paga per essere valutata e nessuna recensione rientra in un punteggio. Questo sito non usa cookie né strumenti di statistica. Le risposte del test si elaborano nel tuo browser: a noi arrivano solo se candidi un hotel al Registro. GitHub, che ospita il sito, registra gli indirizzi IP per sicurezza. <a href="/privacy/">Privacy e note legali</a>.</p>
     <p>Mattia Ferro è independent travel advisor di Fora Travel, New York. Le prenotazioni non influenzano il punteggio.</p>
     <p class="firma">Il Ferro Index è un'opera di Mattia Ferro. Metodo, sette pilastri, pesi e ventitré domande: Mattia Ferro, versione 1.1, settembre 2026. Ogni revisione cambia numero.</p>
     <p class="firma marchio-nota">Ferro Index™ è un marchio di Vimana Holidays GmbH. Domanda di marchio dell'Unione europea n. 019420443, depositata il 10 settembre 2026.</p>
@@ -743,12 +743,12 @@ window.FERRO = {
       titolo: 'Il test è un capitolo della newsletter.',
       testo: 'Il Ferro Index nasce dal lavoro di condivisione che Mattia conduce su lusso e ospitalità, per questo motivo il test è riservato alle persone iscritte alla newsletter.',
       email: 'La tua email',
-      attesa: 'Iscriviti e ricevi subito la nostra email di benvenuto.',
+      attesa: 'Si apre una pagina di Substack per l\'iscrizione: scegli il piano gratuito. Ti arriva una mail: se chiede di confermare, premi il link. Poi torna qui: il test è già aperto.',
       iscrivi: 'Iscrivimi e apri il test',
       gia: 'Sei già iscritto? Scrivi l\'email con cui ricevi la newsletter.',
       erroreEmail: 'Questo indirizzo non risulta valido. Controlla che sia scritto bene.',
       micro: 'L\'iscrizione è gratuita e puoi annullarla in qualsiasi momento.',
-      legale: 'La newsletter viene spedita con Substack. Iscrivendoti accetti i suoi <a href="https://substack.com/tos">Termini di utilizzo</a> e la sua <a href="https://substack.com/privacy">Informativa sulla privacy</a>.'
+      legale: 'La tua email la raccoglie Vimana Holidays GmbH, Vienna, per mandarti la newsletter di Mattia Ferro. La newsletter viene spedita con Substack, una società degli Stati Uniti. Puoi chiederci di vedere, correggere o cancellare i tuoi dati: come farlo, e che cosa fa Substack per conto suo, è scritto nell\'<a href="/privacy/">informativa sulla privacy</a>.'
     },
     reg: {
       email: 'La tua email, per la verifica',
@@ -764,6 +764,8 @@ window.FERRO = {
       formato: 'Il file non sembra un PDF o una foto: prova con un\'altra copia.',
       motivazione: 'La motivazione: cosa rende questo posto un santuario',
       invia: 'Candida questo verdetto al Registro',
+      consenso: 'Acconsento a che Vimana Holidays GmbH usi questi dati per verificare il soggiorno e, se la candidatura è accolta, pubblichi nel Registro hotel, città, motivazione, punteggio e verdetto.',
+      privacy: 'La candidatura la riceve Vimana Holidays GmbH, Vienna. Email e prova del soggiorno servono solo alla verifica e le cancelliamo entro 30 giorni. La tua email non viene mai pubblicata. Se sulla fattura compaiono altre persone, copri i loro nomi. Per ritirare la candidatura scrivici. Il resto è nell\'<a href="/privacy/">informativa sulla privacy</a>.',
       nota: 'Nel Registro entrano solo verdetti argomentati e verificabili. I punteggi sotto quota 85 restano anonimi: il Registro nomina l\'eccellenza, non espone nessuno.',
       solo: 'Solo la fascia Santuario (85+) può candidarsi al <a href="/santuari/">Registro dei Santuari</a>.'
     },
@@ -780,6 +782,6 @@ window.FERRO = {
   }
 };
 </script>
-<script src="/assets/ferro.js?v=83"></script>
+<script src="/assets/ferro.js?v=84"></script>
 </body>
 </html>

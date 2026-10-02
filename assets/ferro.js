@@ -1,9 +1,9 @@
 /* Ferro Index — motore del quiz. Legge la configurazione di lingua da window.FERRO
    (domande, stringhe, verdetti). Punteggio, nome dell'hotel e motivazione viaggiano
-   solo nel link: le risposte non lasciano il browser. La sola richiesta di rete è la
-   candidatura al Registro dei Santuari, e parte quando la persona preme il pulsante.
-   Al cancello del test l'email non passa da qui: il modulo la consegna alla pagina di
-   iscrizione di Substack, che si apre in una scheda nuova. */
+   solo nel link: le risposte non lasciano il browser. Le richieste di rete sono due, e
+   partono solo quando la persona preme un pulsante: la candidatura al Registro dei
+   Santuari e, al cancello del test, il modulo di iscrizione di Substack, che compare in
+   una cornice dentro la pagina. L'email scritta lì non passa da questo codice. */
 
 (function () {
   'use strict';
@@ -966,7 +966,8 @@
 
   /* ---------- cancello newsletter ---------- */
 
-  /* Il test si apre solo a chi lascia la propria email. La chiave cambia ogni volta che
+  /* Il test si apre a chi passa dal modulo di iscrizione. È una porta di cortesia: il sito
+     non sa che cosa è stato scritto nel modulo. La chiave cambia ogni volta che
      il segno di prima non prova più niente, e chi lo aveva ripassa dal cancello una volta:
      con «ferroGate» bastava premere il pulsante senza iscriversi; con «ferroGate2» (la
      versione 82, online il 29 settembre 2026) l'email si scriveva ma nessuno veniva
@@ -974,8 +975,8 @@
      visita. */
   var gateAperto = false;
   /* il passaggio viaggia anche nella voce di cronologia del test: sopravvive al
-     ricaricamento della pagina e non ha bisogno della memoria del browser. Serve nei
-     browser dentro le app, dove la pagina di Substack prende il posto di questa */
+     ricaricamento della pagina e non ha bisogno della memoria del browser. Serve dove
+     il browser non lascia ricordare niente */
   function passatoDiQui() {
     try { return !!(history.state && history.state.ferro === 'test' && history.state.cancello === 1); } catch (e) { return false; }
   }
@@ -992,13 +993,26 @@
     try { localStorage.removeItem('ferroGate'); localStorage.removeItem('ferroGate2'); } catch (e) {}
   }
 
-  /* L'iscrizione la fa Substack, nella sua pagina e nel browser di chi scrive: è l'unica
-     strada che iscrive davvero. Alle richieste che non partono da una sua pagina aperta
-     in un browser (un server, un modulo spedito da un altro sito) Substack risponde come
-     se le accettasse e non iscrive nessuno. La versione 82 passava da lì: provato il 29
-     settembre 2026, nessuna mail di conferma è mai partita. Con l'indirizzo e autoSubmit
-     la pagina di Substack iscrive da sola e manda la mail «Conferma la tua iscrizione». */
-  var NEWSLETTER_ISCRIZIONE = 'https://www.mattiaferro.com/subscribe';
+  /* L'iscrizione la fa Substack, dentro questa pagina (dalla versione 85): nel cancello
+     compare il suo modulo incorporabile ufficiale, /embed, l'unica pagina di Substack che
+     si lascia mettere in una cornice. Campo e pulsante sono i suoi, e iscrive davvero
+     perché gira nel browser di chi scrive (provato il 2 ottobre 2026: mail «Conferma la
+     tua iscrizione» arrivata). Lasciato libero, all'invio quel modulo apre una scheda
+     nuova con i piani a pagamento, e la persona si perde: la cornice è chiusa in una
+     «sandbox» senza il permesso di aprire schede, così l'iscrizione parte e nessuno lascia
+     la pagina. L'indirizzo va tenuto senza parametri: con un parametro qualsiasi il codice
+     di Substack accende una seconda cornice che può portare altrove chi ha già un account.
+     Il modulo salva i cookie di Substack: per questo non si carica da solo, ma quando la
+     persona preme il pulsante, dopo aver letto la riga che lo dice. */
+  var NEWSLETTER_CORNICE = 'https://www.mattiaferro.com/embed';
+  /* quanto deve passare, dopo che il cursore è entrato nel modulo, prima che il pulsante
+     apra il test: il tempo di scrivere un indirizzo e premere «Iscriviti» */
+  var CANCELLO_ATTESA = 3000;
+  /* dopo quanto, se il modulo non si è disegnato, compare il link di ripiego */
+  var CANCELLO_RIPIEGO = 10000;
+  /* e dopo quanto compare comunque, se il sito non ha mai visto il cursore entrare nel
+     modulo: un browser che non lo segnala non deve lasciare nessuno chiuso fuori */
+  var CANCELLO_PAZIENZA = 45000;
 
   function showGate() {
     document.body.classList.add('in-quiz');
@@ -1008,101 +1022,13 @@
     s.appendChild(el('h2', 'q-text', F.ui.gate.titolo));
     s.appendChild(el('p', 'q-note', F.ui.gate.testo));
 
-    /* un modulo vero, che il browser spedisce da solo: così la scheda di Substack si apre
-       anche dove window.open viene fermato */
-    var form = document.createElement('form');
-    form.className = 'gate-form';
-    form.action = NEWSLETTER_ISCRIZIONE;
-    form.method = 'get';
-    form.target = '_blank';
-    form.setAttribute('rel', 'noopener');
-
-    var campo = document.createElement('input');
-    campo.type = 'email'; campo.name = 'email'; campo.required = true;
-    campo.className = 'pub-input'; campo.maxLength = 120;
-    campo.placeholder = F.ui.gate.email;
-    campo.setAttribute('aria-label', F.ui.gate.email);
-    campo.setAttribute('aria-describedby', 'gate-esito');
-    campo.autocomplete = 'email';
-    campo.setAttribute('autocapitalize', 'none');
-    campo.spellcheck = false;
-    /* lo stesso modello del modulo del Registro */
-    campo.pattern = '[A-Za-z0-9._%+\'\\-]+@[A-Za-z0-9\\-]+(\\.[A-Za-z0-9\\-]+)*\\.[A-Za-z]{2,}';
-
-    /* «mario@gmail» per il browser è un indirizzo, per il modello no: senza questa riga
-       il messaggio sarebbe «Rispetta il formato richiesto», che non spiega niente */
-    campo.addEventListener('invalid', function () {
-      var v = campo.validity;
-      if (v.patternMismatch && !v.typeMismatch && !v.valueMissing) campo.setCustomValidity(F.ui.gate.erroreEmail);
-    });
-    function ripulisci() { campo.setCustomValidity(''); }
-    campo.addEventListener('input', ripulisci);
-
+    var blocco = el('div', 'gate-form');
     var avanti = el('button', 'btn', F.ui.gate.iscrivi);
-    avanti.type = 'submit';
-    avanti.style.marginTop = '14px';
-    avanti.addEventListener('click', function () { campo.setCustomValidity(''); });
+    avanti.type = 'button';
     avanti.setAttribute('aria-describedby', 'gate-esito');
-
-    /* Senza indirizzo, o con un indirizzo scritto male, il browser ferma il modulo prima
-       di arrivare qui e lo dice sul campo. Con un indirizzo buono il modulo parte verso
-       Substack in una scheda nuova, e il test si apre in questa. */
-    var partito = false;
-    form.addEventListener('submit', function (ev) {
-      if (partito) { ev.preventDefault(); return; }
-      ripulisci();
-      campo.value = campo.value.trim();
-      if (!form.checkValidity()) { ev.preventDefault(); form.reportValidity(); return; }
-      partito = true;
-      avanti.setAttribute('aria-busy', 'true');
-      avanti.setAttribute('aria-disabled', 'true');
-      /* il passaggio si ricorda subito: dove la scheda nuova prende il posto di questa
-         pagina, al ritorno il test si apre senza richiedere l'email */
-      gatePass();
-      /* Il test si apre un attimo dopo, perché un modulo tolto dalla pagina prima di
-         partire non parte più; chi intanto ha lasciato il cancello non se lo ritrova
-         aperto sopra la pagina in cui è tornato.
-         Se la scheda nuova si apre, questa pagina passa dietro o perde il fuoco. Se dopo
-         un secondo è ancora davanti, la scheda non si è aperta (un'estensione che le
-         blocca, un browser dentro un'app): allora la pagina di Substack si apre in
-         questa, e al ritorno con Indietro si ritrova il test. Senza, quella persona
-         farebbe il test senza essere iscritta. */
-      var indirizzo = NEWSLETTER_ISCRIZIONE + '?' + new URLSearchParams(new FormData(form)).toString();
-      var uscita = false;
-      function segna() { uscita = true; }
-      document.addEventListener('visibilitychange', segna);
-      window.addEventListener('blur', segna);
-      window.addEventListener('pagehide', segna);
-      function lontano() { return uscita || document.visibilityState !== 'visible'; }
-      function smetti() {
-        document.removeEventListener('visibilitychange', segna);
-        window.removeEventListener('blur', segna);
-        window.removeEventListener('pagehide', segna);
-      }
-      setTimeout(function () {
-        if (!app.contains(form)) { smetti(); return; }
-        if (lontano()) { smetti(); showQuestion(0); return; }
-        setTimeout(function () {
-          smetti();
-          if (!app.contains(form)) return;
-          if (lontano()) { showQuestion(0); return; }
-          /* al ritorno dalla memoria del browser nessun timer è più in attesa: senza
-             questo il cancello resterebbe fermo, con il pulsante spento */
-          window.addEventListener('pageshow', function (e) { if (e.persisted && app.contains(form)) showQuestion(0); });
-          location.assign(indirizzo);
-        }, 600);
-      }, 400);
-    });
-
-    form.appendChild(campo);
-    /* quello che la pagina di Substack si aspetta per iscrivere senza altre domande */
-    [['autoSubmit', 'true'], ['simple', 'true'], ['utm_source', 'ferro-index']].forEach(function (c) {
-      var n = document.createElement('input');
-      n.type = 'hidden'; n.name = c[0]; n.value = c[1];
-      form.appendChild(n);
-    });
-    form.appendChild(avanti);
-    s.appendChild(form);
+    avanti.addEventListener('click', function () { mostraModulo(blocco); });
+    blocco.appendChild(avanti);
+    s.appendChild(blocco);
 
     var esito = el('p', 'gate-esito micro', F.ui.gate.attesa);
     esito.id = 'gate-esito';
@@ -1113,6 +1039,169 @@
     app.appendChild(s);
     focusTitle(s);
     app.scrollIntoView({ block: 'start', behavior: 'instant' });
+    /* chi aveva già premuto il pulsante e seguito il link di ripiego, e torna con la
+       pagina ricaricata, ritrova il secondo tempo, con il pulsante che apre il test acceso */
+    if (dalRipiego()) mostraModulo(blocco);
+  }
+  function dalRipiego() {
+    try { return !!(history.state && history.state.ferro === 'test' && history.state.ripiego === 1); } catch (e) { return false; }
+  }
+
+  /* Il secondo tempo del cancello: al posto del pulsante compaiono due passi numerati, con
+     il modulo di Substack in mezzo, e il pulsante che apre il test. Da fuori non si può
+     leggere dentro la cornice (è di un'altra origine, e Substack non manda nessun
+     segnale): il sito sa solo che il cursore è entrato nel modulo. Il pulsante apre il
+     test da quel momento più CANCELLO_ATTESA. Chi lo preme senza essere entrato nel modulo
+     viene rimandato al modulo; chi lo preme appena entrato aspetta, e il test si apre da
+     solo. Resta una porta di cortesia: ferma chi preme senza iscriversi, non può sapere
+     che cosa Substack ha risposto. La cornice non riceve mai il fuoco da qui: farebbe
+     scattare il segno senza nessun gesto della persona. */
+  function mostraModulo(blocco) {
+    blocco.innerHTML = '';
+
+    var passo1 = el('p', 'gate-passo', F.ui.gate.passo1);
+    passo1.id = 'gate-passo1';
+    passo1.setAttribute('tabindex', '-1');
+    blocco.appendChild(passo1);
+
+    var scatola = el('div', 'gate-cornice-box');
+    var carico = el('p', 'gate-carico', F.ui.gate.carico);
+    scatola.appendChild(carico);
+    var cornice = document.createElement('iframe');
+    cornice.className = 'gate-cornice';
+    cornice.title = F.ui.gate.cornice;
+    /* senza «allow-popups»: il modulo non può aprire la scheda dei piani a pagamento.
+       «allow-same-origin» gli lascia la sua origine vera, senza la quale la sua richiesta
+       di iscrizione non parte; «allow-forms» fa funzionare il tasto Invio. Niente
+       scrolling="no": se Substack scrive un errore o propone la correzione di un refuso,
+       quello che non entra nel riquadro deve restare raggiungibile */
+    cornice.setAttribute('sandbox', 'allow-scripts allow-same-origin allow-forms');
+    /* Una cornice che non riesce a caricarsi manda lo stesso «load»: tre secondi dopo si
+       guarda se il modulo si è disegnato davvero, e se no si offre subito il link di
+       ripiego, senza aspettare CANCELLO_RIPIEGO. */
+    cornice.addEventListener('load', function () {
+      carico.hidden = true;
+      setTimeout(function () { if (!disegnata()) offriRipiego(); }, 3000);
+    });
+    /* Per i primi istanti la cornice non riceve tocchi: il secondo colpo di un doppio
+       tocco sul pulsante di prima cadrebbe dentro il modulo, e conterebbe come un
+       ingresso. */
+    cornice.style.pointerEvents = 'none';
+    setTimeout(function () { cornice.style.pointerEvents = ''; }, 600);
+    cornice.src = NEWSLETTER_CORNICE;
+    scatola.appendChild(cornice);
+    blocco.appendChild(scatola);
+
+    var passo2 = el('p', 'gate-passo', F.ui.gate.passo2);
+    passo2.id = 'gate-passo2';
+    blocco.appendChild(passo2);
+
+    /* la riga che rimanda al modulo chi preme troppo presto: vuota finché non serve */
+    var stato = el('p', 'gate-stato micro');
+    stato.id = 'gate-stato';
+    stato.setAttribute('role', 'status');
+    blocco.appendChild(stato);
+
+    var apri = el('button', 'btn', F.ui.gate.apri);
+    apri.type = 'button';
+    apri.setAttribute('aria-disabled', 'true');
+    apri.setAttribute('aria-describedby', 'gate-passo2 gate-stato');
+    blocco.appendChild(apri);
+
+    blocco.appendChild(el('p', 'gate-guida micro', F.ui.gate.guida));
+
+    /* Quando il cursore entra nella cornice questa pagina perde il fuoco e l'elemento
+       attivo diventa la cornice: è l'unico segno che arriva fin qui. Si guarda al «blur»
+       e, per i browser che non lo mandano, a intervalli. */
+    var toccata = 0, accensione = null, ripiego = null, chiesto = false;
+    function pronto() { return toccata > 0 && Date.now() - toccata >= CANCELLO_ATTESA; }
+    function zitto() { stato.textContent = ''; blocco.classList.remove('richiamo'); }
+    function entra() { smetti(); gatePass(); showQuestion(0); }
+    /* il pulsante si accende; se la persona, già entrata nel modulo, lo aveva premuto un
+       attimo troppo presto, il test si apre da solo senza farglielo ripremere. Non se nel
+       frattempo è tornata nel modulo a scrivere: lì trova il pulsante acceso, e lo preme
+       quando ha finito */
+    function accendi() {
+      if (!app.contains(apri) || !pronto()) return;
+      apri.removeAttribute('aria-disabled');
+      apri.removeAttribute('aria-busy');
+      zitto();
+      if (chiesto && document.activeElement !== cornice) entra();
+      chiesto = false;
+    }
+    function segna(subito) {
+      if (toccata) return;
+      toccata = Date.now() - (subito ? CANCELLO_ATTESA : 0);
+      /* chi era stato rimandato al modulo c'è arrivato: l'avviso ha finito */
+      zitto();
+      if (subito) accendi(); else accensione = setTimeout(accendi, CANCELLO_ATTESA + 50);
+    }
+    function guarda() {
+      if (!app.contains(cornice)) { smetti(); return; }
+      if (document.activeElement === cornice) segna(false);
+    }
+    function dopo() { setTimeout(guarda, 0); }
+    var orologio = setInterval(guarda, 300);
+    window.addEventListener('blur', dopo);
+    function smetti() {
+      clearInterval(orologio); clearTimeout(accensione); clearTimeout(limite); clearTimeout(pazienza);
+      window.removeEventListener('blur', dopo);
+    }
+
+    /* Il modulo vero, appena parte, mette dentro di sé una cornice sua: una pagina
+       bloccata o mai arrivata non ne ha. Il numero di cornici figlie è l'unica cosa che
+       da fuori si può leggere. Se dopo CANCELLO_RIPIEGO non c'è, sotto il riquadro compare
+       il link alla pagina di iscrizione di Substack; compare anche dopo CANCELLO_PAZIENZA
+       se il cursore non è mai risultato dentro il modulo. Una volta comparso resta: se
+       sparisse all'arrivo di un modulo lento, la pagina salterebbe sotto le dita di chi
+       sta scrivendo. Chi segue il link trova il pulsante acceso; il passaggio si ricorda
+       solo quando il test si apre. */
+    function disegnata() { try { return cornice.contentWindow.length > 0; } catch (e) { return false; } }
+    function offriRipiego() {
+      if (ripiego || !app.contains(cornice)) return;
+      ripiego = el('p', 'gate-ripiego micro', F.ui.gate.ripiego);
+      ripiego.setAttribute('role', 'status');
+      var link = ripiego.querySelector('a');
+      /* anche chi apre il link con il tasto centrale o dal menu «apri in un'altra scheda» */
+      if (link) ['click', 'auxclick', 'contextmenu'].forEach(function (gesto) {
+        link.addEventListener(gesto, function () {
+          /* Nei browser dentro le app il link può aprirsi al posto di questa pagina, e al
+             ritorno la pagina riparte da capo: un segno nella voce di cronologia ricorda
+             che la persona è passata dal link, così ritrova il pulsante acceso. Il
+             passaggio vero si salva solo quando il test si apre. */
+          try { if (history.state && history.state.ferro === 'test') history.replaceState({ ferro: 'test', ripiego: 1 }, ''); } catch (e) {}
+          segna(true);
+        });
+      });
+      blocco.insertBefore(ripiego, passo2);
+    }
+    if (dalRipiego()) { offriRipiego(); segna(true); }
+    var limite = setTimeout(function () { if (!disegnata()) { carico.hidden = true; offriRipiego(); } }, CANCELLO_RIPIEGO);
+    var pazienza = setTimeout(function () { if (!toccata) offriRipiego(); }, CANCELLO_PAZIENZA);
+
+    apri.addEventListener('click', function () {
+      if (pronto()) { entra(); return; }
+      /* nel modulo c'è già entrata, mancano pochi istanti: il test si apre da solo */
+      if (toccata) { chiesto = true; apri.setAttribute('aria-busy', 'true'); return; }
+      /* se il modulo non è arrivato, la strada è il link qui sopra: l'avviso lo dice */
+      stato.innerHTML = (ripiego && !disegnata()) ? F.ui.gate.primaLink : F.ui.gate.prima;
+      blocco.classList.add('richiamo');
+      /* si scorre solo se serve, e si porta in cima il primo passo: così passi, modulo,
+         avviso e pulsante restano in una schermata anche sui telefoni piccoli */
+      try {
+        if (apri.getBoundingClientRect().bottom > window.innerHeight || scatola.getBoundingClientRect().top < 0) {
+          var fermo = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+          passo1.scrollIntoView({ block: 'start', behavior: fermo ? 'auto' : 'smooth' });
+        }
+      } catch (e) {}
+    });
+
+    try { passo1.focus({ preventScroll: true }); } catch (e) {}
+    /* se il pulsante che apre il test è finito sotto il bordo dello schermo, il primo passo
+       va in cima: così passi, modulo e pulsante stanno in una schermata */
+    try {
+      if (apri.getBoundingClientRect().bottom > window.innerHeight) passo1.scrollIntoView({ block: 'start', behavior: 'instant' });
+    } catch (e) {}
   }
 
   /* ---------- tastiera ---------- */
@@ -1632,9 +1721,10 @@
   menuVivo();
   animaSezioni();
 
-  /* chi torna con Indietro dalla pagina di Substack e trova la pagina ricaricata (succede
-     nei browser dentro le app) ritrova il test, non la prima schermata */
-  if (!shared && arrivo === 'back_forward' && passatoDiQui()) startOwn();
+  /* chi è passato dal cancello, esce verso un'altra pagina e torna con Indietro trovando
+     la pagina ricaricata (succede nei browser dentro le app) ritrova il test, non la
+     prima schermata. Chi era uscito dal link di ripiego ritrova il cancello. */
+  if (!shared && arrivo === 'back_forward' && (passatoDiQui() || dalRipiego())) startOwn();
 
   if (shared) {
     state.answers = shared;

@@ -680,14 +680,77 @@ section.blocco h2.reveal.armato { opacity: 1; transform: none; }
 .pub-input:focus { outline: none; border-color: var(--brass); }
 .pub-input::placeholder { color: var(--muted); opacity: 1; }
 
-/* Il cancello del test: campo dell'email e pulsante, incolonnati sulla misura del
-   testo che li precede. */
+/* Il cancello del test: prima un pulsante, poi le istruzioni, il modulo di Substack e il
+   pulsante che apre il test, incolonnati sulla misura del testo che li precede. */
 .gate-form {
   margin-top: 26px;
   max-width: 460px;
 }
-.gate-form .pub-input { margin-top: 0; }
 .gate-form .btn { width: 100%; }
+/* i due passi numerati: nel carattere del testo, più grandi delle righe piccole */
+.gate-passo {
+  font-family: var(--serif);
+  font-size: 17px;
+  line-height: 1.45;
+  color: var(--ink);
+  margin: 0;
+  scroll-margin-top: 20px;
+}
+.gate-passo:focus { outline: none; }
+.gate-passo + .gate-cornice-box { margin-top: 12px; }
+.gate-cornice-box ~ .gate-passo { margin-top: 16px; }
+/* La cornice con il modulo di Substack. L'altezza decide che cosa il modulo mostra: sotto
+   240 px toglie da solo logo e frase di presentazione e lascia nome, campo, pulsante e riga
+   dei Termini, con lo spazio che serve ai suoi messaggi d'errore. Lo sfondo è quello del
+   modulo, così mentre si carica il riquadro è già al suo posto. */
+.gate-cornice-box {
+  position: relative;
+  height: 236px;
+  border-radius: 2px;
+  background: #020617;
+  overflow: hidden;
+}
+.gate-carico {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  padding: 0 16px;
+  text-align: center;
+  font-family: var(--sans);
+  font-size: 14px;
+  color: #b9c0cc;
+}
+/* «display: flex» scavalcherebbe l'attributo hidden: la scritta resterebbe per i lettori di schermo */
+.gate-carico[hidden] { display: none; }
+.gate-cornice {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+/* Sugli schermi stretti la cornice prende tutta la larghezza dello schermo, uscendo dai
+   22 px di margine della pagina: al modulo servono circa 350 px per mostrare intero il
+   riquadro con cui propone la correzione di un refuso. */
+@media (max-width: 420px) {
+  .gate-cornice-box { margin-left: -22px; margin-right: -22px; border-radius: 0; }
+}
+.gate-form .gate-cornice-box ~ .btn { margin-top: 12px; }
+.gate-ripiego { margin-top: 12px; }
+/* la riga che rimanda al modulo: vuota non occupa spazio */
+.gate-stato { margin-top: 10px; color: var(--brass); }
+.gate-stato:empty { display: none; }
+.gate-guida { margin-top: 12px; }
+/* il pulsante che apre il test resta spento finché il modulo non è stato usato */
+.gate-form .btn[aria-disabled="true"] { opacity: 0.6; cursor: default; }
+.gate-form .btn[aria-disabled="true"]:hover { opacity: 0.6; }
+/* premuto un attimo troppo presto da chi è già entrato nel modulo: sta per aprirsi */
+.gate-form .btn[aria-busy="true"] { cursor: progress; }
+/* chi lo preme troppo presto viene rimandato al modulo, che si mette in evidenza */
+.gate-form.richiamo .gate-cornice-box { outline: 2px solid var(--brass); outline-offset: 3px; }
 
 /* Il cancello è un blocco solo: modulo, esito e righe piccole stanno nella stessa
    colonna. */

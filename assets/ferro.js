@@ -1013,21 +1013,18 @@
   var NEWSLETTER_ISCRIZIONE = 'https://www.mattiaferro.com/subscribe';
   /* Che cosa mostra la pagina di Substack dopo aver registrato l'iscrizione non si può
      scegliere: a un indirizzo nuovo chiede di confermare l'email con una schermata che
-     sembra un accesso, ad altri mostra i piani a pagamento. Per questo la persona la deve
-     avere davanti il meno possibile. Ma davanti: provato il 3 ottobre su un telefono, in
-     una scheda rimasta dietro la pagina di Substack non iscrive. Da fuori si legge solo
-     quante cornici ha la pagina: ne ha almeno due appena il suo codice parte. */
+     sembra un accesso, ad altri mostra i piani a pagamento. Per questo la persona non la
+     deve avere davanti. Da fuori si legge solo quante cornici ha la pagina: ne ha almeno
+     due appena il suo codice parte, e l'iscrizione parte in quel momento. */
   var ISCRIZIONE_CORNICI = 2;
-  /* la pagina non si chiude mai prima di ISCRIZIONE_MINIMO dall'apertura, e resta ancora
-     ISCRIZIONE_MARGINE dopo che il codice di Substack è partito: l'iscrizione deve
-     arrivare. Se quel segno non si vede mai, si chiude dopo ISCRIZIONE_MASSIMO. */
-  var ISCRIZIONE_MINIMO = 7000, ISCRIZIONE_MARGINE = 5000, ISCRIZIONE_MASSIMO = 15000;
+  /* la finestra non si chiude mai prima di ISCRIZIONE_MINIMO dall'apertura, e resta ancora
+     ISCRIZIONE_MARGINE dopo che il codice di Substack è partito: l'iscrizione deve arrivare */
+  var ISCRIZIONE_MINIMO = 5000, ISCRIZIONE_MARGINE = 4000;
+  /* il nome della scheda in cui, sul telefono, il cancello apre il test */
+  var SCHEDA_TEST = 'ferroTest';
 
-  /* Tiene d'occhio la pagina di Substack (finestrella sul computer, scheda sul telefono)
-     e la chiude quando ha avuto il tempo di iscrivere: chiusa quella, il browser torna a
-     questa pagina, dove il test è già aperto. Il conto va a giri e non a secondi: se sul
-     telefono questa pagina dorme mentre quella di Substack è davanti, al risveglio la deve
-     ancora poter chiudere. */
+  /* Sul computer: tiene d'occhio la finestrella di Substack e la chiude quando ha finito.
+     Se il codice di Substack non parte mai la finestra resta aperta. */
   function chiudiQuandoHaFinito(finestra) {
     var nata = Date.now(), vista = 0, giri = 0;
     var giro = setInterval(function () {
@@ -1037,14 +1034,41 @@
       try { cornici = finestra.length; } catch (e) {}
       var ora = Date.now();
       if (!vista && cornici >= ISCRIZIONE_CORNICI) vista = ora;
-      var finito = vista ? (ora - vista >= ISCRIZIONE_MARGINE && ora - nata >= ISCRIZIONE_MINIMO) : ora - nata >= ISCRIZIONE_MASSIMO;
-      if (finito) {
+      if (vista && ora - vista >= ISCRIZIONE_MARGINE && ora - nata >= ISCRIZIONE_MINIMO) {
         clearInterval(giro);
         try { finestra.close(); } catch (e) {}
         try { window.focus(); } catch (e) {}
         return;
       }
       if (++giri > 300) clearInterval(giro);
+    }, 300);
+  }
+
+  /* Sul telefono non esistono finestrelle: una pagina nuova si apre davanti e copre tutto.
+     Allora le schede si scambiano: il test si apre nella scheda nuova, davanti, e la scheda
+     di prima, rimasta dietro, va alla pagina di Substack e iscrive. Questa funzione gira
+     nella scheda nuova e accompagna quella di prima: se non è ancora partita verso
+     Substack ce la manda lei, e quando Substack ha finito la riporta al sito del test, così
+     chi ci torna non trova una pagina di Substack che chiede di confermare. */
+  function accompagna(vecchia) {
+    if (!vecchia) return;
+    var nata = Date.now(), vista = 0, giri = 0, spinta = false;
+    var giro = setInterval(function () {
+      var chiusa = true, cornici = 0;
+      try { chiusa = vecchia.closed; } catch (e) {}
+      if (chiusa || ++giri > 300) { clearInterval(giro); return; }
+      var ora = Date.now();
+      if (!spinta && ora - nata > 1500) {
+        spinta = true;
+        /* leggibile solo finché la scheda di prima è ancora sul sito del test */
+        try { var meta = vecchia.__ferroConsegna; if (meta) vecchia.location.assign(meta); } catch (e) {}
+      }
+      try { cornici = vecchia.length; } catch (e) {}
+      if (!vista && cornici >= ISCRIZIONE_CORNICI) vista = ora;
+      if (vista && ora - vista >= ISCRIZIONE_MARGINE + 2000) {
+        clearInterval(giro);
+        try { vecchia.location.replace(location.origin + location.pathname); } catch (e) {}
+      }
     }, 300);
   }
 
@@ -1194,14 +1218,24 @@
       gatePass();
       var larga = false;
       try { larga = !!(window.matchMedia && window.matchMedia('(min-width: 900px) and (pointer: fine)').matches); } catch (e) {}
-      /* La pagina di Substack si apre da qui, dentro il gesto del tocco, per tenerne il
-         riferimento e poterla chiudere. Su uno schermo largo è una finestrella accanto al
-         test; sul telefono è una scheda, che resta davanti qualche secondo, il tempo di
-         iscrivere, e poi viene chiusa: sotto c'è il test, già aperto. */
+      /* Sul telefono il test si apre in una scheda nuova, davanti, e questa scheda, che
+         resta dietro, va alla pagina di Substack: la persona vede il test e non Substack.
+         L'indirizzo resta a disposizione della scheda nuova, che se serve la manda lei. */
+      if (!larga) {
+        var nuova = null;
+        try {
+          window.__ferroConsegna = indirizzo;
+          nuova = window.open(location.origin + location.pathname + '?apri=1', SCHEDA_TEST);
+        } catch (e) { nuova = null; }
+        if (nuova) { location.assign(indirizzo); return; }
+      }
+      /* Su uno schermo largo la pagina di Substack si apre in una finestrella accanto, e
+         il test resta in vista. La finestra si apre da qui, dentro il gesto del clic, per
+         tenerne il riferimento e poterla chiudere. */
       var finestra = null;
       try {
         var misure = larga ? 'popup=yes,width=460,height=640,left=' + ((window.screenX || 0) + (window.outerWidth || 1200) - 460) + ',top=' + ((window.screenY || 0) + 90) : undefined;
-        finestra = window.open(indirizzo, 'ferroIscrizione', misure);
+        if (larga) finestra = window.open(indirizzo, 'ferroIscrizione', misure);
       } catch (e) { finestra = null; }
       /* La finestra non si è aperta (un'estensione che le blocca, un browser dentro
          un'app): la pagina di Substack si apre in questa scheda, e al ritorno con Indietro
@@ -1793,6 +1827,18 @@
   /* chi torna con Indietro dalla pagina di Substack e trova la pagina ricaricata (succede
      nei browser dentro le app) ritrova il test, non la prima schermata */
   if (!shared && arrivo === 'back_forward' && passatoDiQui()) startOwn();
+
+  /* la scheda che il cancello ha aperto sul telefono: porta il nome dato dal cancello, e
+     il test parte subito. Aprire a mano lo stesso indirizzo non basta: il nome non c'è. */
+  var dalCancello = false;
+  try { dalCancello = !shared && params.get('apri') === '1' && window.name === SCHEDA_TEST; } catch (e) {}
+  if (dalCancello) {
+    try { window.name = ''; } catch (e) {}
+    gateAperto = true;
+    startOwn();
+    gatePass();
+    accompagna(window.opener);
+  }
 
   if (shared) {
     state.answers = shared;

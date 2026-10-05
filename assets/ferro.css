@@ -703,6 +703,18 @@ section.blocco h2.reveal.armato { opacity: 1; transform: none; }
   color: var(--brass);
 }
 .gate-avviso:not(:empty) { margin-top: 8px; }
+/* in cima alle domande, per chi è appena passato dal cancello: l'ultimo passo
+   dell'iscrizione, che decide Substack (un clic nella sua mail) */
+.ultimo-passo {
+  max-width: 640px;
+  margin: 0 0 16px;
+  padding: 8px 12px;
+  border-left: 2px solid var(--brass);
+  font-family: var(--sans);
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--ink);
+}
 /* la casella del consenso al cancello: stessa forma di quella del Registro, riga alta
    almeno 44 px e tutta toccabile */
 .gate-form .gate-consenso { margin-top: 6px; min-height: 44px; align-items: center; }

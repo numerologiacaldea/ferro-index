@@ -244,6 +244,13 @@
     var screenDone = false;
 
     var s = el('div', 'screen');
+    /* solo sulla prima domanda: sulle altre, in un telefono, spingerebbe il pulsante
+       Indietro sotto il bordo dello schermo */
+    if (appenaIscritto && i === 0 && F.ui.gate && F.ui.gate.ultimoPasso) {
+      var passo = el('p', 'ultimo-passo');
+      passo.textContent = F.ui.gate.ultimoPasso;
+      s.appendChild(passo);
+    }
     s.appendChild(el('p', 'occhiello', q.section));
     s.appendChild(el('p', 'q-count', (i + 1) + ' / ' + F.questions.length));
     var titolo = el('h2', 'q-text', q.text);
@@ -338,7 +345,11 @@
     s.appendChild(nav);
 
     app.appendChild(s);
-    announce(F.ui.domandaDi(i + 1, F.questions.length));
+    /* il fuoco va al titolo, che viene dopo la riga dell'ultimo passo: la riga si fa
+       leggere dall'annuncio, una volta sola */
+    var detto = F.ui.domandaDi(i + 1, F.questions.length);
+    if (appenaIscritto && i === 0 && F.ui.gate && F.ui.gate.ultimoPasso && !passoAnnunciato) { passoAnnunciato = true; detto = F.ui.gate.ultimoPasso + ' ' + detto; }
+    announce(detto);
     focusTitle(s);
     app.scrollIntoView({ block: 'start', behavior: 'instant' });
   }
@@ -978,6 +989,13 @@
      versione 86 la chiave è «ferroGate4». Se il browser non lascia ricordare niente, il
      cancello si ripresenta a ogni visita. */
   var gateAperto = false;
+  /* chi è appena passato dal cancello (in questa scheda o nella scheda nuova aperta dal
+     cancello) vede in cima alla prima domanda l'ultimo passo dell'iscrizione: Substack decide
+     da sé se chiedere un clic nella sua mail (conferma o accesso), e senza quel clic il
+     lettore non riceve la newsletter. Chi era già passato nei giorni prima non la vede */
+  var appenaIscritto = false;
+  /* la riga si annuncia ai lettori di schermo una volta sola, la prima volta che compare */
+  var passoAnnunciato = false;
   /* il passaggio viaggia anche nella voce di cronologia del test: sopravvive al
      ricaricamento della pagina e non ha bisogno della memoria del browser. Serve nei
      browser dentro le app, dove la pagina di Substack prende il posto di questa. Il
@@ -1279,7 +1297,7 @@
       function alRitorno() {
         window.addEventListener('pageshow', function (e) {
           try { delete window.__ferroConsegna; } catch (x) {}
-          if (e.persisted && app.contains(form)) showQuestion(0);
+          if (e.persisted && app.contains(form)) { appenaIscritto = true; showQuestion(0); }
         });
       }
       function inQuestaScheda() { alRitorno(); location.assign(indirizzo); }
@@ -1872,7 +1890,7 @@
 
   /* chi torna con Indietro dalla pagina di Substack e trova la pagina ricaricata (succede
      nei browser dentro le app) ritrova il test, non la prima schermata */
-  if (!shared && arrivo === 'back_forward' && passatoDiQui()) startOwn();
+  if (!shared && arrivo === 'back_forward' && passatoDiQui()) { appenaIscritto = true; startOwn(); }
 
   /* la scheda che il cancello ha aperto per il test: porta il nome dato dal cancello e
      trova nella memoria del browser il segno del passaggio, lasciato dal cancello prima di
@@ -1884,6 +1902,7 @@
   if (dalCancello) {
     try { window.name = ''; } catch (e) {}
     gateAperto = true;
+    appenaIscritto = true;
     startOwn();
     gatePass();
     /* si accompagna la scheda del sito, non la pagina di un altro sito che avesse aperto

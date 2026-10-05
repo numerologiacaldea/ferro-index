@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<meta name="referrer" content="no-referrer">
+<!-- il browser fa rispettare la regola «nient'altro va in rete»: solo il server delle
+     candidature (con il suo rinvio a script.googleusercontent.com), niente moduli verso
+     altri indirizzi, niente risorse esterne -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src data:; connect-src https://script.google.com https://script.googleusercontent.com; form-action 'none'; base-uri 'none'">
+<title>Registro dei Santuari</title>
+<!-- un'icona vuota: il browser non chiede /favicon.ico, e la pagina non manda in rete
+     niente oltre alla richiesta al server delle candidature -->
+<link rel="icon" href="data:,">
+<!--
+  La pagina di revisione del Registro dei Santuari, per Mattia. Ci portano i pulsanti
+  «Rivedi e pubblica» e «Ritira dal Registro» delle mail del server delle candidature
+  (Apps Script di mailperagente, sorgenti in knowledge/codice/registro/Codice.gs).
+
+  Perché qui e non sul server: la pagina servita da Apps Script non si apre in un browser
+  con più account Google collegati (Google lo dice per iscritto: il «multi-login» non è
+  supportato per le app web) e mostrava «Impossibile aprire il file in questo momento».
+  Questa pagina parla con il server con fetch e senza cookie, come il modulo delle
+  candidature in ferro.js: funziona con qualunque account, o con nessuno.
+
+  Codice della candidatura e token arrivano dopo il «#» (/revisione/#id=…&t=…): il browser
+  non manda mai quella parte a GitHub Pages, e con referrer «no-referrer» non esce nemmeno
+  verso i link della pagina. La pagina non è collegata dal resto del sito, non è nella
+  mappa del sito e chiede ai motori di ricerca di non indicizzarla.
+
+  Testi e aspetto sono quelli di Pagina.html, la pagina di prima, che resta sul server per
+  i link delle mail già mandate. Quei link si possono anche incollare qui.
+  Tutto ciò che arriva dal server entra nella pagina con textContent o value, mai come HTML.
+-->
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #ebe7e0; color: #1a1a18; font-family: Georgia, 'Times New Roman', serif; font-size: 17px; line-height: 1.55; }
+  .box { max-width: 660px; margin: 0 auto; padding: 28px 18px 60px; }
+  .occhiello { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif; font-size: 11px; font-weight: 600; letter-spacing: 0.24em; text-transform: uppercase; color: #1d4e6b; margin: 0; }
+  h1 { font-size: 28px; line-height: 1.2; margin: 10px 0 6px; overflow-wrap: anywhere; }
+  .punti { font-family: -apple-system, system-ui, sans-serif; font-size: 14px; color: #5c5954; margin: 0 0 8px; }
+  .punti a { color: #1d4e6b; }
+  label { display: block; margin-top: 20px; font-family: -apple-system, system-ui, sans-serif; font-size: 11.5px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: #5c5954; }
+  .aiuto { font-family: -apple-system, system-ui, sans-serif; font-size: 13px; color: #5c5954; margin: 4px 0 0; }
+  input, textarea { display: block; width: 100%; margin-top: 6px; padding: 11px 12px; border: 1px solid rgba(26,26,24,0.25); border-radius: 2px; background: #fdfcf9; color: #1a1a18; font: 17px/1.45 Georgia, serif; }
+  textarea { min-height: 120px; resize: vertical; }
+  input:focus, textarea:focus { outline: 2px solid #1d4e6b; outline-offset: 1px; }
+  .azioni { margin-top: 28px; display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
+  button { font-family: -apple-system, system-ui, sans-serif; font-size: 16px; border-radius: 2px; cursor: pointer; padding: 14px 24px; }
+  .primario { background: #1a1a18; color: #ebe7e0; border: 0; }
+  .quieto { background: transparent; color: #1a1a18; border: 1px solid rgba(26,26,24,0.3); }
+  button[disabled] { opacity: 0.5; cursor: default; }
+  .esito { margin-top: 22px; padding: 14px 16px; border-left: 2px solid #1d4e6b; background: #fdfcf9; font-family: -apple-system, system-ui, sans-serif; font-size: 15px; overflow-wrap: anywhere; }
+  .esito.errore { border-left-color: #8a2a1e; }
+  .esito a { color: #1d4e6b; }
+  [hidden], .nascosto { display: none !important; }
+  fieldset.lingua { border: 0; padding: 0; margin: 22px 0 0; min-width: 0; }
+  fieldset.lingua legend { font-family: -apple-system, system-ui, sans-serif; font-size: 11.5px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: #5c5954; padding: 0; }
+  label.scelta { display: inline-flex; align-items: center; gap: 6px; margin: 8px 18px 0 0; font: 17px Georgia, serif; letter-spacing: 0; text-transform: none; color: #1a1a18; }
+  label.scelta input { width: auto; margin: 0; }
+</style>
+</head>
+<body>
+<div class="box">
+  <p class="occhiello">Ferro Index · Registro dei Santuari</p>
+
+  <!-- mentre arriva la risposta del server -->
+  <section id="s-caricamento" hidden>
+    <h1>Un momento…</h1>
+    <p class="aiuto">Sto aprendo la candidatura.</p>
+  </section>
+
+  <!-- la lettura non è andata (rete, server che non risponde o non riconosce la
+       richiesta): si può riprovare -->
+  <section id="s-rete" hidden>
+    <h1>Non è andata</h1>
+    <p class="esito errore" id="rete-testo"></p>
+    <div class="azioni"><button class="primario" id="riprova" type="button">Riprova</button></div>
+  </section>
+
+  <section id="s-nontrovata" hidden>
+    <h1>Candidatura non trovata</h1>
+    <p class="esito errore">Le candidature scartate o ritirate si cancellano da sole <span id="giorni-scartate">7</span> giorni dopo, quelle rimaste in attesa dopo <span id="giorni">120</span> giorni: se la mail è più vecchia, questa non c'è più.</p>
+    <div class="azioni"><button class="quieto altro-link" type="button">Incolla un altro link</button></div>
+  </section>
+
+  <section id="s-nonvalido" hidden>
+    <h1>Link non valido</h1>
+    <p class="esito errore"><span id="nonvalido-testo">Link non valido</span>. <span id="nonvalido-consiglio">Se il link arriva da una mail di candidatura, aprilo di nuovo da lì.</span></p>
+    <div class="azioni"><button class="quieto altro-link" type="button">Incolla un altro link</button></div>
+  </section>
+
+  <!-- senza codice nel link: pagina aperta a mano, o link di una mail di prima, che
+       portava alla pagina di Apps Script. Si incolla il link e si va avanti da qui -->
+  <section id="s-incolla" hidden>
+    <h1 id="incolla-titolo">Apri una candidatura</h1>
+    <p class="aiuto">Nella mail della candidatura, o in quella di conferma, copia il link del pulsante «Rivedi e pubblica» o «Ritira dal Registro»: sul telefono tienilo premuto e scegli «Copia link», sul computer fai clic destro e scegli «Copia indirizzo link». Vanno bene anche i link delle mail di prima, quelli che cominciano con script.google.com.</p>
+    <form id="incolla" novalidate>
+      <label for="link">Incolla il link della mail</label>
+      <input id="link" type="text" inputmode="url" autocomplete="off" autocapitalize="off" spellcheck="false">
+      <div class="azioni"><button class="primario" id="apri" type="submit">Apri la candidatura</button></div>
+    </form>
+    <p class="esito errore" id="incolla-esito" hidden></p>
+  </section>
+
+  <section id="s-attesa" hidden>
+    <h1>Candidatura: <span id="a-hotel"></span></h1>
+    <p class="punti"><span id="a-punteggio"></span>/100 · Santuario<span id="a-verdetto-riga"> · <a id="a-verdetto" target="_blank" rel="noopener noreferrer">apri il verdetto</a></span></p>
+    <p class="aiuto">Così apparirà nel Registro. Puoi correggere nome, città e traduzione prima di pubblicare.</p>
+    <p class="aiuto"><strong>Prima di pubblicare apri la prova del soggiorno</strong> allegata alla mail: la scheda esce con la spunta «Soggiorno verificato», che sul sito vuol dire che l'hai vista.</p>
+
+    <form id="scheda" novalidate>
+      <label for="hotel">Nome dell'hotel</label>
+      <input id="hotel" maxlength="60">
+      <label for="citta">Città</label>
+      <input id="citta" maxlength="60">
+      <fieldset class="lingua">
+        <legend>Il candidato ha scritto in</legend>
+        <label class="scelta"><input type="radio" name="originale" value="it"> italiano</label>
+        <label class="scelta"><input type="radio" name="originale" value="en"> inglese</label>
+        <label class="scelta"><input type="radio" name="originale" value=""> un'altra lingua</label>
+        <p class="aiuto" id="aiuto-riconosciuta">L'ho riconosciuto da solo: correggi se ho sbagliato. Sul sito l'altra versione porta la dicitura «Tradotto dall'inglese» o «Translated from Italian». Con «un'altra lingua» sono traduzioni tutte e due e il sito non porta diciture.</p>
+        <p class="aiuto" id="aiuto-sconosciuta">Non ho riconosciuto la lingua: le due versioni qui sotto sono traduzioni e il testo originale è nella mail. Sul sito nessuna delle due porta diciture. Se il candidato ha scritto in italiano o in inglese, scegli la lingua e incolla nel campo giusto il suo testo originale, che trovi nella mail.</p>
+      </fieldset>
+      <label for="it">Motivazione in italiano</label>
+      <textarea id="it" maxlength="900"></textarea>
+      <label for="en">Motivazione in inglese</label>
+      <textarea id="en" maxlength="900"></textarea>
+      <div class="azioni">
+        <button class="primario" id="pubblica" type="button">Pubblica</button>
+        <button class="quieto" id="scarta" type="button">Scarta</button>
+      </div>
+    </form>
+    <p class="esito" id="esito-attesa" hidden></p>
+  </section>
+
+  <section id="s-pubblicata" hidden>
+    <h1>Pubblicato: <span id="p-hotel"></span></h1>
+    <p class="punti"><span id="p-punteggio"></span>/100 · Santuario<span id="p-registro-riga"> · <a id="p-registro" target="_blank" rel="noopener noreferrer">apri il Registro</a></span></p>
+    <p class="aiuto">Se hai cambiato idea, puoi togliere la scheda dal Registro. Resta tutto il resto del sito com'è.</p>
+    <div class="azioni"><button class="quieto" id="ritira" type="button">Ritira dal Registro</button></div>
+    <p class="esito" id="esito-pubblicata" hidden></p>
+  </section>
+
+  <section id="s-altro" hidden>
+    <h1 id="x-hotel"></h1>
+    <p class="esito">Questa candidatura è <span id="x-stato"></span>. Non c'è altro da fare.</p>
+  </section>
+
+  <noscript><p class="esito errore">Questa pagina ha bisogno di JavaScript.</p></noscript>
+</div>
+
+<script>
+(function () {
+  'use strict';
+  /* dentro la cornice di un altro sito la pagina non si mostra: nessuno può coprirne i
+     pulsanti con i suoi */
+  if (window.top !== window.self) { document.body.textContent = ''; return; }
+  /* lo stesso indirizzo di REGISTRO_ENDPOINT in assets/ferro.js: il server delle
+     candidature, che riconosce le richieste di questa pagina dal campo «azione» */
+  var ENDPOINT = 'https://script.google.com/macros/s/AKfycbyxZksLgOrGZOfpzwompQuTZ-82lS9D-npHVQerLf57mRD5V_jDJbgnrzSDBiBDcn5D/exec';
+  /* Apps Script si ferma comunque a sei minuti: oltre non ha senso aspettare */
+  var ATTESA_MASSIMA = 360000;
+  var STATI = ['s-caricamento', 's-rete', 's-nontrovata', 's-nonvalido', 's-incolla', 's-attesa', 's-pubblicata', 's-altro'];
+  var ID = '', TOKEN = '';
+  var occupato = false;
+  /* il link è stato incollato nel campo, e non aperto dalla mail */
+  var incollato = false;
+
+  function $(id) { return document.getElementById(id); }
+  function testo(id, s) { $(id).textContent = s == null ? '' : String(s); }
+  function mostra(quale) {
+    STATI.forEach(function (s) { $(s).hidden = s !== quale; });
+  }
+  /* solo indirizzi https veri: un indirizzo che arriva dal server non deve poter
+     diventare un link «javascript:» */
+  function collega(id, url) {
+    var buono = typeof url === 'string' && /^https:\/\/[^\s"<>]+$/.test(url);
+    if (buono) $(id).href = url; else $(id).removeAttribute('href');
+    return buono;
+  }
+
+  /* Codice e token da un link: quello nuovo (…/revisione/#id=…&t=…) o quello vecchio
+     della pagina di Apps Script (…/exec?a=rivedi&id=…&t=…). Se il link è stato copiato
+     codificato, per esempio dentro un rinvio, si decodifica e si riprova. */
+  function daLink(s) {
+    s = String(s || '').trim().replace(/&amp;/g, '&');
+    for (var giro = 0; giro < 3; giro++) {
+      var id = s.match(/(?:^|[?#&])id=([^&#\s]*)/), t = s.match(/(?:^|[?#&])t=([^&#\s]*)/);
+      if (id) return { id: esadecimale(decodifica(id[1])), t: t ? esadecimale(decodifica(t[1])) : '' };
+      try { var d = decodeURIComponent(s); if (d === s) break; s = d; } catch (e) { break; }
+    }
+    return null;
+  }
+  function decodifica(v) { try { return decodeURIComponent(v); } catch (e) { return v; } }
+  /* codice e token del server sono fatti solo di cifre e lettere da a a f: un punto, una
+     parentesi o uno spazio rimasti in coda al link copiato si lasciano fuori */
+  function esadecimale(v) { var m = String(v || '').match(/^[0-9a-f]+/i); return m ? m[0] : ''; }
+
+  function bloccaTutto(si) {
+    document.querySelectorAll('button').forEach(function (b) { b.disabled = si; });
+  }
+
+  /* Una richiesta al server: corpo JSON spedito come testo semplice, così il browser non
+     fa domande preliminari all'altro dominio; credentials 'omit', così nessun cookie di
+     Google parte con la richiesta (è il motivo di questa pagina). Risponde sempre con
+     un oggetto: quello del server, oppure { ok: false, rete: true, errore } se la rete
+     cade o il server non risponde entro sei minuti. */
+  function chiedi(azione, campi) {
+    var corpo = { azione: azione, id: ID, t: TOKEN };
+    if (campi) corpo.campi = campi;
+    var fermo = typeof AbortController === 'function' ? new AbortController() : null;
+    var scaduto = false;
+    var orologio = fermo ? setTimeout(function () { scaduto = true; fermo.abort(); }, ATTESA_MASSIMA) : null;
+    return fetch(ENDPOINT, {
+      method: 'POST', credentials: 'omit', referrerPolicy: 'no-referrer', cache: 'no-store',
+      body: JSON.stringify(corpo), signal: fermo ? fermo.signal : undefined
+    }).then(function (r) {
+      /* la risposta è arrivata: se non è JSON (per esempio una pagina d'errore di Google)
+         il guasto è del server, non della connessione */
+      return r.json().catch(function (err) {
+        /* scaduti i sei minuti mentre arrivava il corpo: lo dice il catch qui sotto */
+        if (scaduto) throw err;
+        return { ok: false, rete: true, errore: 'Il server ha risposto con un errore. Riprova fra qualche minuto' };
+      });
+    }).then(function (esito) {
+      clearTimeout(orologio);
+      if (!esito || typeof esito !== 'object') return { ok: false, rete: true, errore: 'Il server ha risposto con un errore. Riprova fra qualche minuto' };
+      return esito;
+    }).catch(function () {
+      clearTimeout(orologio);
+      return { ok: false, rete: true, errore: scaduto
+        ? 'Il server non ha risposto entro sei minuti. Riprova'
+        : 'Il server non ha risposto. Controlla la connessione e riprova' };
+    });
+  }
+
+  /* Il messaggio da mostrare per un esito non riuscito, scritto come in Pagina.html
+     («Non è andata: Link non valido»). Il server vecchio, che non conosce le azioni di
+     questa pagina, risponde con i codici del modulo delle candidature (per esempio
+     «campi»): lo si dice in chiaro invece di mostrare il codice. */
+  var CODICI_DEL_MODULO = ['campi', 'email', 'verdetto', 'soglia', 'file', 'troppe'];
+  function messaggio(esito) {
+    var e = String(esito && esito.errore || '');
+    if (esito && esito.rete) return e;
+    if (!e || e === 'interno') return 'Il server non è riuscito a completare la richiesta. Riprova fra qualche minuto';
+    if (CODICI_DEL_MODULO.indexOf(e) >= 0) return 'Il server non ha riconosciuto la richiesta. Forse non è ancora aggiornato: riprova più tardi';
+    return e;
+  }
+
+  function avvia() {
+    /* dopo un'azione riuscita i pulsanti restano spenti (contro il secondo clic): un
+       link nuovo riparte con i pulsanti accesi */
+    bloccaTutto(false);
+    var dati = daLink(location.hash);
+    if (!dati || !dati.id) { apriIncolla(); return; }
+    ID = dati.id; TOKEN = dati.t;
+    if (!TOKEN) { nonValido('Link non valido'); return; }
+    leggi();
+  }
+
+  /* chi ha incollato il link non va rimandato alla mail: con le mail di prima il link
+     riporterebbe alla pagina di Google che non si apre */
+  function nonValido(s) {
+    testo('nonvalido-testo', s);
+    testo('nonvalido-consiglio', incollato
+      ? 'Controlla di aver copiato il link intero e incollalo di nuovo.'
+      : 'Se il link arriva da una mail di candidatura, aprilo di nuovo da lì.');
+    mostra('s-nonvalido');
+  }
+
+  function apriIncolla() {
+    ID = ''; TOKEN = '';
+    $('incolla-esito').hidden = true;
+    mostra('s-incolla');
+  }
+
+  function leggi() {
+    if (occupato) return;
+    occupato = true;
+    bloccaTutto(true);
+    mostra('s-caricamento');
+    chiedi('leggi').then(function (esito) {
+      occupato = false;
+      bloccaTutto(false);
+      if (esito.ok) { disegna(esito); return; }
+      if (esito.errore === 'Candidatura non trovata') {
+        if (esito.giorni) testo('giorni', esito.giorni);
+        if (esito.giorniScartate) testo('giorni-scartate', esito.giorniScartate);
+        mostra('s-nontrovata');
+        return;
+      }
+      if (esito.errore === 'Link non valido') { nonValido(esito.errore); return; }
+      /* rete caduta, server che non risponde, errore interno o server non aggiornato */
+      testo('rete-testo', messaggio(esito) + '.');
+      mostra('s-rete');
+    });
+  }
+
+  function disegna(d) {
+    if (d.stato === 'in attesa') {
+      testo('a-hotel', d.hotel);
+      testo('a-punteggio', d.punteggio);
+      $('a-verdetto-riga').hidden = !collega('a-verdetto', d.verdetto);
+      $('hotel').value = d.hotel || '';
+      $('citta').value = d.citta || '';
+      $('it').value = d.it || '';
+      $('en').value = d.en || '';
+      var originale = d.originale === 'it' || d.originale === 'en' ? d.originale : '';
+      document.querySelectorAll('input[name=originale]').forEach(function (r) { r.checked = r.value === originale; });
+      $('aiuto-riconosciuta').hidden = !originale;
+      $('aiuto-sconosciuta').hidden = !!originale;
+      $('scheda').classList.remove('nascosto');
+      $('esito-attesa').hidden = true;
+      mostra('s-attesa');
+    } else if (d.stato === 'pubblicata') {
+      testo('p-hotel', d.hotel);
+      testo('p-punteggio', d.punteggio);
+      $('p-registro-riga').hidden = !collega('p-registro', d.registro);
+      $('ritira').classList.remove('nascosto');
+      $('esito-pubblicata').hidden = true;
+      mostra('s-pubblicata');
+    } else {
+      testo('x-hotel', d.hotel);
+      testo('x-stato', d.stato);
+      mostra('s-altro');
+    }
+  }
+
+  var STATO_CAMBIATO = ['Questa scheda non è pubblicata', 'Questa candidatura non è più in attesa', 'È già pubblicata: usa «Ritira dal Registro»'];
+
+  function esito(id, s, errore) {
+    var e = $(id);
+    e.className = 'esito' + (errore ? ' errore' : '');
+    e.textContent = s;
+    e.hidden = false;
+  }
+
+  /* un'azione dei pulsanti: blocca tutto finché non torna la risposta, così un secondo
+     clic non manda una seconda richiesta; se non va, sblocca e dice perché */
+  function azione(nome, campi, dove, attesa, riuscita) {
+    if (occupato) return;
+    occupato = true;
+    bloccaTutto(true);
+    if (attesa) esito(dove, attesa); else $(dove).hidden = true;
+    chiedi(nome, campi).then(function (r) {
+      occupato = false;
+      if (r.ok) { riuscita(r); return; }
+      bloccaTutto(false);
+      /* la candidatura nel frattempo ha cambiato stato (per esempio un ritiro già fatto,
+         con la risposta persa per strada): si rilegge e si mostra com'è adesso */
+      if (STATO_CAMBIATO.indexOf(String(r.errore || '')) >= 0) { leggi(); return; }
+      esito(dove, 'Non è andata: ' + messaggio(r), true);
+    });
+  }
+
+  $('pubblica').addEventListener('click', function () {
+    var scelta = document.querySelector('input[name=originale]:checked');
+    var campi = { hotel: $('hotel').value, citta: $('citta').value, it: $('it').value, en: $('en').value };
+    /* senza scelta il server tiene la lingua riconosciuta. «un'altra lingua» manda ''
+       insieme ad altraLingua, come Pagina.html */
+    if (scelta) campi.originale = scelta.value;
+    if (scelta && scelta.value === '') campi.altraLingua = true;
+    azione('pubblica', campi, 'esito-attesa', 'Pubblicazione in corso…', function (r) {
+      $('scheda').classList.add('nascosto');
+      esito('esito-attesa', 'Pubblicato. Sarà visibile sul sito entro pochi minuti. ');
+      var url = r.url;
+      if (typeof url === 'string' && /^https:\/\/[^\s"<>]+$/.test(url)) {
+        var a = document.createElement('a');
+        a.href = url; a.target = '_blank'; a.rel = 'noopener noreferrer'; a.textContent = 'Apri il Registro';
+        $('esito-attesa').appendChild(a);
+      }
+    });
+  });
+
+  $('scarta').addEventListener('click', function () {
+    if (occupato) return;
+    if (!confirm('Scartare questa candidatura? Non verrà pubblicata.')) return;
+    azione('scarta', null, 'esito-attesa', '', function () {
+      $('scheda').classList.add('nascosto');
+      esito('esito-attesa', 'Candidatura scartata. Cancella dalla tua casella la mail con la prova del soggiorno: la copia rimasta al server va nel cestino da sola.');
+    });
+  });
+
+  $('ritira').addEventListener('click', function () {
+    if (occupato) return;
+    if (!confirm('Togliere questa scheda dal Registro?')) return;
+    azione('ritira', null, 'esito-pubblicata', 'Ritiro in corso…', function () {
+      $('ritira').classList.add('nascosto');
+      esito('esito-pubblicata', 'Ritirata. Sparirà dal sito entro pochi minuti.');
+    });
+  });
+
+  $('riprova').addEventListener('click', leggi);
+
+  /* dopo un link sbagliato o scaduto si torna al campo per incollarne un altro */
+  document.querySelectorAll('.altro-link').forEach(function (b) {
+    b.addEventListener('click', function () {
+      if (occupato) return;
+      try { history.replaceState(null, '', location.pathname); } catch (err) {}
+      apriIncolla();
+    });
+  });
+
+  $('incolla').addEventListener('submit', function (ev) {
+    ev.preventDefault();
+    if (occupato) return;
+    var dati = daLink($('link').value);
+    if (!dati || !dati.id || !dati.t) {
+      var e = $('incolla-esito');
+      e.textContent = 'Questo non sembra il link della mail: deve contenere il codice della candidatura (id=…) e il codice segreto (t=…).';
+      e.hidden = false;
+      return;
+    }
+    $('link').value = '';
+    incollato = true;
+    /* il link incollato diventa l'indirizzo della pagina: si può ricaricare, e
+       sostituisce la voce della cronologia invece di aggiungerne una */
+    try { history.replaceState(null, '', '#id=' + encodeURIComponent(dati.id) + '&t=' + encodeURIComponent(dati.t)); } catch (err) {}
+    ID = dati.id; TOKEN = dati.t;
+    leggi();
+  });
+
+  /* un link nuovo incollato nella barra dell'indirizzo cambia solo il «#»: la pagina non
+     si ricarica, quindi si riparte da qui */
+  window.addEventListener('hashchange', function () { if (!occupato) { incollato = false; avvia(); } });
+
+  avvia();
+})();
+</script>
+</body>
+</html>

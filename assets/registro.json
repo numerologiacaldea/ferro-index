@@ -29,6 +29,21 @@
         "it": "Le attenzioni prima di tutto.",
         "en": "Attention comes first."
       }
+    },
+    {
+      "id": "38cb03a1",
+      "hotel": "Bulgari Hotel Roma",
+      "citta": "Roma",
+      "punteggio": 87,
+      "r": "141111410111111111111204",
+      "originale": "it",
+      "mese": "2026-10",
+      "pubblicato": "2026-10-05T07:15:26Z",
+      "verificato": true,
+      "motivazione": {
+        "it": "Un hotel per farti sentire speciale. La colazione meravigliosa, e la vista sulla camera al Mausoleo di Augusto, è impagabile. Ovviamente non mancavano le attenzioni.",
+        "en": "A hotel that makes you feel special. The wonderful breakfast, and the view from the room overlooking the Mausoleum of Augustus, is priceless. Of course, there was no shortage of thoughtful touches."
+      }
     }
   ]
 }

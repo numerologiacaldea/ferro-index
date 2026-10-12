@@ -277,52 +277,41 @@ try { if ('scrollRestoration' in history) history.scrollRestoration = 'manual'; 
   "variableMeasured": [
     {
       "@type": "PropertyValue",
-      "name": "Peso del pilastro Attenzioni",
-      "value": 40,
-      "unitText": "punti su 100"
+      "name": "Pilastro",
+      "description": "Attenzioni, Comfort, Privacy, Cibo, Pulizia, Design, Arte"
     },
     {
       "@type": "PropertyValue",
-      "name": "Peso del pilastro Comfort",
-      "value": 12,
-      "unitText": "punti su 100"
+      "name": "Peso del pilastro",
+      "unitText": "punti su 100",
+      "minValue": 5,
+      "maxValue": 40
     },
     {
       "@type": "PropertyValue",
-      "name": "Peso del pilastro Privacy",
-      "value": 12,
-      "unitText": "punti su 100"
+      "name": "Peso nominale della domanda",
+      "unitText": "punti su 100",
+      "minValue": 0,
+      "maxValue": 8
     },
     {
       "@type": "PropertyValue",
-      "name": "Peso del pilastro Cibo",
-      "value": 12,
-      "unitText": "punti su 100"
+      "name": "Quota della risposta",
+      "description": "Frazione del peso della domanda (0; 0,25; 0,5; 0,75; 1), vuota per le risposte di esclusione",
+      "minValue": 0,
+      "maxValue": 1
     },
     {
       "@type": "PropertyValue",
-      "name": "Peso del pilastro Pulizia",
-      "value": 11,
-      "unitText": "punti su 100"
-    },
-    {
-      "@type": "PropertyValue",
-      "name": "Peso del pilastro Design",
-      "value": 8,
-      "unitText": "punti su 100"
-    },
-    {
-      "@type": "PropertyValue",
-      "name": "Peso del pilastro Arte",
-      "value": 5,
-      "unitText": "punti su 100"
+      "name": "Fascia di punteggio",
+      "description": "Santuario, Ottimo hotel, Costoso, Scenografia"
     },
     {
       "@type": "PropertyValue",
       "name": "Punteggio Ferro Index",
+      "unitText": "punti su 100",
       "minValue": 0,
-      "maxValue": 100,
-      "unitText": "punti su 100"
+      "maxValue": 100
     }
   ],
   "distribution": [
@@ -432,6 +421,17 @@ try { if ('scrollRestoration' in history) history.scrollRestoration = 'manual'; 
     </ul>
     <p>Forbes Travel Guide dichiara 70 punti su 100 al servizio: io ho modificato la proporzione e mantenuto il loro ordine di grandezza.</p>
     <p>Questa scelta nasce da un fatto molto semplice: le attenzioni valgono 40 punti perché sono l'unica voce che nessun budget può comprare in un pomeriggio. Il marmo si ordina, un servizio che anticipa i bisogni del cliente si costruisce in anni. Il conto lo puoi rifare: 40 più 12 più 12 più 11 fa 75 e 12 più 8 più 5 fa 25.</p>
+
+    <h3>Le quattro fasce</h3>
+    <table class="pesi">
+      <thead><tr><th>Fascia</th><th>Punteggio</th></tr></thead>
+      <tbody>
+        <tr><td>Santuario</td><td class="num">da 85 a 100</td></tr>
+        <tr><td>Ottimo hotel</td><td class="num">da 65 a 84</td></tr>
+        <tr><td>Costoso</td><td class="num">da 40 a 64</td></tr>
+        <tr><td>Scenografia</td><td class="num">da 0 a 39</td></tr>
+      </tbody>
+    </table>
 
     <h3>Tre regole che mantengono onesto il punteggio</h3>
     <p>I difetti pesano più dei pregi: ogni stonatura segnalata toglie quattro punti, e anche una sola ferma il punteggio a 84, sotto la soglia del Santuario, perché sappiamo bene che un secco «no» fa dimenticare dieci gentilezze.</p>
@@ -591,7 +591,7 @@ try { if ('scrollRestoration' in history) history.scrollRestoration = 'manual'; 
     <h2>Le ventitré domande</h2>
     <p>Il risultato finale lo calcola lo strumento, ma le domande sono a disposizione di chiunque voglia usarle: che tu sia un direttore che vuole misurare il proprio albergo prima che lo faccia un ospite o un giornalista che vuole conoscere meglio lo strumento per poterne parlare o un lettore curioso che vuole saperne di più.</p>
     <p>Copiale, discutile, citale riportando sempre la fonte e, se una non ti convince, scrivimi e confrontiamoci insieme.</p>
-    <p class="licenza micro">Le ventitré domande e la descrizione del metodo sono rilasciate con licenza <a href="https://creativecommons.org/licenses/by/4.0/deed.it" rel="license">Creative Commons Attribuzione 4.0 Internazionale</a>. Puoi copiarle, adattarle e riutilizzarle, anche per lavoro, citando «Ferro Index, metodo di Mattia Ferro, versione 1.1» e riportando il link index.mattiaferro.com.<br>Attenzione: il nome «Ferro Index» resta escluso dalla licenza.</p>
+    <p class="licenza micro">Le ventitré domande e la descrizione del metodo sono rilasciate con licenza <a href="https://creativecommons.org/licenses/by/4.0/deed.it" rel="license">Creative Commons Attribuzione 4.0 Internazionale</a>. Puoi copiarle, adattarle e riutilizzarle, anche per lavoro, citando «Ferro Index, metodo di Mattia Ferro, versione 1.1» e riportando il link index.mattiaferro.com.<br>I dati del metodo si scaricano in <a href="/assets/ferro-index-metodo.json" type="application/json">JSON</a> e in <a href="/assets/ferro-index-metodo.csv" type="text/csv" download>CSV</a>.<br>Attenzione: il nome «Ferro Index» resta escluso dalla licenza.</p>
     <div class="tabella-scorre"><table class="pesi domande">
       <thead><tr><th>Domanda</th><th>Pilastro</th><th>Punti</th></tr></thead>
       <tbody>

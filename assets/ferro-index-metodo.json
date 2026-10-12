@@ -1,0 +1,1091 @@
+{
+  "nome": "Ferro Index",
+  "descrizione": "Test online che misura su una scala da 0 a 100 quanto un hotel è di lusso a partire dal soggiorno di un ospite, con domande su fatti osservati e senza usare recensioni.",
+  "description": "Online test that measures, on a 0 to 100 scale, how luxurious a hotel is, based on a guest's stay, with questions about observed facts and without using reviews.",
+  "versione": "1.1",
+  "data_versione": "2026-09-21",
+  "pubblicato": "2026-08-16",
+  "autore": "Mattia Ferro",
+  "url": "https://index.mattiaferro.com/",
+  "licenza": "https://creativecommons.org/licenses/by/4.0/",
+  "attribuzione": "Ferro Index, metodo di Mattia Ferro, versione 1.1, https://index.mattiaferro.com",
+  "nota_licenza": "La licenza riguarda le domande e la descrizione del metodo; il nome Ferro Index ne è escluso.",
+  "pilastri": [
+    {
+      "chiave": "attenzioni",
+      "nome": "Attenzioni",
+      "name": "Attention",
+      "peso": 40
+    },
+    {
+      "chiave": "comfort",
+      "nome": "Comfort",
+      "name": "Comfort",
+      "peso": 12
+    },
+    {
+      "chiave": "privacy",
+      "nome": "Privacy",
+      "name": "Privacy",
+      "peso": 12
+    },
+    {
+      "chiave": "cibo",
+      "nome": "Cibo",
+      "name": "Food",
+      "peso": 12
+    },
+    {
+      "chiave": "pulizia",
+      "nome": "Pulizia",
+      "name": "Cleanliness",
+      "peso": 11
+    },
+    {
+      "chiave": "design",
+      "nome": "Design",
+      "name": "Design",
+      "peso": 8
+    },
+    {
+      "chiave": "arte",
+      "nome": "Arte",
+      "name": "Art",
+      "peso": 5
+    }
+  ],
+  "regole": [
+    {
+      "it": "Ogni risposta vale una quota del peso della domanda: 1 il peso intero, 0,5 metà (le vie di mezzo come «Quasi» o «Una volta sola»), 0 niente. Nelle scale a cinque livelli le risposte valgono 0, 0,25, 0,5, 0,75 e 1. Nei dati la quota è il campo «quota» di ogni risposta.",
+      "en": "Each answer is worth a share of the question weight: 1 the full weight, 0.5 half (middle answers such as «Almost» or «Just once»), 0 nothing. On five-level scales the answers are worth 0, 0.25, 0.5, 0.75 and 1. In the data the share is the «quota» field of each answer."
+    },
+    {
+      "it": "Le risposte con quota null tolgono la domanda dal conto (per esempio un servizio non provato, nessuna preferenza espressa, nessun problema avuto): il pilastro si riscala al suo peso e, se esce per intero, il totale si ricalcola sugli altri pilastri.",
+      "en": "Answers with a null quota leave the question out (for example a service not tried, no preference expressed, no problem to report): its pillar is rescaled to its weight and, if the whole pillar is left out, the total is recalculated on the other pillars."
+    },
+    {
+      "it": "Ogni stonatura segnalata toglie 4 punti dal punteggio già arrotondato, e ne basta una perché il punteggio finale non superi 84.",
+      "en": "Each false note marked subtracts 4 points from the already rounded score, and a single one keeps the final score from going above 84."
+    },
+    {
+      "it": "Se Attenzioni o Pulizia scendono sotto la metà dei punti in gioco, il punteggio non supera 64.",
+      "en": "If Attention or Cleanliness falls below half of the points in play, the score does not go above 64."
+    },
+    {
+      "it": "Il punteggio si arrotonda all'intero più vicino, con il mezzo per eccesso, e non scende sotto zero. L'ordine è questo: per ogni pilastro in gioco, i punti presi divisi per i punti in gioco, per il peso del pilastro; la somma, nell'ordine dei pilastri, divisa per la somma dei pesi dei pilastri in gioco e moltiplicata per 100; l'arrotondamento; 4 punti in meno per ogni stonatura; zero come minimo; per ultimi i tetti di 84 e di 64. Il riferimento è il calcolo in virgola mobile del motore del sito (assets/ferro.js): in pochi casi, a 14,5, 28,5, 56,5 e 57,5, arrotonda per difetto, senza mai cambiare fascia.",
+      "en": "The score is rounded to the nearest whole number, halves rounded up, and never goes below zero. The order is: for each pillar in play, points earned divided by points in play, times the pillar weight; the sum, in the order of the pillars, divided by the sum of the weights of the pillars in play and multiplied by 100; rounding; minus 4 points for each false note; zero as the floor; the caps of 84 and 64 last. The reference is the floating-point calculation of the site engine (assets/ferro.js): in a few cases, at 14.5, 28.5, 56.5 and 57.5, it rounds down, never changing band."
+    },
+    {
+      "it": "L'ultima domanda, sulla sensazione complessiva, non entra nel punteggio: serve da controprova.",
+      "en": "The last question, on the overall feeling, does not count towards the score: it serves as a cross-check."
+    }
+  ],
+  "fasce": [
+    {
+      "da": 85,
+      "a": 100,
+      "nome": "Santuario",
+      "name": "Sanctuary",
+      "verdetto": "Il lusso vero: quello che non si fa vedere. Si sente.",
+      "verdict": "True luxury: the kind that doesn't show off. You feel it."
+    },
+    {
+      "da": 65,
+      "a": 84,
+      "nome": "Ottimo hotel",
+      "name": "Excellent hotel",
+      "verdetto": "Ottimo. Non ancora lusso.",
+      "verdict": "An excellent hotel. Not luxury yet."
+    },
+    {
+      "da": 40,
+      "a": 64,
+      "nome": "Costoso",
+      "name": "Expensive",
+      "verdetto": "Non è lusso. È soltanto costoso.",
+      "verdict": "It's not luxury. It's just expensive."
+    },
+    {
+      "da": 0,
+      "a": 39,
+      "nome": "Scenografia",
+      "name": "Stage set",
+      "verdetto": "Non è ospitalità. È una scena. E il pubblico eri tu.",
+      "verdict": "It's not hospitality. It's a stage. And you were the audience."
+    }
+  ],
+  "domande": [
+    {
+      "ordine": 1,
+      "id": "a5",
+      "pilastro": "attenzioni",
+      "peso_nominale": 8,
+      "sezione": "L'arrivo",
+      "section": "The arrival",
+      "testo": "Il primo saluto.",
+      "text": "The first greeting.",
+      "nota": "La prima persona della struttura che ti ha accolto, chiunque fosse, come l'ha fatto?",
+      "note": "The first person from the property who welcomed you, whoever it was: how did they do it?",
+      "tipo": "scale",
+      "ruolo": "punteggio",
+      "opzioni": [
+        {
+          "testo": "In modo freddo: mi ha sbrigato come se fossi una pratica",
+          "quota": 0
+        },
+        {
+          "testo": "In modo corretto, ma niente di più",
+          "quota": 0.25
+        },
+        {
+          "testo": "In modo cortese",
+          "quota": 0.5
+        },
+        {
+          "testo": "In modo caloroso: un sorriso sincero, non di circostanza",
+          "quota": 0.75
+        },
+        {
+          "testo": "Era genuinamente contento di vedermi: ha interrotto quello che stava facendo per parlare con me",
+          "quota": 1
+        }
+      ],
+      "options": [
+        {
+          "text": "Coldly: I was processed as if I were paperwork",
+          "quota": 0
+        },
+        {
+          "text": "Correctly, but nothing more",
+          "quota": 0.25
+        },
+        {
+          "text": "Politely",
+          "quota": 0.5
+        },
+        {
+          "text": "Warmly: a sincere smile, not a routine one",
+          "quota": 0.75
+        },
+        {
+          "text": "They were genuinely glad to see me: they stopped what they were doing to talk to me",
+          "quota": 1
+        }
+      ]
+    },
+    {
+      "ordine": 2,
+      "id": "a1",
+      "pilastro": "attenzioni",
+      "peso_nominale": 8,
+      "sezione": "L'arrivo",
+      "section": "The arrival",
+      "testo": "Dopo il check-in, si sono ricordati il tuo nome e l'hanno usato in un'altra area della struttura?",
+      "text": "After check-in, did they remember your name and use it elsewhere on the property?",
+      "nota": "Al bar, al ristorante, alla spa, il personale della struttura conosceva il tuo nome anche se non ti eri mai presentato direttamente a loro? Non conta il momento del check-in, quando il nome ce l'hanno scritto davanti. Basta una sola volta. Se, oltre il check-in, non c'è stato nessun contatto, la risposta è no: il riconoscimento è esattamente quello che è mancato.",
+      "note": "At the bar, at the restaurant, at the spa, did the property's staff know your name even though you had never introduced yourself to them directly? Check-in itself doesn't count, since your name is written right in front of them. Once is enough. If there was no contact at all beyond check-in, the answer is no: recognition is exactly what was missing.",
+      "tipo": "yn0",
+      "ruolo": "punteggio",
+      "opzioni": [
+        {
+          "testo": "Sì, mi hanno chiamato per nome",
+          "quota": 1
+        },
+        {
+          "testo": "No, ho dovuto ricordarglielo io",
+          "quota": 0
+        },
+        {
+          "testo": "Non ci ho fatto caso",
+          "quota": 0
+        }
+      ],
+      "options": [
+        {
+          "text": "Yes, they used my name",
+          "quota": 1
+        },
+        {
+          "text": "No, I had to remind them",
+          "quota": 0
+        },
+        {
+          "text": "I didn't notice",
+          "quota": 0
+        }
+      ]
+    },
+    {
+      "ordine": 3,
+      "id": "p1",
+      "pilastro": "privacy",
+      "peso_nominale": 4,
+      "sezione": "L'arrivo",
+      "section": "The arrival",
+      "testo": "Durante il check-in, il numero della tua camera è stato detto ad alta voce o te l'hanno condiviso per iscritto?",
+      "text": "At check-in, was your room number said out loud, or was it given to you in writing?",
+      "nota": "Nei migliori hotel è una regola di riservatezza: il numero non si pronuncia se altri possono sentirlo.",
+      "note": "In the best hotels it's a privacy rule: the number is never spoken if others can hear it.",
+      "tipo": "yn",
+      "ruolo": "punteggio",
+      "opzioni": [
+        {
+          "testo": "Scritto, solo per me",
+          "quota": 1
+        },
+        {
+          "testo": "Detto ad alta voce, davanti ad altri",
+          "quota": 0
+        }
+      ],
+      "options": [
+        {
+          "text": "Written, just for me",
+          "quota": 1
+        },
+        {
+          "text": "Said out loud, in front of others",
+          "quota": 0
+        }
+      ]
+    },
+    {
+      "ordine": 4,
+      "id": "c1",
+      "pilastro": "comfort",
+      "peso_nominale": 4,
+      "sezione": "La camera",
+      "section": "The room",
+      "testo": "Di notte avevi buio totale?",
+      "text": "At night, was the room totally dark?",
+      "nota": "Non è questione di gusti: è la capacità della stanza di «farsi buia», se l'ospite lo desidera. Niente led della TV, niente spiragli dalle tende. Rispondi in base a com'era la stanza, non alle tue preferenze durante il sonno.",
+      "note": "This isn't about taste: it's whether the room can \"go dark\" when the guest wants it to. No TV LEDs, no light leaking through the curtains. Answer for what the room was like, not for how you prefer to sleep.",
+      "tipo": "ynp",
+      "ruolo": "punteggio",
+      "opzioni": [
+        {
+          "testo": "Sì",
+          "quota": 1
+        },
+        {
+          "testo": "No",
+          "quota": 0
+        },
+        {
+          "testo": "Quasi: solo un led o uno spiraglio dalle tende",
+          "quota": 0.5
+        }
+      ],
+      "options": [
+        {
+          "text": "Yes",
+          "quota": 1
+        },
+        {
+          "text": "No",
+          "quota": 0
+        },
+        {
+          "text": "Almost: just a stray LED or a sliver of light through the curtains",
+          "quota": 0.5
+        }
+      ]
+    },
+    {
+      "ordine": 5,
+      "id": "c2",
+      "pilastro": "comfort",
+      "peso_nominale": 4,
+      "sezione": "La camera",
+      "section": "The room",
+      "testo": "Il silenzio era il protagonista della stanza?",
+      "text": "Was silence the main feature of the room?",
+      "nota": "Nessun ronzio del climatizzatore o del frigobar, niente voci dal corridoio, niente traffico dalla strada. Con un margine di tolleranza: se all'una di notte passa qualcuno che ha bevuto troppo, non è colpa dell'albergo. Valuta solo quello che la struttura poteva controllare.",
+      "note": "No hum from the air conditioning or the minibar, no voices from the corridor, no traffic from the street. With a margin of tolerance: if someone who drank too much stumbles down the corridor at one in the morning, that's not the hotel's fault. Judge only the sounds the property could control.",
+      "tipo": "ynpx",
+      "ruolo": "punteggio",
+      "opzioni": [
+        {
+          "testo": "Sì",
+          "quota": 1
+        },
+        {
+          "testo": "No",
+          "quota": 0
+        },
+        {
+          "testo": "Quasi: solo un ronzio di fondo, niente voci né traffico",
+          "quota": 0.5
+        },
+        {
+          "testo": "Io dormo ovunque, non ci ho fatto caso",
+          "quota": null
+        }
+      ],
+      "options": [
+        {
+          "text": "Yes",
+          "quota": 1
+        },
+        {
+          "text": "No",
+          "quota": 0
+        },
+        {
+          "text": "Almost: just a background hum, no voices or traffic",
+          "quota": 0.5
+        },
+        {
+          "text": "I can sleep anywhere, I didn't notice",
+          "quota": null
+        }
+      ]
+    },
+    {
+      "ordine": 6,
+      "id": "c3",
+      "pilastro": "comfort",
+      "peso_nominale": 4,
+      "sezione": "La camera",
+      "section": "The room",
+      "testo": "Il letto.",
+      "text": "The bed.",
+      "nota": "Lenzuola, cuscini, materasso, il profumo che hai sentito coricandoti a letto. La notte è il primo servizio che paghi.",
+      "note": "Sheets, pillows, mattress, the scent you noticed as you got into bed. The night is the first service you pay for.",
+      "tipo": "scale",
+      "ruolo": "punteggio",
+      "opzioni": [
+        {
+          "testo": "Da dimenticare",
+          "quota": 0
+        },
+        {
+          "testo": "Normale",
+          "quota": 0.25
+        },
+        {
+          "testo": "Buono",
+          "quota": 0.5
+        },
+        {
+          "testo": "Molto buono",
+          "quota": 0.75
+        },
+        {
+          "testo": "Il miglior letto in cui abbia dormito",
+          "quota": 1
+        }
+      ],
+      "options": [
+        {
+          "text": "Forgettable",
+          "quota": 0
+        },
+        {
+          "text": "Average",
+          "quota": 0.25
+        },
+        {
+          "text": "Good",
+          "quota": 0.5
+        },
+        {
+          "text": "Very good",
+          "quota": 0.75
+        },
+        {
+          "text": "The best bed I've slept in",
+          "quota": 1
+        }
+      ]
+    },
+    {
+      "ordine": 7,
+      "id": "h1",
+      "pilastro": "pulizia",
+      "peso_nominale": 4,
+      "sezione": "La camera",
+      "section": "The room",
+      "testo": "Il bagno: la prima impressione che ti ha dato",
+      "text": "The bathroom: the first impression it gave you",
+      "nota": "Il bagno è una delle prime cose che si guardano: aloni sullo specchio, impronte sul rubinetto, gocce asciugate male. È da questi dettagli che si capisce se la camera è stata preparata con cura o soltanto rifatta velocemente.",
+      "note": "The bathroom is one of the first things you check: streaks on the mirror, fingerprints on the taps, water spots wiped in a hurry. Those details tell you whether the room was prepared with care or just reset in a rush.",
+      "tipo": "yn",
+      "ruolo": "punteggio",
+      "opzioni": [
+        {
+          "testo": "Impeccabile",
+          "quota": 1
+        },
+        {
+          "testo": "Qualche segno c'era",
+          "quota": 0
+        }
+      ],
+      "options": [
+        {
+          "text": "Spotless",
+          "quota": 1
+        },
+        {
+          "text": "There were marks",
+          "quota": 0
+        }
+      ]
+    },
+    {
+      "ordine": 8,
+      "id": "a2",
+      "pilastro": "attenzioni",
+      "peso_nominale": 8,
+      "sezione": "Le attenzioni",
+      "section": "The care",
+      "testo": "I dettagli contano: è stata anticipata una tua richiesta?",
+      "text": "Details matter: did they anticipate a request before you made it?",
+      "nota": "Considera solo ciò che non hai chiesto esplicitamente: l'ombrello prima che iniziasse a piovere, già dal secondo giorno il caffè arrivava come lo desideravi, il taxi già contattato, il cuscino in più notato già a disposizione. Ricorda: se l'hai chiesto tu, non è anticipazione: è servizio.",
+      "note": "Count only what you never explicitly asked for: the umbrella before the rain started, the coffee that arrived the way you like it from day two, the taxi already called, the extra pillow noticed and already there. Remember: if you asked for it, it isn't anticipation, it's service.",
+      "tipo": "ynp",
+      "ruolo": "punteggio",
+      "opzioni": [
+        {
+          "testo": "Sì, più di una volta",
+          "quota": 1
+        },
+        {
+          "testo": "No, è arrivato solo quello che ho chiesto",
+          "quota": 0
+        },
+        {
+          "testo": "Una volta sola",
+          "quota": 0.5
+        }
+      ],
+      "options": [
+        {
+          "text": "Yes, more than once",
+          "quota": 1
+        },
+        {
+          "text": "No, I only got what I asked for",
+          "quota": 0
+        },
+        {
+          "text": "Just once",
+          "quota": 0.5
+        }
+      ]
+    },
+    {
+      "ordine": 9,
+      "id": "a3",
+      "pilastro": "attenzioni",
+      "peso_nominale": 8,
+      "sezione": "Le attenzioni",
+      "section": "The care",
+      "testo": "Hai condiviso una tua preferenza con un addetto del personale e, poco dopo, era già nota a tutte le aree della struttura?",
+      "text": "You shared a preference with one member of staff: shortly after, did every area of the property already know it?",
+      "nota": "Hai detto al ristorante di una tua allergia e alla colazione successiva erano già tutti informati. Hai chiesto acqua naturale il primo giorno e non hai più dovuto specificare la tua preferenza. Hai segnalato un dettaglio che ti dava fastidio e l'hanno tempestivamente eliminato.",
+      "note": "You mentioned an allergy at the restaurant, and at the next breakfast everyone already knew. You asked for still water on day one, and never had to specify your preference again. You pointed out a detail that bothered you, and it was promptly dealt with.",
+      "tipo": "yn3",
+      "ruolo": "punteggio",
+      "opzioni": [
+        {
+          "testo": "Sì",
+          "quota": 1
+        },
+        {
+          "testo": "No, ho dovuto ripetermi",
+          "quota": 0
+        },
+        {
+          "testo": "Non ho espresso preferenze",
+          "quota": null
+        }
+      ],
+      "options": [
+        {
+          "text": "Yes",
+          "quota": 1
+        },
+        {
+          "text": "No, I had to repeat myself",
+          "quota": 0
+        },
+        {
+          "text": "I never stated a preference",
+          "quota": null
+        }
+      ]
+    },
+    {
+      "ordine": 10,
+      "id": "p2",
+      "pilastro": "privacy",
+      "peso_nominale": 4,
+      "sezione": "La privacy",
+      "section": "Privacy",
+      "testo": "Prima di entrare nella tua stanza, il personale ha sempre bussato e aspettato una tua risposta?",
+      "text": "Before entering your room, did the staff always knock and wait for your answer?",
+      "nota": "Considera anche: se hai esposto il cartello «non disturbare», ma hanno bussato lo stesso, la risposta è no. Se nessuno è mai entrato mentre eri in stanza, la risposta è sì.",
+      "note": "Consider this too: if you hung the do-not-disturb sign but they knocked anyway, the answer is no. If nobody ever walked in while you were in the room, the answer is yes.",
+      "tipo": "yn",
+      "ruolo": "punteggio",
+      "opzioni": [
+        {
+          "testo": "Sì",
+          "quota": 1
+        },
+        {
+          "testo": "No",
+          "quota": 0
+        }
+      ],
+      "options": [
+        {
+          "text": "Yes",
+          "quota": 1
+        },
+        {
+          "text": "No",
+          "quota": 0
+        }
+      ]
+    },
+    {
+      "ordine": 11,
+      "id": "p3",
+      "pilastro": "privacy",
+      "peso_nominale": 4,
+      "sezione": "La privacy",
+      "section": "Privacy",
+      "testo": "Alla reception, con altri ospiti intorno: come sono stati trattati i tuoi dati?",
+      "text": "At the desk, with other guests around: how were your details handled?",
+      "nota": "I tuoi dati, come nome e cognome, numero di notti in hotel, città di residenza: sono stati tenuti riservati in presenza di altri ospiti o sono stati citati con leggerezza? L'attenzione alla privacy è una delle dimostrazioni più semplici, e più disattese, del lusso vero.",
+      "note": "Your details, such as your full name, how many nights you're staying, where you live: were they kept quiet in front of other guests, or mentioned carelessly? Attention to privacy is one of the simplest proofs of true luxury, and one of the most neglected.",
+      "tipo": "yn",
+      "ruolo": "punteggio",
+      "opzioni": [
+        {
+          "testo": "Condivisi con discrezione",
+          "quota": 1
+        },
+        {
+          "testo": "Detti ad alta voce davanti a tutti",
+          "quota": 0
+        }
+      ],
+      "options": [
+        {
+          "text": "Handled with discretion",
+          "quota": 1
+        },
+        {
+          "text": "Said out loud in front of everyone",
+          "quota": 0
+        }
+      ]
+    },
+    {
+      "ordine": 12,
+      "id": "h2",
+      "pilastro": "pulizia",
+      "peso_nominale": 4,
+      "sezione": "La sera",
+      "section": "The evening",
+      "testo": "Tornando la sera, hai trovato la camera preparata per la notte?",
+      "text": "Coming back in the evening, did you find the room prepared for the night?",
+      "nota": "Luci abbassate, lenzuola ripiegate ad angolo, acqua fresca disponibile, i tuoi oggetti spostati con rispetto: quello che nel mondo del lusso si chiama couverture.",
+      "note": "Lights low, sheets folded back at the corner, fresh water at hand, your things moved with respect: what the luxury world calls turndown service.",
+      "tipo": "yn3",
+      "ruolo": "punteggio",
+      "opzioni": [
+        {
+          "testo": "Sì",
+          "quota": 1
+        },
+        {
+          "testo": "No",
+          "quota": 0
+        },
+        {
+          "testo": "Non ho avuto occasione di scoprirlo, sono ripartito la mattina successiva",
+          "quota": null
+        }
+      ],
+      "options": [
+        {
+          "text": "Yes",
+          "quota": 1
+        },
+        {
+          "text": "No",
+          "quota": 0
+        },
+        {
+          "text": "I had no chance to find out, I left the next morning",
+          "quota": null
+        }
+      ]
+    },
+    {
+      "ordine": 13,
+      "id": "h3",
+      "pilastro": "pulizia",
+      "peso_nominale": 3,
+      "sezione": "La cura",
+      "section": "The care",
+      "testo": "Gli angoli nascosti che di solito non si notano erano curati quanto l'ingresso?",
+      "text": "Were the out-of-the-way corners nobody usually notices as cared for as the entrance?",
+      "nota": "Gli spazi meno in vista come scale, corridoi, bagni comuni a fine giornata, angoli dietro la porta, il bordo dello specchio, sotto il letto erano curati come le zone più di passaggio?",
+      "note": "The less visible spaces, like stairs, corridors, shared bathrooms at the end of the day, the corner behind the door, the edge of the mirror, under the bed: were they as cared for as the areas everyone walks through?",
+      "tipo": "yn3",
+      "ruolo": "punteggio",
+      "opzioni": [
+        {
+          "testo": "Sì",
+          "quota": 1
+        },
+        {
+          "testo": "No",
+          "quota": 0
+        },
+        {
+          "testo": "Non ci ho fatto caso",
+          "quota": null
+        }
+      ],
+      "options": [
+        {
+          "text": "Yes",
+          "quota": 1
+        },
+        {
+          "text": "No",
+          "quota": 0
+        },
+        {
+          "text": "I didn't pay attention",
+          "quota": null
+        }
+      ]
+    },
+    {
+      "ordine": 14,
+      "id": "f1",
+      "pilastro": "cibo",
+      "peso_nominale": 4,
+      "sezione": "La colazione",
+      "section": "Breakfast",
+      "testo": "La colazione è stata preparata rispettando le tue richieste?",
+      "text": "Was breakfast prepared the way you asked for it?",
+      "nota": "La colazione è il momento in cui si capisce quanta cura viene riservata agli ospiti. Ripensa ai dettagli: la spremuta d'arancia è stata preparata al momento? Le uova strapazzate erano ancora calde e il caffè ancora fumante? Rispondi «sì» solo se tutte le portate rispettavano alti standard qualitativi.",
+      "note": "Breakfast is when you can tell how much care the guests are given. Think back to the details: was the orange juice squeezed to order? Were the scrambled eggs still hot and the coffee still steaming? Answer \"yes\" only if every course met a high standard.",
+      "tipo": "yn3",
+      "ruolo": "punteggio",
+      "opzioni": [
+        {
+          "testo": "Sì",
+          "quota": 1
+        },
+        {
+          "testo": "No",
+          "quota": 0
+        },
+        {
+          "testo": "Non ho fatto colazione in hotel",
+          "quota": null
+        }
+      ],
+      "options": [
+        {
+          "text": "Yes",
+          "quota": 1
+        },
+        {
+          "text": "No",
+          "quota": 0
+        },
+        {
+          "text": "I didn't have breakfast at the hotel",
+          "quota": null
+        }
+      ]
+    },
+    {
+      "ordine": 15,
+      "id": "f2",
+      "pilastro": "cibo",
+      "peso_nominale": 4,
+      "sezione": "La tavola",
+      "section": "The table",
+      "testo": "Chi ti ha servito ha saputo raccontarti i piatti e rispondere alle tue domande senza andare a chiedere in cucina?",
+      "text": "Could the person serving you describe the dishes and answer your questions without going to ask the kitchen?",
+      "nota": "Facci caso la prossima volta che chiedi informazioni su un piatto: la risposta arriva direttamente dalla persona a cui hai chiesto o è stato necessario andare a chiedere in cucina?",
+      "note": "Notice it next time you ask about a dish: does the answer come straight from the person you asked, or do they have to go and ask the kitchen?",
+      "tipo": "yn3",
+      "ruolo": "punteggio",
+      "opzioni": [
+        {
+          "testo": "Sì, mi ha detto tutto la persona a cui ho chiesto",
+          "quota": 1
+        },
+        {
+          "testo": "No, è dovuto andare a chiedere in cucina",
+          "quota": 0
+        },
+        {
+          "testo": "Non ho mangiato al ristorante dell'hotel",
+          "quota": null
+        }
+      ],
+      "options": [
+        {
+          "text": "Yes, the person I asked told me everything",
+          "quota": 1
+        },
+        {
+          "text": "No, they had to go and ask the kitchen",
+          "quota": 0
+        },
+        {
+          "text": "I didn't eat at the hotel restaurant",
+          "quota": null
+        }
+      ]
+    },
+    {
+      "ordine": 16,
+      "id": "f3",
+      "pilastro": "cibo",
+      "peso_nominale": 4,
+      "sezione": "La tavola",
+      "section": "The table",
+      "testo": "I piatti caldi sono arrivati alla corretta temperatura e, soprattutto, nei tempi previsti?",
+      "text": "Did hot dishes arrive at the right temperature and, above all, on time?",
+      "nota": "Per rispondere «sì» è importante che sia la temperatura che l'attesa siano state adeguate.",
+      "note": "To answer \"yes\", both the temperature and the wait have to have been right.",
+      "tipo": "yn3",
+      "ruolo": "punteggio",
+      "opzioni": [
+        {
+          "testo": "Sì",
+          "quota": 1
+        },
+        {
+          "testo": "No",
+          "quota": 0
+        },
+        {
+          "testo": "Non ho mangiato al ristorante dell'hotel",
+          "quota": null
+        }
+      ],
+      "options": [
+        {
+          "text": "Yes",
+          "quota": 1
+        },
+        {
+          "text": "No",
+          "quota": 0
+        },
+        {
+          "text": "I didn't eat at the hotel restaurant",
+          "quota": null
+        }
+      ]
+    },
+    {
+      "ordine": 17,
+      "id": "d1",
+      "pilastro": "design",
+      "peso_nominale": 4,
+      "sezione": "Lo sguardo",
+      "section": "The eye",
+      "testo": "Gli interni rispecchiavano la personalità unica dell'albergo o potevano essere gli interni di qualunque hotel?",
+      "text": "Did the interiors reflect the hotel's unique personality, or could they have been the interiors of any hotel?",
+      "nota": "I migliori alberghi non copiano il lusso di qualcun altro e non copiano nemmeno la cartolina del posto: prendono la cultura del luogo e la fanno propria. L'albergo che ti ha ospitato aveva una personalità unica e riconoscibile o sarebbe potuto essere un hotel come tanti in qualunque città del mondo?",
+      "note": "The best hotels don't copy someone else's luxury, and they don't copy the local postcard either: they take the culture of the place and make it their own. Did the hotel you stayed in have a unique, recognisable personality, or could it have been just another hotel in any city in the world?",
+      "tipo": "ynp",
+      "ruolo": "punteggio",
+      "opzioni": [
+        {
+          "testo": "Personalità unica e riconoscibile",
+          "quota": 1
+        },
+        {
+          "testo": "Poteva essere ovunque nel mondo",
+          "quota": 0
+        },
+        {
+          "testo": "Rispecchiava le caratteristiche della città, ma non l'unicità dell'albergo",
+          "quota": 0.5
+        }
+      ],
+      "options": [
+        {
+          "text": "A unique, recognisable personality",
+          "quota": 1
+        },
+        {
+          "text": "It could be anywhere in the world",
+          "quota": 0
+        },
+        {
+          "text": "It reflected the city's character, but nothing unique to the hotel",
+          "quota": 0.5
+        }
+      ]
+    },
+    {
+      "ordine": 18,
+      "id": "d2",
+      "pilastro": "design",
+      "peso_nominale": 4,
+      "sezione": "Lo sguardo",
+      "section": "The eye",
+      "testo": "Parliamo di dettagli: erano curati fino in fondo?",
+      "text": "Let's talk details: were they cared for all the way through?",
+      "nota": "Ripensa ai piccoli dettagli come i fiori freschi, il profumo che si sente entrando, le grucce vere e non quelle che non puoi staccare dall'asta, i cartellini scritti a mano e non plastificati, gli accessori del bagno, i piccoli oggetti con il logo dell'hotel. Era tutto curato nel dettaglio?",
+      "note": "Think back to the small details: fresh flowers, the scent as you walk in, real hangers rather than the ones you can't take off the rail, handwritten cards rather than laminated ones, the bathroom accessories, the small objects with the hotel's logo. Was everything cared for down to the last detail?",
+      "tipo": "yn",
+      "ruolo": "punteggio",
+      "opzioni": [
+        {
+          "testo": "Sì",
+          "quota": 1
+        },
+        {
+          "testo": "No",
+          "quota": 0
+        }
+      ],
+      "options": [
+        {
+          "text": "Yes",
+          "quota": 1
+        },
+        {
+          "text": "No",
+          "quota": 0
+        }
+      ]
+    },
+    {
+      "ordine": 19,
+      "id": "r1",
+      "pilastro": "arte",
+      "peso_nominale": 3,
+      "sezione": "L'arte",
+      "section": "The art",
+      "testo": "Le opere appese alle pareti erano scelte o messe lì solo per riempire uno spazio?",
+      "text": "Was the art hanging on the walls chosen, or put there just to fill a space?",
+      "nota": "Non conta che siano opere d'arte originali di autori famosi: quello che fa la differenza è quanto siano state scelte per dare un tocco in più agli spazi dell'hotel. Erano in armonia con il colore delle pareti, con il luogo in cui sono state inserite, con la stanza nel complesso o semplici stampe da catalogo distribuite con poca cura?",
+      "note": "It doesn't matter whether they are original works by famous artists: what makes the difference is how far they were chosen to add something to the hotel's spaces. Were they in harmony with the colour of the walls, with the spot they were placed in, with the room as a whole, or were they plain catalogue prints scattered about with little care?",
+      "tipo": "yn",
+      "ruolo": "punteggio",
+      "opzioni": [
+        {
+          "testo": "Scelte con cura",
+          "quota": 1
+        },
+        {
+          "testo": "Semplici riempitivi",
+          "quota": 0
+        }
+      ],
+      "options": [
+        {
+          "text": "Chosen with care",
+          "quota": 1
+        },
+        {
+          "text": "Just fillers",
+          "quota": 0
+        }
+      ]
+    },
+    {
+      "ordine": 20,
+      "id": "r2",
+      "pilastro": "arte",
+      "peso_nominale": 2,
+      "sezione": "L'arte",
+      "section": "The art",
+      "testo": "C'è un oggetto o un'opera che ti ha colpito e ricorderai anche tra un anno?",
+      "text": "Is there an object or a work that struck you and that you will still remember in a year?",
+      "nota": "Di solito è qualcosa di caratteristico del posto: un pezzo d'artigianato, un oggetto di un rito locale, una cosa che in un altro Paese non troveresti. Se, ripensandoci, ti viene subito in mente adesso, la tua risposta è un «sì».",
+      "note": "It's usually something typical of the place: a piece of craftsmanship, an object from a local ritual, something you wouldn't find in another country. If, thinking back, one comes to mind straight away now, your answer is a \"yes\".",
+      "tipo": "yn",
+      "ruolo": "punteggio",
+      "opzioni": [
+        {
+          "testo": "Sì",
+          "quota": 1
+        },
+        {
+          "testo": "No",
+          "quota": 0
+        }
+      ],
+      "options": [
+        {
+          "text": "Yes",
+          "quota": 1
+        },
+        {
+          "text": "No",
+          "quota": 0
+        }
+      ]
+    },
+    {
+      "ordine": 21,
+      "id": "a4",
+      "pilastro": "attenzioni",
+      "peso_nominale": 8,
+      "sezione": "Quando qualcosa va storto",
+      "section": "When something goes wrong",
+      "testo": "Hai segnalato un problema: chi l'ha risolto?",
+      "text": "You reported a problem: who solved it?",
+      "nota": "Vale qualunque cosa: la temperatura dell'acqua della doccia, il tavolo non perfettamente stabile, la luce che non si accende. Se la prima persona a cui hai riferito il problema se ne è occupata fino in fondo, anche se poi ha chiamato un tecnico, rispondi sì; se è iniziato lo scaricabarile, rispondi no.",
+      "note": "Anything counts: the temperature of the shower water, the wobbly table, the light that wouldn't come on. If the first person you reported the problem to saw it through to the end, even if they then called a technician, answer yes; if the buck started getting passed, answer no.",
+      "tipo": "yn3",
+      "ruolo": "punteggio",
+      "opzioni": [
+        {
+          "testo": "Sì, se n'è occupata la prima persona con cui ho parlato",
+          "quota": 1
+        },
+        {
+          "testo": "No, è partito lo scaricabarile",
+          "quota": 0
+        },
+        {
+          "testo": "Non ho avuto problemi da segnalare",
+          "quota": null
+        }
+      ],
+      "options": [
+        {
+          "text": "Yes, the first person I spoke to dealt with it",
+          "quota": 1
+        },
+        {
+          "text": "No, the buck got passed",
+          "quota": 0
+        },
+        {
+          "text": "I had nothing to report",
+          "quota": null
+        }
+      ]
+    },
+    {
+      "ordine": 22,
+      "id": "flags",
+      "pilastro": null,
+      "peso_nominale": 0,
+      "sezione": "Le stonature",
+      "section": "The false notes",
+      "testo": "Quali di queste sono successe davvero?",
+      "text": "Which of these actually happened?",
+      "nota": "Puoi indicarne più di una e contano in modo negativo sul risultato finale: i difetti, infatti, pesano più dei pregi.",
+      "note": "Pick as many as apply; they count against the final score, because flaws weigh more than merits.",
+      "tipo": "flags",
+      "ruolo": "stonature",
+      "opzioni": [
+        {
+          "testo": "Un no secco a una mia richiesta, senza che mi venisse data un'alternativa",
+          "punti": -4
+        },
+        {
+          "testo": "Mi hanno fatto notare quanto un oggetto o servizio fosse pregiato o costoso",
+          "punti": -4
+        },
+        {
+          "testo": "Monoporzioni industriali in plastica a colazione",
+          "punti": -4
+        },
+        {
+          "testo": "Voci di spesa comparse sul conto al momento del check-out che non erano state dichiarate prima",
+          "punti": -4
+        },
+        {
+          "testo": "Niente di tutto questo",
+          "punti": 0
+        }
+      ],
+      "options": [
+        {
+          "text": "A flat no to a request of mine, with no alternative offered",
+          "punti": -4
+        },
+        {
+          "text": "Someone pointed out how precious or expensive an object or service was",
+          "punti": -4
+        },
+        {
+          "text": "Plastic single-serve packets at breakfast",
+          "punti": -4
+        },
+        {
+          "text": "Charges that appeared on the bill at check-out that had not been mentioned before",
+          "punti": -4
+        },
+        {
+          "text": "None of these",
+          "punti": 0
+        }
+      ]
+    },
+    {
+      "ordine": 23,
+      "id": "emo",
+      "pilastro": null,
+      "peso_nominale": 0,
+      "sezione": "Alla fine",
+      "section": "At the end",
+      "testo": "Come ti sei sentito nel complesso?",
+      "text": "How did you feel overall?",
+      "nota": "Questa risposta non influenza il punteggio finale, serve solo da controprova: la nostra sensazione a pelle conferma o smentisce i fatti.",
+      "note": "This answer doesn't affect the final score; it's only the cross-check: our gut confirms the facts, or contradicts them.",
+      "tipo": "scale",
+      "ruolo": "controprova",
+      "opzioni": [
+        {
+          "testo": "Trascurato: mi sembra di aver buttato via i miei soldi"
+        },
+        {
+          "testo": "Servito, ma si poteva fare meglio"
+        },
+        {
+          "testo": "Rispettato e preso in considerazione"
+        },
+        {
+          "testo": "Apprezzato e coccolato"
+        },
+        {
+          "testo": "Mi sono sentito un ospite speciale, tornerei domani"
+        }
+      ],
+      "options": [
+        {
+          "text": "Neglected: I feel I wasted my money"
+        },
+        {
+          "text": "Served, but it could have been better"
+        },
+        {
+          "text": "Respected and taken into account"
+        },
+        {
+          "text": "Appreciated and looked after"
+        },
+        {
+          "text": "I felt like a special guest: I'd go back tomorrow"
+        }
+      ]
+    }
+  ]
+}

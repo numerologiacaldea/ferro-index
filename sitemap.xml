@@ -43,4 +43,18 @@
     <xhtml:link rel="alternate" hreflang="en" href="https://index.mattiaferro.com/en/privacy/"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://index.mattiaferro.com/privacy/"/>
   </url>
+  <url>
+    <loc>https://index.mattiaferro.com/stampa/</loc>
+    <lastmod>2026-10-14</lastmod>
+    <xhtml:link rel="alternate" hreflang="it" href="https://index.mattiaferro.com/stampa/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://index.mattiaferro.com/en/press/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://index.mattiaferro.com/stampa/"/>
+  </url>
+  <url>
+    <loc>https://index.mattiaferro.com/en/press/</loc>
+    <lastmod>2026-10-14</lastmod>
+    <xhtml:link rel="alternate" hreflang="it" href="https://index.mattiaferro.com/stampa/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://index.mattiaferro.com/en/press/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://index.mattiaferro.com/stampa/"/>
+  </url>
 </urlset>
